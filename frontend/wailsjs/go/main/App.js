@@ -5,3 +5,15 @@
 export function Greet(arg1) {
   return window['go']['main']['App']['Greet'](arg1);
 }
+
+export function ListChildTable(arg1, arg2) {
+  return window['go']['main']['App']['ListChildTable'](arg1, arg2);
+}
+
+export function ListDatabases() {
+  return window['go']['main']['App']['ListDatabases']();
+}
+
+export function ListSuperTable(arg1) {
+  return window['go']['main']['App']['ListSuperTable'](arg1);
+}
