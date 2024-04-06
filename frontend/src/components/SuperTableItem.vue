@@ -8,7 +8,6 @@ const props = defineProps(['superTable', 'num'])
   <div class="table-item">
     <div class="name-num">
       <div class="table-name">{{ props.superTable }}</div>
-      <div class="child-table-num">({{ props.num }})</div>
     </div>
 
 
