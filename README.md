@@ -17,3 +17,6 @@ to this in your browser, and you can call your Go code from devtools.
 ## Building
 
 To build a redistributable, production mode package, use `wails build`.
+
+div伸缩方案：
+https://juejin.cn/post/7029640316999172104
