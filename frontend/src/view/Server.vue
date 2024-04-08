@@ -1,9 +1,9 @@
-<script setup>
-
-</script>
+<script setup></script>
 
 <template>
-  $END$
+  <div class="server-list">
+
+  </div>
 </template>
 
 <style scoped>

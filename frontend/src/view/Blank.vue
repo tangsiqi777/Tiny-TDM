@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  $END$
+空白
 </template>
 
 <style scoped>

@@ -37,12 +37,12 @@ func (a *App) ListDatabases() []string {
 		fmt.Println("failed to connect TDengine, err:", err)
 		return nil
 	} else {
-		fmt.Println("success")
+		fmt.Println("success conn")
 	}
 
 	rows, err := taos.Query("show databases;")
 	if err != nil {
-		log.Fatalln("failed to select from table, err:", err)
+		log.Fatalln("failed to select database from table, err:", err)
 	}
 	defer rows.Close()
 
@@ -70,12 +70,12 @@ func (a *App) ListSuperTable(databaseName string) []string {
 		fmt.Println("failed to connect TDengine, err:", err)
 		return nil
 	} else {
-		fmt.Println("success")
+		fmt.Println("success conn")
 	}
 
 	rows, err := taos.Query("show `" + databaseName + "`.stables;")
 	if err != nil {
-		log.Fatalln("failed to select from table, err:", err)
+		log.Fatalln("failed to select from super table, err:", err)
 	}
 	defer rows.Close()
 
@@ -103,7 +103,7 @@ func (a *App) ListChildTable(databaseName string, superTable string) []string {
 		fmt.Println("failed to connect TDengine, err:", err)
 		return nil
 	} else {
-		fmt.Println("success")
+		fmt.Println("success conn")
 	}
 
 	rows, err := taos.Query("SELECT DISTINCT TBNAME FROM `" + databaseName + "`.`" + superTable + "`;")
@@ -136,12 +136,12 @@ func (a *App) PageData(databaseName string, table string) [][]interface{} {
 		fmt.Println("failed to connect TDengine, err:", err)
 		return nil
 	} else {
-		fmt.Println("success")
+		fmt.Println("success conn")
 	}
 
 	rows, err := taos.Query("SELECT * FROM `power`.`meters` LIMIT 100;")
 	if err != nil {
-		log.Fatalln("failed to select from table, err:", err)
+		log.Fatalln("failed to select from data, err:", err)
 	}
 	defer rows.Close()
 
@@ -178,12 +178,12 @@ func (a *App) PageData1(databaseName string, table string) PageData {
 		fmt.Println("failed to connect TDengine, err:", err)
 		return p
 	} else {
-		fmt.Println("success")
+		fmt.Println("success conn")
 	}
 
 	rows, err := taos.Query("SELECT * FROM `" + databaseName + "`.`" + table + "` LIMIT 100;")
 	if err != nil {
-		log.Fatalln("failed to select from table, err:", err)
+		log.Fatalln("failed to select from data1, err:", err)
 	}
 	defer rows.Close()
 	rowList := make([]map[string]interface{}, 100)
