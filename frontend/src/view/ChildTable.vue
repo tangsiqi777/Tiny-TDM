@@ -4,6 +4,8 @@ import ChildTableList from "../components/ChildTableList.vue";
 import {ListChildTable} from "../../wailsjs/go/main/App.js";
 import router from "../router.js";
 
+console.log("ChildTable List\n\n\n\n\n\n")
+
 let childTableList = ref([])
 let database = ref("")
 let superTable = ref("")

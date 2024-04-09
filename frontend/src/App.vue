@@ -75,6 +75,8 @@ function dragControllerDiv() {
           <router-view></router-view>
         </div>
         <div class="left-bottom">
+          <el-button plain @click="returnPage">取消</el-button>
+
           <el-breadcrumb :separator-icon="ArrowRight">
             <el-breadcrumb-item :to="{ path: '/' }">数据库</el-breadcrumb-item>
             <el-breadcrumb-item :to="{path: '/superTable'}">超级表</el-breadcrumb-item>

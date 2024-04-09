@@ -12,6 +12,4 @@ export function ListDatabases():Promise<Array<string>>;
 
 export function ListSuperTable(arg1:string):Promise<Array<string>>;
 
-export function PageData(arg1:string,arg2:string):Promise<Array<any>>;
-
 export function PageData1(arg1:string,arg2:string):Promise<main.PageData>;

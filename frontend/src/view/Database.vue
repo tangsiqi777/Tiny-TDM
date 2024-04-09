@@ -5,6 +5,8 @@ import {onMounted, ref} from "vue";
 import {ListDatabases} from "../../wailsjs/go/main/App.js";
 import {useRouter} from "vue-router";
 
+console.log("Database List\n\n\n\n\n\n")
+
 let router = useRouter()
 let databaseList = ref([])
 onMounted(() => {

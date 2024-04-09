@@ -5,6 +5,8 @@ import {ref} from "vue";
 import {ListSuperTable} from "../../wailsjs/go/main/App.js";
 import {useRouter} from "vue-router";
 
+console.log("SuperTable List\n\n\n\n\n\n")
+
 let superTableList = ref([])
 
 let router = useRouter()

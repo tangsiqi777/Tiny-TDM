@@ -30,32 +30,38 @@ func (a *App) Greet(name string) string {
 	return fmt.Sprintf("Hello %s, It's show time!", name)
 }
 
-func (a *App) ListDatabases() []string {
-	var taosUri = "root:taosdata@http(192.168.56.19:6041)/"
-	taos, err := sql.Open("taosRestful", taosUri)
+func (a *App) getConn() (*sql.DB, error) {
+	var url = "root:taosdata@http(192.168.56.10:6041)/"
+	dbConn, err := sql.Open("taosRestful", url)
 	if err != nil {
 		fmt.Println("failed to connect TDengine, err:", err)
-		return nil
+		return nil, err
 	} else {
 		fmt.Println("success conn")
+		return dbConn, nil
 	}
+}
 
-	rows, err := taos.Query("show databases;")
+func (a *App) ListDatabases() []string {
+	dbConn, err := a.getConn()
 	if err != nil {
-		log.Fatalln("failed to select database from table, err:", err)
+		fmt.Println("empty db")
+		return []string{}
+	}
+	rows, err := dbConn.Query("show databases;")
+	if err != nil {
+		log.Println("failed to select database from table, err:", err)
+		return []string{}
 	}
 	defer rows.Close()
 
 	var slice []string
-
 	for rows.Next() {
-		var (
-			name string
-		)
+		var name string
 		err := rows.Scan(&name)
 		if err != nil {
-			log.Fatalln("scan error:\n", err)
-			return nil
+			log.Println("scan error:\n", err)
+			return []string{}
 		}
 		slice = append(slice, name)
 		log.Println(name)
@@ -64,105 +70,55 @@ func (a *App) ListDatabases() []string {
 }
 
 func (a *App) ListSuperTable(databaseName string) []string {
-	var taosUri = "root:taosdata@http(192.168.56.19:6041)/"
-	taos, err := sql.Open("taosRestful", taosUri)
+	dbConn, err := a.getConn()
 	if err != nil {
-		fmt.Println("failed to connect TDengine, err:", err)
-		return nil
-	} else {
-		fmt.Println("success conn")
+		return []string{}
 	}
-
-	rows, err := taos.Query("show `" + databaseName + "`.stables;")
+	rows, err := dbConn.Query("show `" + databaseName + "`.stables;")
 	if err != nil {
-		log.Fatalln("failed to select from super table, err:", err)
+		log.Println("failed to select from super table, err:", err)
+		return []string{}
 	}
 	defer rows.Close()
-
 	var slice []string
-
 	for rows.Next() {
-		var (
-			stable_name string
-		)
-		err := rows.Scan(&stable_name)
+		var stableName string
+		err := rows.Scan(&stableName)
 		if err != nil {
-			log.Fatalln("scan error:\n", err)
-			return nil
+			log.Println("scan error:\n", err)
+			return []string{}
 		}
-		slice = append(slice, stable_name)
-		log.Println(stable_name)
+		slice = append(slice, stableName)
+		log.Println(stableName)
 	}
 	return slice
 }
 
 func (a *App) ListChildTable(databaseName string, superTable string) []string {
-	var taosUri = "root:taosdata@http(192.168.56.19:6041)/"
-	taos, err := sql.Open("taosRestful", taosUri)
+	dbConn, err := a.getConn()
 	if err != nil {
-		fmt.Println("failed to connect TDengine, err:", err)
-		return nil
-	} else {
-		fmt.Println("success conn")
+		return []string{}
 	}
 
-	rows, err := taos.Query("SELECT DISTINCT TBNAME FROM `" + databaseName + "`.`" + superTable + "`;")
+	rows, err := dbConn.Query("SELECT DISTINCT TBNAME FROM `" + databaseName + "`.`" + superTable + "`;")
 	if err != nil {
-		log.Fatalln("failed to select from table, err:", err)
+		log.Println("failed to select from table, err:", err)
+		return []string{}
 	}
 	defer rows.Close()
-
 	var slice []string
-
 	for rows.Next() {
-		var (
-			tbname string
-		)
-		err := rows.Scan(&tbname)
+		var childName string
+
+		err := rows.Scan(&childName)
 		if err != nil {
-			log.Fatalln("scan error:\n", err)
-			return nil
+			log.Println("scan error:\n", err)
+			return []string{}
 		}
-		slice = append(slice, tbname)
-		log.Println(tbname)
+		slice = append(slice, childName)
+		log.Println(childName)
 	}
 	return slice
-}
-
-func (a *App) PageData(databaseName string, table string) [][]interface{} {
-	var taosUri = "root:taosdata@http(192.168.56.19:6041)/"
-	taos, err := sql.Open("taosRestful", taosUri)
-	if err != nil {
-		fmt.Println("failed to connect TDengine, err:", err)
-		return nil
-	} else {
-		fmt.Println("success conn")
-	}
-
-	rows, err := taos.Query("SELECT * FROM `power`.`meters` LIMIT 100;")
-	if err != nil {
-		log.Fatalln("failed to select from data, err:", err)
-	}
-	defer rows.Close()
-
-	vals := make([][]interface{}, 100)
-	var rowNum = 0
-	for rows.Next() {
-		cols, _ := rows.Columns()
-		row := make([]interface{}, len(cols))
-		vals[rowNum] = row
-		for i, _ := range cols {
-			t, _ := rows.ColumnTypes()
-			row[i] = a.Check(t[i].ScanType().Name())
-		}
-		err := rows.Scan(row...)
-		if err != nil {
-			log.Fatalln("\nscan error:", err)
-		}
-		fmt.Print(row[1])
-		rowNum++
-	}
-	return vals
 }
 
 type PageData struct {
@@ -171,19 +127,15 @@ type PageData struct {
 }
 
 func (a *App) PageData1(databaseName string, table string) PageData {
-	var taosUri = "root:taosdata@http(192.168.56.19:6041)/"
-	taos, err := sql.Open("taosRestful", taosUri)
 	var p PageData
+	dbConn, err := a.getConn()
 	if err != nil {
-		fmt.Println("failed to connect TDengine, err:", err)
 		return p
-	} else {
-		fmt.Println("success conn")
 	}
-
-	rows, err := taos.Query("SELECT * FROM `" + databaseName + "`.`" + table + "` LIMIT 100;")
+	rows, err := dbConn.Query("SELECT * FROM `" + databaseName + "`.`" + table + "` LIMIT 100;")
 	if err != nil {
-		log.Fatalln("failed to select from data1, err:", err)
+		log.Println("failed to select from data1, err:", err)
+		return p
 	}
 	defer rows.Close()
 	rowList := make([]map[string]interface{}, 100)
@@ -211,7 +163,7 @@ func (a *App) PageData1(databaseName string, table string) PageData {
 		}
 		rowList[rowNum] = rowMap
 		if err != nil {
-			log.Fatalln("\nscan error:", err)
+			log.Println("\nscan error:", err)
 		}
 		fmt.Print(row[1])
 		rowNum++
