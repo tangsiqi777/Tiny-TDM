@@ -2,7 +2,16 @@
 
 // import TableItem from "./components/SuperTableItem.vue";
 import {onMounted} from 'vue'
+import Database from "./view/Database.vue";
+import SuperTable from "./view/SuperTable.vue";
+import ChildTable from "./view/ChildTable.vue";
+import {Store} from "./store.js";
+import {storeToRefs} from "pinia";
+import RightData from "./view/RightData.vue";
 
+const store = Store()
+// 0 显示连接， 1显示数据库， 2显示超级表， 3显示子表
+let {displayType} = storeToRefs(store)
 
 onMounted(() => {
   dragControllerDiv();
@@ -72,7 +81,19 @@ function dragControllerDiv() {
     <div class="main">
       <div class="left">
         <div class="left-top">
-          <router-view></router-view>
+          <div v-if="displayType===0">
+            <!--            <Server></Server>-->
+            <Database></Database>
+          </div>
+          <div v-if="displayType===1">
+            <Database></Database>
+          </div>
+          <div v-if="displayType===2">
+            <SuperTable></SuperTable>
+          </div>
+          <div v-if="displayType===3">
+            <ChildTable></ChildTable>
+          </div>
         </div>
         <div class="left-bottom">
           <el-button plain @click="returnPage">取消</el-button>
@@ -87,7 +108,9 @@ function dragControllerDiv() {
 
       <div class="resize" title="收缩侧边栏"></div>
       <div class="right-data">
-        <router-view name="rightData"></router-view>
+        <div v-if="displayType===3">
+          <RightData></RightData>
+        </div>
       </div>
     </div>
 
@@ -120,13 +143,7 @@ body {
 
 .main {
   width: 95%;
-  //background-color: #e7d0d0;
-  height: 100%;
-  background-color: white;
-  display: flex;
-  min-width: 600px;
-
-  overflow: hidden;
+//background-color: #e7d0d0; height: 100%; background-color: white; display: flex; min-width: 600px; overflow: hidden;
 }
 
 .left {
@@ -144,7 +161,7 @@ body {
   width: 70%; /*右侧初始化宽度*/
   height: 100%;
   background: #fff;
-  //box-shadow: -1px 4px 5px 3px rgba(0, 0, 0, 0.11);
+//box-shadow: -1px 4px 5px 3px rgba(0, 0, 0, 0.11);
 }
 
 
@@ -194,7 +211,7 @@ body {
   height: 30px;
   background-color: #858383;
   z-index: 9999;
-  //border: #909399 solid 1px;
+//border: #909399 solid 1px;
 }
 
 /*拖拽区鼠标悬停样式*/

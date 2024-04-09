@@ -4,6 +4,7 @@ import DatabaseItem from "../components/DatabaseItem.vue";
 import {onMounted, ref} from "vue";
 import {ListDatabases} from "../../wailsjs/go/main/App.js";
 import {useRouter} from "vue-router";
+import {Store} from "../store.js";
 
 console.log("Database List\n\n\n\n\n\n")
 
@@ -22,13 +23,9 @@ function displayDatabase() {
 }
 
 function toSuperTable(database) {
-  //父路由编程式传参(一般通过事件触发)
-  router.push({
-    name: 'superTable',
-    query: {
-      database: database
-    }
-  });
+  const store = Store()
+  store.setDatabase(database)
+  store.setDisplayType(2)
 }
 
 </script>

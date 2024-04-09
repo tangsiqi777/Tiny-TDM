@@ -4,5 +4,8 @@ import './style.css';
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import router from "./router.js";
+import {createPinia} from 'pinia'
 
-createApp(App).use(ElementPlus).use(router).mount('#app')
+
+const pinia = createPinia()
+createApp(App).use(ElementPlus).use(router).use(pinia).mount('#app')

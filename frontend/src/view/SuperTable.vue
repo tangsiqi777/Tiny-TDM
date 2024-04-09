@@ -3,18 +3,19 @@
 import SuperTableItem from "../components/SuperTableItem.vue";
 import {ref} from "vue";
 import {ListSuperTable} from "../../wailsjs/go/main/App.js";
-import {useRouter} from "vue-router";
+import {Store} from "../store.js";
 
 console.log("SuperTable List\n\n\n\n\n\n")
 
 let superTableList = ref([])
 
-let router = useRouter()
-let database = router.currentRoute.value.query.database
+const store = Store()
 
-displaySuperTable(database)
 
-function displaySuperTable(database) {
+displaySuperTable()
+
+function displaySuperTable() {
+  let database = store.database
   ListSuperTable(database).then((superTables) => {
     superTableList.value = superTables
     console.log("stable" + JSON.stringify(superTables))
@@ -22,14 +23,9 @@ function displaySuperTable(database) {
 }
 
 function toChildTable(superTable) {
-  //父路由编程式传参(一般通过事件触发)
-  router.push({
-    name: 'childTable',
-    query: {
-      superTable: superTable,
-      database: database
-    }
-  });
+
+  store.setSuperTable(superTable)
+  store.setDisplayType(3)
 }
 
 </script>

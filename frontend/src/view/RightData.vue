@@ -1,19 +1,20 @@
 <script setup>
 
 import {PageData1} from "../../wailsjs/go/main/App.js";
-import {ref} from "vue";
-import router from "../router.js";
+import {ref, watch} from "vue";
+import {Store} from "../store.js";
+import {storeToRefs} from "pinia";
+
+console.log("Right Data\n\n\n\n\n\n")
 
 let headList = ref([])
 let pageDataList = ref([])
+const store = Store()
+let {database, childTable} = storeToRefs(store)
+pageData()
 
-
-let database = router.currentRoute.value.query.database
-let table = router.currentRoute.value.query.table
-pageData(database, table)
-
-function pageData(database, table) {
-  PageData1(database, table).then((pageData) => {
+function pageData() {
+  PageData1(database, childTable).then((pageData) => {
     console.log(JSON.stringify(pageData))
     headList.value = pageData.HeaderList
     pageDataList.value = pageData.Data
@@ -21,6 +22,22 @@ function pageData(database, table) {
     console.log("pageDataList:" + JSON.stringify(pageDataList.value))
   })
 }
+
+// 可以直接侦听一个 ref
+watch(question, async (newQuestion, oldQuestion) => {
+  if (newQuestion.includes('?')) {
+    loading.value = true
+    answer.value = 'Thinking...'
+    try {
+      const res = await fetch('https://yesno.wtf/api')
+      answer.value = (await res.json()).answer
+    } catch (error) {
+      answer.value = 'Error! Could not reach the API. ' + error
+    } finally {
+      loading.value = false
+    }
+  }
+})
 
 </script>
 
