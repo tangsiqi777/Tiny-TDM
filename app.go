@@ -31,7 +31,7 @@ func (a *App) Greet(name string) string {
 }
 
 func (a *App) getConn() (*sql.DB, error) {
-	var url = "root:taosdata@http(192.168.100.26:6041)/"
+	var url = "root:taosdata@http(192.168.56.19:6041)/"
 	dbConn, err := sql.Open("taosRestful", url)
 	if err != nil {
 		fmt.Println("failed to connect TDengine, err:", err)

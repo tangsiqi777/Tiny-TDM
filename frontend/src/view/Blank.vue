@@ -1,47 +1,74 @@
 <script setup>
-import {reactive} from 'vue'
-import {SaveConnection} from "../../wailsjs/go/service/ConnectionStorageService.js";
+import {getCurrentInstance, reactive, ref} from 'vue'
 
-// do not use same name with ref
+
+const {ctx: _this} = getCurrentInstance()
+const visible = ref(false);
 const form = reactive({
-  Id: 0,
   Name: '',
   Addr: '',
-  Port: 0,
+  Port: '',
   Username: '',
-  Password: ''
-})
+  Password: '',
+});
 
-const onSubmit = () => {
-  SaveConnection(form)
+const formRef = ref()
+const handleClick = () => {
+  visible.value = true;
+};
+const handleBeforeOk = (done) => {
+  formRef.value.setFields({
+    name: {
+      status: 'error',
+      message: 'async name error'
+    },
+    ip: {
+      status: 'error',
+      message: 'valid post'
+    }
+  })
+  done(false)
+  console.log(form)
+  /*  SaveConnection(form).then(ret => {
+      done()
+      form.Name = ''
+      form.Addr = ''
+      form.Port = ''
+      form.Username = ''
+      form.Password = ''
+    })*/
+
+
 }
+
+
+const handleCancel = () => {
+  visible.value = false;
+}
+
 </script>
 
 <template>
-  <el-form :model="form" label-width="auto" style="max-width: 600px">
-    <el-form-item label="id">
-      <el-input v-model="form.Id"/>
-    </el-form-item>
-    <el-form-item label="name">
-      <el-input v-model="form.Name"/>
-    </el-form-item>
-    <el-form-item label="Addr">
-      <el-input v-model="form.Addr"/>
-    </el-form-item>
-    <el-form-item label="Port">
-      <el-input v-model="form.Port"/>
-    </el-form-item>
-    <el-form-item label="Username">
-      <el-input v-model="form.Username"/>
-    </el-form-item>
-    <el-form-item label="Password">
-      <el-input v-model="form.Password"/>
-    </el-form-item>
-  </el-form>
-  <el-form-item>
-    <el-button type="primary" @click="onSubmit">Create</el-button>
-    <el-button>Cancel</el-button>
-  </el-form-item>
+  <a-button @click="handleClick">新增连接信息</a-button>
+  <a-modal v-model:visible="visible" title="新建连接" @cancel="handleCancel" @before-ok="handleBeforeOk">
+    <a-form :model="form" ref="formRef">
+      <a-form-item field="name" label="连接名称">
+        <a-input v-model="form.Name"/>
+      </a-form-item>
+      <a-form-item field="ip" label="IP地址">
+        <a-input v-model="form.Addr"/>
+      </a-form-item>
+      <a-form-item field="post" label="端口">
+        <a-input-number v-model="form.Port" placeholder="6041" :min="1" :max="100000"/>
+      </a-form-item>
+      <a-form-item field="post" label="用户名">
+        <a-input v-model="form.Username" placeholder="root"/>
+      </a-form-item>
+      <a-form-item field="post" label="密码">
+        <a-input v-model="form.Password" placeholder="taosdata"/>
+      </a-form-item>
+    </a-form>
+  </a-modal>
 </template>
 
 <style scoped>

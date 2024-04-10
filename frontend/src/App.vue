@@ -18,6 +18,13 @@ onMounted(() => {
   dragControllerDiv();
 })
 
+function back() {
+  console.log("displayType" + displayType.value)
+  if (displayType.value > 0) {
+    store.setDisplayType(displayType.value - 1)
+  }
+}
+
 
 function dragControllerDiv() {
   const main = document.getElementsByClassName('main');
@@ -77,11 +84,18 @@ function dragControllerDiv() {
       <div class="fun-item">
         <img class="item-img" src="./assets/images/log.png" alt="">
       </div>
-
     </div>
     <div class="main">
       <div class="left">
-        <div class="left-top">
+        <div class="left-bottom">
+          <div class="back">
+            <img src="./assets/images/back.png" alt="" v-if="displayType>0" @click="back">
+          </div>
+          <div class="path">
+
+          </div>
+        </div>
+        <a-scrollbar class="left-top" style="height: calc(100vh - 6px);overflow-y: auto;">
           <div v-if="displayType===0">
             <!--            <Server></Server>-->
             <Database></Database>
@@ -95,19 +109,12 @@ function dragControllerDiv() {
           <div v-if="displayType===3">
             <ChildTable></ChildTable>
           </div>
-        </div>
-        <div class="left-bottom">
-          <el-button plain @click="returnPage">取消</el-button>
-
-          <el-breadcrumb :separator-icon="ArrowRight">
-            <el-breadcrumb-item :to="{ path: '/' }">数据库</el-breadcrumb-item>
-            <el-breadcrumb-item :to="{path: '/superTable'}">超级表</el-breadcrumb-item>
-          </el-breadcrumb>
-        </div>
+        </a-scrollbar>
       </div>
 
 
       <div class="resize" title="收缩侧边栏"></div>
+
       <div class="right-data">
         <div v-if="displayType===3">
           <RightData></RightData>
@@ -115,6 +122,7 @@ function dragControllerDiv() {
         <div v-if="displayType!==3">
           <Blank></Blank>
         </div>
+
       </div>
     </div>
 
@@ -147,14 +155,14 @@ body {
 
 .main {
   width: 95%;
-//background-color: #e7d0d0; height: 100%; background-color: white; display: flex; min-width: 600px; overflow: hidden;
+  height: 100%;
+  //background-color: #e7d0d0; height: 100%; background-color: white; display: flex; min-width: 600px; overflow: hidden;
 }
 
 .left {
   min-width: 300px;
-
   width: calc(30% - 6px); /*左侧初始化宽度*/
-  height: 100%;
+  height: 100vh;
   background: #FFFFFF;
   float: left;
 }
@@ -165,7 +173,7 @@ body {
   width: 70%; /*右侧初始化宽度*/
   height: 100%;
   background: #fff;
-//box-shadow: -1px 4px 5px 3px rgba(0, 0, 0, 0.11);
+  //box-shadow: -1px 4px 5px 3px rgba(0, 0, 0, 0.11);
 }
 
 
@@ -190,18 +198,35 @@ body {
 
 .left-top {
   width: 100%;
-  height: 98%;
   min-width: 300px;
-  overflow-y: inherit;
-  overflow-x: hidden;
 }
 
 .left-bottom {
   min-width: 150px;
   width: 100%;
   text-align: left;
-  background-color: #67c23a;
-  height: 2%;
+  //background-color: #67c23a;
+  height: 40px;
+  display: flex;
+}
+
+.back {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  //background-color: red;
+  width: calc(20% - 10px);
+}
+
+.back img {
+  height: 60%;
+}
+
+.path {
+  height: 100%;
+  width: 80%;
+  //background-color: #79bbff;
 }
 
 /*拖拽区div样式*/
@@ -215,7 +240,7 @@ body {
   height: 30px;
   background-color: #858383;
   z-index: 9999;
-//border: #909399 solid 1px;
+  //border: #909399 solid 1px;
 }
 
 /*拖拽区鼠标悬停样式*/
