@@ -8,6 +8,7 @@ import ChildTable from "./view/ChildTable.vue";
 import {Store} from "./store.js";
 import {storeToRefs} from "pinia";
 import RightData from "./view/RightData.vue";
+import Blank from "./view/Blank.vue";
 
 const store = Store()
 // 0 显示连接， 1显示数据库， 2显示超级表， 3显示子表
@@ -110,6 +111,9 @@ function dragControllerDiv() {
       <div class="right-data">
         <div v-if="displayType===3">
           <RightData></RightData>
+        </div>
+        <div v-if="displayType!==3">
+          <Blank></Blank>
         </div>
       </div>
     </div>

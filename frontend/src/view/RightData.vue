@@ -14,42 +14,40 @@ let {database, childTable} = storeToRefs(store)
 pageData()
 
 function pageData() {
-  PageData1(database, childTable).then((pageData) => {
+  PageData1(database.value, childTable.value).then((pageData) => {
     console.log(JSON.stringify(pageData))
-    headList.value = pageData.HeaderList
+    headList.value = convertArrayToObject(pageData.HeaderList)
     pageDataList.value = pageData.Data
+
+
     console.log("headList:" + JSON.stringify(headList.value))
     console.log("pageDataList:" + JSON.stringify(pageDataList.value))
   })
 }
 
+function convertArrayToObject(arr) {
+  return arr.map(item => {
+    return {
+      title: item,
+      dataIndex: item,
+    };
+  });
+}
+
+// 示例用法
+const arr = ["ts", "value"];
+const result = convertArrayToObject(arr);
+console.log(result);
+
 // 可以直接侦听一个 ref
-watch(question, async (newQuestion, oldQuestion) => {
-  if (newQuestion.includes('?')) {
-    loading.value = true
-    answer.value = 'Thinking...'
-    try {
-      const res = await fetch('https://yesno.wtf/api')
-      answer.value = (await res.json()).answer
-    } catch (error) {
-      answer.value = 'Error! Could not reach the API. ' + error
-    } finally {
-      loading.value = false
-    }
-  }
+watch(childTable, async (newQuestion, oldQuestion) => {
+  pageData()
 })
 
 </script>
 
 <template>
-  <el-table :data="pageDataList" border style="width: 100%">
-    <el-table-column :prop="item" :label="item" v-for="item in  headList"/>
-    <el-table-column fixed="right" label="Operations" width="120">
-      <template #default>
-        <el-button link type="primary" size="small">Edit</el-button>
-      </template>
-    </el-table-column>
-  </el-table>
+  <a-table :columns="headList" :data="pageDataList"/>
 </template>
 
 <style scoped>
