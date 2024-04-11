@@ -3,12 +3,12 @@
 import {service} from '../models';
 import {context} from '../models';
 
-export function DeleteConnection(arg1:number):Promise<number>;
+export function DeleteConnection(arg1:number):Promise<string>;
 
 export function ListConnection():Promise<Array<service.ConnectionConfig>>;
 
-export function SaveConnection(arg1:service.ConnectionConfig):Promise<number>;
+export function SaveConnection(arg1:service.ConnectionConfig):Promise<string>;
 
 export function Startup(arg1:context.Context):Promise<void>;
 
-export function UpdateConnection(arg1:service.ConnectionConfig):Promise<number>;
+export function UpdateConnection(arg1:service.ConnectionConfig):Promise<string>;

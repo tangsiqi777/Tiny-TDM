@@ -3,10 +3,12 @@ package main
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	_ "github.com/taosdata/driver-go/v3/taosRestful"
 	"log"
 	"time"
+	"tinytdm/backend/service"
 )
 
 // App struct
@@ -30,7 +32,26 @@ func (a *App) Greet(name string) string {
 	return fmt.Sprintf("Hello %s, It's show time!", name)
 }
 
-func (a *App) getConn() (*sql.DB, error) {
+func (a *App) getConn(configStr string) (*sql.DB, error) {
+	fmt.Println(configStr)
+	var config service.ConnectionConfig
+	err1 := json.Unmarshal([]byte(configStr), &config)
+	if err1 != nil {
+
+	}
+	var url = config.Username + ":" + config.Password + "@http(" + config.Addr + ":" + fmt.Sprintf("%d", config.Port) + ")/"
+
+	dbConn, err := sql.Open("taosRestful", url)
+	if err != nil {
+		fmt.Println("failed to connect TDengine, err:", err)
+		return nil, err
+	} else {
+		fmt.Println("success conn")
+		return dbConn, nil
+	}
+}
+
+func (a *App) getConn1() (*sql.DB, error) {
 	var url = "root:taosdata@http(192.168.56.19:6041)/"
 	dbConn, err := sql.Open("taosRestful", url)
 	if err != nil {
@@ -42,8 +63,8 @@ func (a *App) getConn() (*sql.DB, error) {
 	}
 }
 
-func (a *App) ListDatabases() []string {
-	dbConn, err := a.getConn()
+func (a *App) ListDatabases(config string) []string {
+	dbConn, err := a.getConn(config)
 	if err != nil {
 		fmt.Println("empty db")
 		return []string{}
@@ -70,7 +91,7 @@ func (a *App) ListDatabases() []string {
 }
 
 func (a *App) ListSuperTable(databaseName string) []string {
-	dbConn, err := a.getConn()
+	dbConn, err := a.getConn1()
 	if err != nil {
 		return []string{}
 	}
@@ -95,7 +116,7 @@ func (a *App) ListSuperTable(databaseName string) []string {
 }
 
 func (a *App) ListChildTable(databaseName string, superTable string) []string {
-	dbConn, err := a.getConn()
+	dbConn, err := a.getConn1()
 	if err != nil {
 		return []string{}
 	}
@@ -128,7 +149,7 @@ type PageData struct {
 
 func (a *App) PageData1(databaseName string, table string) PageData {
 	var p PageData
-	dbConn, err := a.getConn()
+	dbConn, err := a.getConn1()
 	if err != nil {
 		return p
 	}

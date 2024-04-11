@@ -10,20 +10,21 @@ console.log("Database List\n\n\n\n\n\n")
 
 let router = useRouter()
 let databaseList = ref([])
+const store = Store()
 onMounted(() => {
-  displayDatabase()
+  console.log("conn:" + JSON.stringify(store.conn))
+  displayDatabase(JSON.stringify(store.conn.conn))
 })
 
 
-function displayDatabase() {
-  ListDatabases().then((databases) => {
+function displayDatabase(conn) {
+  ListDatabases(conn).then((databases) => {
     databaseList.value = databases
     console.log("db" + JSON.stringify(databases))
   });
 }
 
 function toSuperTable(database) {
-  const store = Store()
   store.setDatabase(database)
   store.setDisplayType(2)
 }

@@ -14,8 +14,8 @@ export function ListChildTable(arg1, arg2) {
   return window['go']['main']['App']['ListChildTable'](arg1, arg2);
 }
 
-export function ListDatabases() {
-  return window['go']['main']['App']['ListDatabases']();
+export function ListDatabases(arg1) {
+  return window['go']['main']['App']['ListDatabases'](arg1);
 }
 
 export function ListSuperTable(arg1) {

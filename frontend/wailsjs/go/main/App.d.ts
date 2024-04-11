@@ -8,7 +8,7 @@ export function Greet(arg1:string):Promise<string>;
 
 export function ListChildTable(arg1:string,arg2:string):Promise<Array<string>>;
 
-export function ListDatabases():Promise<Array<string>>;
+export function ListDatabases(arg1:string):Promise<Array<string>>;
 
 export function ListSuperTable(arg1:string):Promise<Array<string>>;
 

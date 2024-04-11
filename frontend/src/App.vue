@@ -9,6 +9,7 @@ import {Store} from "./store.js";
 import {storeToRefs} from "pinia";
 import RightData from "./view/RightData.vue";
 import Blank from "./view/Blank.vue";
+import Server from "./view/Server.vue";
 
 const store = Store()
 // 0 显示连接， 1显示数据库， 2显示超级表， 3显示子表
@@ -97,8 +98,7 @@ function dragControllerDiv() {
         </div>
         <a-scrollbar class="left-top" style="height: calc(100vh - 6px);overflow-y: auto;">
           <div v-if="displayType===0">
-            <!--            <Server></Server>-->
-            <Database></Database>
+            <Server></Server>
           </div>
           <div v-if="displayType===1">
             <Database></Database>

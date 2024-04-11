@@ -1,23 +1,25 @@
 import {defineStore} from 'pinia'
-import {ref} from 'vue'
+import {reactive, ref} from 'vue'
 
 // 用户模块 token setToken removeToken
 export const Store = defineStore('big-user', () => {
 
-    const displayType = ref(1)
+    const displayType = ref(0)
     const setDisplayType = (newDisplayType) => {
         displayType.value = newDisplayType
     }
     const removeDisplayType = () => {
-        displayType.value = 1
+        displayType.value = 0
     }
 
-    const conn = ref('')
+    const conn = reactive({
+        conn: {}
+    })
     const setConn = (newConn) => {
-        conn.value = newConn
+        conn.conn = newConn
     }
     const removeConn = () => {
-        conn.value = ''
+        conn.conn = {}
     }
 
     const database = ref('')

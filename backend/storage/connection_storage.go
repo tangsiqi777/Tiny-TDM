@@ -2,7 +2,6 @@ package storage
 
 import (
 	"encoding/json"
-	"fmt"
 	"golang.org/x/net/context"
 	"sync"
 )
@@ -47,7 +46,6 @@ func GetConnectionStorage() *ConnectionStorage {
 
 		})
 	}
-	fmt.Print("ddddddddd%p", connectionStorage)
 	return connectionStorage
 }
 

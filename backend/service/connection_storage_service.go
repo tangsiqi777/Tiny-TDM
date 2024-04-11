@@ -54,54 +54,61 @@ func (c *ConnectionStorageService) ListConnection() []ConnectionConfig {
 	return connections
 }
 
-func (c *ConnectionStorageService) SaveConnection(newConnection ConnectionConfig) int {
+func (c *ConnectionStorageService) SaveConnection(newConnection ConnectionConfig) string {
 	connections := c.ListConnection()
 	maxId := 0
+	name := newConnection.Name
 	for i := 0; i < len(connections); i++ {
 		conn := connections[i]
 		if conn.Id > maxId {
 			maxId = conn.Id
+		}
+		if conn.Name == name {
+			return "连接名称重复"
 		}
 	}
 	newConnection.Id = maxId
 	connections = append(connections, newConnection)
 	connectionsJson, err := json.Marshal(connections)
 	if err != nil {
-		return 0
+		return "发生未知错误"
 	}
 	err1 := c.LocalStorage.Store(connectionsJson)
 	if err1 != nil {
-		return 0
+		return "发生未知错误"
 	}
-	return 1
+	return "ok"
 }
 
-func (c *ConnectionStorageService) UpdateConnection(newConnection ConnectionConfig) int {
+func (c *ConnectionStorageService) UpdateConnection(newConnection ConnectionConfig) string {
 	connections := c.ListConnection()
 	updateIndex := -1
+	name := newConnection.Name
 	for i := 0; i < len(connections); i++ {
 		conn := connections[i]
 		if conn.Id == newConnection.Id {
 			updateIndex = i
-			break
+		}
+		if conn.Name == name && conn.Id != newConnection.Id {
+			return "连接名称重复"
 		}
 	}
 	if updateIndex == -1 {
-		return 0
+		return "操作对象不存在请刷新"
 	}
 	connections[updateIndex] = newConnection
 	connectionsJson, err := json.Marshal(connections)
 	if err != nil {
-		return 0
+		return "发生未知错误"
 	}
 	err1 := c.LocalStorage.Store(connectionsJson)
 	if err1 != nil {
-		return 0
+		return "发生未知错误"
 	}
-	return 1
+	return "ok"
 }
 
-func (c *ConnectionStorageService) DeleteConnection(id int) int {
+func (c *ConnectionStorageService) DeleteConnection(id int) string {
 	connections := c.ListConnection()
 	newConnections := make([]ConnectionConfig, len(connections))
 	deleteIndex := -1
@@ -114,15 +121,15 @@ func (c *ConnectionStorageService) DeleteConnection(id int) int {
 		}
 	}
 	if deleteIndex == -1 {
-		return 0
+		return "操作对象不存在请刷新"
 	}
 	connectionsJson, err := json.Marshal(newConnections)
 	if err != nil {
-		return 0
+		return "发生未知错误"
 	}
 	err1 := c.LocalStorage.Store(connectionsJson)
 	if err1 != nil {
-		return 0
+		return "发生未知错误"
 	}
-	return 1
+	return "ok"
 }

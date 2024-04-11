@@ -1,8 +1,8 @@
 <script setup>
-import {getCurrentInstance, reactive, ref} from 'vue'
+import {reactive, ref} from 'vue'
+import {checkNum, checkStrLen,} from '../valid.js'
+import {SaveConnection} from "../../wailsjs/go/service/ConnectionStorageService.js";
 
-
-const {ctx: _this} = getCurrentInstance()
 const visible = ref(false);
 const form = reactive({
   Name: '',
@@ -17,28 +17,76 @@ const handleClick = () => {
   visible.value = true;
 };
 const handleBeforeOk = (done) => {
-  formRef.value.setFields({
-    name: {
-      status: 'error',
-      message: 'async name error'
-    },
-    ip: {
-      status: 'error',
-      message: 'valid post'
-    }
-  })
-  done(false)
+  // 校验字段
+  if (!checkStrLen(form.Name, 20)) {
+    formRef.value.setFields({
+      name: {
+        status: 'error',
+        message: '名称不为空最长为20个字符'
+      }
+    })
+    done(false)
+    return
+  }
+
+  if (!checkStrLen(form.Addr, 20)) {
+    formRef.value.setFields({
+      addr: {
+        status: 'error',
+        message: '地址不为空最长为20个字符'
+      }
+    })
+    done(false)
+    return
+  }
+  if (!checkNum(form.Port)) {
+    formRef.value.setFields({
+      port: {
+        status: 'error',
+        message: '端口号不为空'
+      }
+    })
+    done(false)
+    return
+  }
+
+  if (!checkStrLen(form.Username, 100)) {
+    formRef.value.setFields({
+      username: {
+        status: 'error',
+        message: '用户名不为空'
+      }
+    })
+    done(false)
+    return
+  }
+
+  if (!checkStrLen(form.Password, 100)) {
+    formRef.value.setFields({
+      password: {
+        status: 'error',
+        message: '密码不为空'
+      }
+    })
+    done(false)
+    return
+  }
   console.log(form)
-  /*  SaveConnection(form).then(ret => {
+  SaveConnection(form).then(errMsg => {
+    if ('ok' === errMsg) {
+      console.log("conn add ok")
       done()
       form.Name = ''
       form.Addr = ''
       form.Port = ''
       form.Username = ''
       form.Password = ''
-    })*/
-
-
+      return
+    }
+    // todo 完善错误处理
+    console.log("conn add ok error" + errMsg)
+    done()
+  })
 }
 
 
@@ -55,16 +103,16 @@ const handleCancel = () => {
       <a-form-item field="name" label="连接名称">
         <a-input v-model="form.Name"/>
       </a-form-item>
-      <a-form-item field="ip" label="IP地址">
+      <a-form-item field="addr" label="IP地址">
         <a-input v-model="form.Addr"/>
       </a-form-item>
       <a-form-item field="post" label="端口">
         <a-input-number v-model="form.Port" placeholder="6041" :min="1" :max="100000"/>
       </a-form-item>
-      <a-form-item field="post" label="用户名">
+      <a-form-item field="username" label="用户名">
         <a-input v-model="form.Username" placeholder="root"/>
       </a-form-item>
-      <a-form-item field="post" label="密码">
+      <a-form-item field="password" label="密码">
         <a-input v-model="form.Password" placeholder="taosdata"/>
       </a-form-item>
     </a-form>
