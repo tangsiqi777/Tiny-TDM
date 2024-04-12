@@ -1,6 +1,6 @@
 <script setup>
 import {onMounted, ref} from "vue";
-import ChildTableList from "../components/ChildTableList.vue";
+import ChildTableList from "../components/ChildTableItem.vue";
 import {ListChildTable} from "../../wailsjs/go/main/App.js";
 import {Store} from "../store.js";
 
@@ -17,7 +17,7 @@ onMounted(() => {
 function displayChildTable() {
   let database = store.database
   let superTable = store.superTable
-  ListChildTable(database, superTable).then((childTables) => {
+  ListChildTable(store.conn.conn, database, superTable).then((childTables) => {
     childTableList.value = childTables
   })
 }

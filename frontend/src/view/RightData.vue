@@ -14,7 +14,7 @@ let {database, childTable} = storeToRefs(store)
 pageData()
 
 function pageData() {
-  PageData1(database.value, childTable.value).then((pageData) => {
+  PageData1(store.conn.conn, database.value, childTable.value).then((pageData) => {
     console.log(JSON.stringify(pageData))
     headList.value = convertArrayToObject(pageData.HeaderList)
     pageDataList.value = pageData.Data

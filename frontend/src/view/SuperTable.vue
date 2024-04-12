@@ -16,7 +16,7 @@ displaySuperTable()
 
 function displaySuperTable() {
   let database = store.database
-  ListSuperTable(database).then((superTables) => {
+  ListSuperTable(store.conn.conn, database).then((superTables) => {
     superTableList.value = superTables
     console.log("stable" + JSON.stringify(superTables))
   })

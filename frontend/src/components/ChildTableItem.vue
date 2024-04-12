@@ -6,6 +6,7 @@ const props = defineProps(['childTable'])
 
 <template>
   <div class="table-item">
+    <div class="child-table"><img class="child-table-img" src="../assets/images/child-table.png" alt=""></div>
     <div class="name-num">
       <div class="table-name">{{ props.childTable }}</div>
     </div>
@@ -13,9 +14,6 @@ const props = defineProps(['childTable'])
 
     <div class="info">
       <img class="info-img" src="../assets/images/info.png" alt="">
-    </div>
-    <div class="delete">
-      <img class="delete-img" src="../assets/images/delete.png" alt="">
     </div>
   </div>
 </template>
@@ -60,7 +58,7 @@ const props = defineProps(['childTable'])
   height: 30px;
 }
 
-.delete {
+.child-table {
   height: 60px;
   min-width: 60px;
   width: 10%;
@@ -69,7 +67,7 @@ const props = defineProps(['childTable'])
   justify-content: center;
 }
 
-.delete-img {
+.child-table-img {
   width: 30px;
   height: 30px;
 }

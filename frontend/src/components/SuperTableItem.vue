@@ -6,16 +6,13 @@ const props = defineProps(['superTable', 'num'])
 
 <template>
   <div class="table-item">
+    <div class="super-table"><img class="super-table-img" src="../assets/images/super-table.png" alt=""></div>
     <div class="name-num">
       <div class="table-name">{{ props.superTable }}</div>
     </div>
 
-
     <div class="info">
       <img class="info-img" src="../assets/images/info.png" alt="">
-    </div>
-    <div class="delete">
-      <img class="delete-img" src="../assets/images/delete.png" alt="">
     </div>
   </div>
 </template>
@@ -46,12 +43,6 @@ const props = defineProps(['superTable', 'num'])
 
 }
 
-.child-table-num {
-  height: 60px;
-  line-height: 60px;
-}
-
-
 .info {
   height: 60px;
   width: 10%;
@@ -66,7 +57,7 @@ const props = defineProps(['superTable', 'num'])
   height: 30px;
 }
 
-.delete {
+.super-table {
   height: 60px;
   min-width: 60px;
   width: 10%;
@@ -75,7 +66,7 @@ const props = defineProps(['superTable', 'num'])
   justify-content: center;
 }
 
-.delete-img {
+.super-table-img {
   width: 30px;
   height: 30px;
 }

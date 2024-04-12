@@ -13,7 +13,7 @@ let databaseList = ref([])
 const store = Store()
 onMounted(() => {
   console.log("conn:" + JSON.stringify(store.conn))
-  displayDatabase(JSON.stringify(store.conn.conn))
+  displayDatabase(store.conn.conn)
 })
 
 

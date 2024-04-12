@@ -88,28 +88,31 @@ function dragControllerDiv() {
     </div>
     <div class="main">
       <div class="left">
+        <div class="left-top">
+          <a-scrollbar style="height: calc(100vh - 6px);overflow-y: auto;">
+            <div v-if="displayType===0">
+              <Server></Server>
+            </div>
+            <div v-if="displayType===1">
+              <Database></Database>
+            </div>
+            <div v-if="displayType===2">
+              <SuperTable></SuperTable>
+            </div>
+            <div v-if="displayType===3">
+              <ChildTable></ChildTable>
+            </div>
+          </a-scrollbar>
+        </div>
+
         <div class="left-bottom">
           <div class="back">
             <img src="./assets/images/back.png" alt="" v-if="displayType>0" @click="back">
           </div>
           <div class="path">
-
+            <a-input-search :style="{width:'220px'}" placeholder="Please enter something"/>
           </div>
         </div>
-        <a-scrollbar class="left-top" style="height: calc(100vh - 6px);overflow-y: auto;">
-          <div v-if="displayType===0">
-            <Server></Server>
-          </div>
-          <div v-if="displayType===1">
-            <Database></Database>
-          </div>
-          <div v-if="displayType===2">
-            <SuperTable></SuperTable>
-          </div>
-          <div v-if="displayType===3">
-            <ChildTable></ChildTable>
-          </div>
-        </a-scrollbar>
       </div>
 
 
@@ -145,23 +148,23 @@ body {
 }
 
 .slide {
-  width: 5%;
+  width: 3.2%;
   box-sizing: border-box;
-  background-color: #909399;
-  height: 100%;
-  min-width: 90px;
+  background-color: white;
+//border-right: #7d7d7f solid 1px; height: 100%;
+  min-width: 20px;
 
 }
 
 .main {
-  width: 95%;
+  width: 96.8%;
   height: 100%;
-  //background-color: #e7d0d0; height: 100%; background-color: white; display: flex; min-width: 600px; overflow: hidden;
+//background-color: #e7d0d0; height: 100%; background-color: white; display: flex; min-width: 600px; overflow: hidden;
 }
 
 .left {
   min-width: 300px;
-  width: calc(30% - 6px); /*左侧初始化宽度*/
+  width: calc(20% - 6px); /*左侧初始化宽度*/
   height: 100vh;
   background: #FFFFFF;
   float: left;
@@ -170,10 +173,10 @@ body {
 .right-data {
   overflow-y: scroll;
   float: left;
-  width: 70%; /*右侧初始化宽度*/
+  width: 80%; /*右侧初始化宽度*/
   height: 100%;
   background: #fff;
-  //box-shadow: -1px 4px 5px 3px rgba(0, 0, 0, 0.11);
+//box-shadow: -1px 4px 5px 3px rgba(0, 0, 0, 0.11);
 }
 
 
@@ -186,37 +189,36 @@ body {
 }
 
 .item-img {
-  width: 35px;
-  height: 35px;
+  width: 20px;
+  height: 20px;
 }
 
 .item-img img {
-  width: 35px;
-  height: 35px;
+  width: 20px;
+  height: 20px;
 }
 
 
 .left-top {
   width: 100%;
+  height: calc(100% - 60px);
   min-width: 300px;
 }
 
 .left-bottom {
-  min-width: 150px;
+  height: 60px;
+  min-width: 300px;
   width: 100%;
   text-align: left;
-  //background-color: #67c23a;
-  height: 40px;
-  display: flex;
+//background-color: #67c23a; height: 40px; display: flex;
 }
 
 .back {
-  height: 100%;
+  height: 60%;
   display: flex;
   align-items: center;
   margin-left: 10px;
-  //background-color: red;
-  width: calc(20% - 10px);
+//background-color: red; width: calc(20% - 10px);
 }
 
 .back img {
@@ -226,7 +228,7 @@ body {
 .path {
   height: 100%;
   width: 80%;
-  //background-color: #79bbff;
+//background-color: #79bbff;
 }
 
 /*拖拽区div样式*/
@@ -240,7 +242,7 @@ body {
   height: 30px;
   background-color: #858383;
   z-index: 9999;
-  //border: #909399 solid 1px;
+//border: #909399 solid 1px;
 }
 
 /*拖拽区鼠标悬停样式*/

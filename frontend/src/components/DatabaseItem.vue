@@ -7,7 +7,7 @@ const props = defineProps(['databaseName'])
 
 <template>
   <div class="database-item">
-    <div class="server"><img class="server-img" src="../assets/images/server2.png" alt="">
+    <div class="server"><img class="server-img" src="../assets/images/database.png" alt="">
     </div>
     <div class="name">
       {{ props.databaseName }}
@@ -15,24 +15,28 @@ const props = defineProps(['databaseName'])
     <div class="setting">
       <img class="setting-img" src="../assets/images/setting.png" alt="">
     </div>
-    <div class="delete">
-      <img class="delete-img" src="../assets/images/delete.png" alt="">
+    <div class="blank">
+
     </div>
   </div>
 </template>
 
 <style scoped>
 .database-item {
-  min-height: 60px;
-  height: 60px;
+  margin-top: 8px;
+  min-height: 30px;
+  height: 30px;
   display: flex;
   align-items: center;
+  margin-bottom: 15px;
+  min-width: 300px;
+  width: 100%;
 }
 
 .server {
-  min-width: 60px;
-  height: 60px;
-  width: 10%;
+  min-width: 30px;
+  height: 30px;
+  width: 15%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -44,18 +48,18 @@ const props = defineProps(['databaseName'])
 }
 
 .name {
-  width: 70%;
+  width: 65%;
   min-width: 120px;
-  height: 30px;
+  height: 20px;
   font-size: 18px;
   line-height: 30px;
   text-align: left;
 }
 
 .setting {
-  min-width: 60px;
-  width: 10%;
-  height: 60px;
+  min-width: 30px;
+  width: 15%;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -66,18 +70,12 @@ const props = defineProps(['databaseName'])
   height: 30px;
 }
 
-.delete {
-  min-width: 60px;
-  width: 10%;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.delete-img {
-  width: 30px;
+.blank{
+  width: 5%;
   height: 30px;
 }
+
+
+
 
 </style>

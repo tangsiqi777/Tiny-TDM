@@ -7,16 +7,13 @@ const props = defineProps(['connectionName'])
 
 <template>
   <div class="database-item">
-    <div class="server"><img class="server-img" src="../assets/images/server2.png" alt="">
+    <div class="server"><img class="server-img" src="../assets/images/connection.png" alt="">
     </div>
     <div class="name">
       {{ props.connectionName }}
     </div>
     <div class="setting">
       <img class="setting-img" src="../assets/images/setting.png" alt="">
-    </div>
-    <div class="delete">
-      <img class="delete-img" src="../assets/images/delete.png" alt="">
     </div>
   </div>
 </template>
@@ -27,6 +24,8 @@ const props = defineProps(['connectionName'])
   height: 60px;
   display: flex;
   align-items: center;
+  min-width: 300px;
+  width: 100%;
 }
 
 .server {
