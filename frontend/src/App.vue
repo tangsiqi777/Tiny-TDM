@@ -89,7 +89,7 @@ function dragControllerDiv() {
     <div class="main">
       <div class="left">
         <div class="left-top">
-          <a-scrollbar style="height: calc(100vh - 6px);overflow-y: auto;">
+          <a-scrollbar style="height: calc(100vh - 60px);overflow-y: auto;">
             <div v-if="displayType===0">
               <Server></Server>
             </div>
@@ -106,8 +106,8 @@ function dragControllerDiv() {
         </div>
 
         <div class="left-bottom">
-          <div class="back">
-            <img src="./assets/images/back.png" alt="" v-if="displayType>0" @click="back">
+          <div class="back" @click="back">
+            <img src="./assets/images/back.png" alt="" v-if="displayType>0" >
           </div>
           <div class="path">
             <a-input-search :style="{width:'220px'}" placeholder="Please enter something"/>
@@ -151,8 +151,7 @@ body {
   width: 3.2%;
   box-sizing: border-box;
   background-color: white;
-//border-right: #7d7d7f solid 1px; height: 100%;
-  min-width: 20px;
+//border-right: #7d7d7f solid 1px; height: 100%; min-width: 20px;
 
 }
 
@@ -210,6 +209,8 @@ body {
   min-width: 300px;
   width: 100%;
   text-align: left;
+  display: flex;
+  align-items: center;
 //background-color: #67c23a; height: 40px; display: flex;
 }
 
@@ -217,17 +218,19 @@ body {
   height: 60%;
   display: flex;
   align-items: center;
-  margin-left: 10px;
+
 //background-color: red; width: calc(20% - 10px);
 }
 
 .back img {
-  height: 60%;
+  height: 80%;
 }
 
 .path {
   height: 100%;
   width: 80%;
+  display: flex;
+  align-items: center;
 //background-color: #79bbff;
 }
 
