@@ -7,7 +7,7 @@ const props = defineProps(['databaseName'])
 
 <template>
   <div class="database-item">
-    <div class="server"><img class="server-img" src="../assets/images/database.png" alt="">
+    <div class="database"><img class="database-img" src="../assets/images/tmp/database.png" alt="">
     </div>
     <div class="name">
       {{ props.databaseName }}
@@ -15,67 +15,55 @@ const props = defineProps(['databaseName'])
     <div class="setting">
       <img class="setting-img" src="../assets/images/setting.png" alt="">
     </div>
-    <div class="blank">
-
-    </div>
   </div>
 </template>
 
 <style scoped>
 .database-item {
-  margin-top: 8px;
   min-height: 30px;
   height: 30px;
   display: flex;
   align-items: center;
-  margin-bottom: 15px;
   min-width: 300px;
   width: 100%;
+  margin-top: 30px;
 }
 
-.server {
-  min-width: 30px;
-  height: 30px;
-  width: 15%;
+.database {
+  min-width: 60px;
+  height: 60px;
+  width: 10%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.server-img {
+.database-img {
   width: 30px;
   height: 30px;
 }
 
 .name {
-  width: 65%;
-  min-width: 120px;
-  height: 20px;
+  width: 80%;
+  min-width: 210px;
+  height: 30px;
   font-size: 18px;
   line-height: 30px;
   text-align: left;
+  color: #18489d;
 }
 
 .setting {
-  min-width: 30px;
-  width: 15%;
-  height: 30px;
+  min-width: 60px;
+  width: 10%;
+  height: 60px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .setting-img {
-  width: 30px;
-  height: 30px;
+  width: 22px;
+  height: 22px;
 }
-
-.blank{
-  width: 5%;
-  height: 30px;
-}
-
-
-
-
 </style>

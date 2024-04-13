@@ -1,13 +1,12 @@
 <script setup>
-console.log("ljdhalfjhalj")
 const props = defineProps(['connectionName'])
 
 
 </script>
 
 <template>
-  <div class="database-item">
-    <div class="server"><img class="server-img" src="../assets/images/connection.png" alt="">
+  <div class="connection-item">
+    <div class="connection"><img class="connection-img" src="../assets/images/tmp/connection3.png" alt="">
     </div>
     <div class="name">
       {{ props.connectionName }}
@@ -19,16 +18,17 @@ const props = defineProps(['connectionName'])
 </template>
 
 <style scoped>
-.database-item {
-  min-height: 60px;
-  height: 60px;
+.connection-item {
+  min-height: 30px;
+  height: 30px;
   display: flex;
   align-items: center;
   min-width: 300px;
   width: 100%;
+  margin-top: 30px;
 }
 
-.server {
+.connection {
   min-width: 60px;
   height: 60px;
   width: 10%;
@@ -37,18 +37,19 @@ const props = defineProps(['connectionName'])
   justify-content: center;
 }
 
-.server-img {
+.connection-img {
   width: 30px;
   height: 30px;
 }
 
 .name {
-  width: 70%;
-  min-width: 120px;
+  width: 80%;
+  min-width: 210px;
   height: 30px;
   font-size: 18px;
   line-height: 30px;
   text-align: left;
+  color: #18489d;
 }
 
 .setting {
@@ -57,26 +58,13 @@ const props = defineProps(['connectionName'])
   height: 60px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .setting-img {
-  width: 30px;
-  height: 30px;
+  width: 22px;
+  height: 22px;
 }
 
-.delete {
-  min-width: 60px;
-  width: 10%;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.delete-img {
-  width: 30px;
-  height: 30px;
-}
 
 </style>

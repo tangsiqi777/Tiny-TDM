@@ -47,7 +47,7 @@ func (a *App) getConn(config service.ConnectionConfig) (*sql.DB, error) {
 }
 
 func (a *App) getConn1() (*sql.DB, error) {
-	var url = "root:taosdata@http(192.168.100.101:32515)/"
+	var url = "root:taosdata@http(192.168.56.19:6041)/"
 	dbConn, err := sql.Open("taosRestful", url)
 	if err != nil {
 		fmt.Println("failed to connect TDengine, err:", err)
@@ -85,12 +85,17 @@ func (a *App) ListDatabases(config service.ConnectionConfig) []string {
 	return slice
 }
 
-func (a *App) ListSuperTable(config service.ConnectionConfig, databaseName string) []string {
+func (a *App) ListSuperTable(config service.ConnectionConfig, databaseName string, superTableSearch string) []string {
+	querySql := "show `" + databaseName + "`.stables;"
+	if superTableSearch != "" {
+		querySql = "show `" + databaseName + "`.stables LIKE \"%" + superTableSearch + "%\";"
+	}
+	fmt.Print(querySql)
 	dbConn, err := a.getConn(config)
 	if err != nil {
 		return []string{}
 	}
-	rows, err := dbConn.Query("show `" + databaseName + "`.stables;")
+	rows, err := dbConn.Query(querySql)
 	if err != nil {
 		log.Println("failed to select from super table, err:", err)
 		return []string{}
@@ -110,13 +115,17 @@ func (a *App) ListSuperTable(config service.ConnectionConfig, databaseName strin
 	return slice
 }
 
-func (a *App) ListChildTable(config service.ConnectionConfig, databaseName string, superTable string) []string {
+func (a *App) ListChildTable(config service.ConnectionConfig, databaseName string, superTable string, childTableSearch string) []string {
+	querySql := "SELECT DISTINCT TBNAME FROM `" + databaseName + "`.`" + superTable + "`;"
+	if childTableSearch != "" {
+		querySql = "SELECT DISTINCT TBNAME FROM `" + databaseName + "`.`" + superTable + "`" + "where TBNAME LIKE \"%" + childTableSearch + "%\";"
+	}
 	dbConn, err := a.getConn(config)
 	if err != nil {
 		return []string{}
 	}
 
-	rows, err := dbConn.Query("SELECT DISTINCT TBNAME FROM `" + databaseName + "`.`" + superTable + "`;")
+	rows, err := dbConn.Query(querySql)
 	if err != nil {
 		log.Println("failed to select from table, err:", err)
 		return []string{}

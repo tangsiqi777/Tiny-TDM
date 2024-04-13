@@ -7,6 +7,8 @@ export const Store = defineStore('big-user', () => {
     const displayType = ref(0)
     const setDisplayType = (newDisplayType) => {
         displayType.value = newDisplayType
+        removeSuperTableSearch()
+        removeChildTableSearch()
     }
     const removeDisplayType = () => {
         displayType.value = 0
@@ -15,6 +17,7 @@ export const Store = defineStore('big-user', () => {
     const conn = reactive({
         conn: {}
     })
+
     const setConn = (newConn) => {
         conn.conn = newConn
     }
@@ -46,6 +49,23 @@ export const Store = defineStore('big-user', () => {
         childTable.value = ''
     }
 
+    const superTableSearch = ref('')
+    const setSuperTableSearch = (searchKey) => {
+        superTableSearch.value = searchKey
+    }
+    const removeSuperTableSearch = () => {
+        superTableSearch.value = ''
+    }
+
+
+    const childTableSearch = ref('')
+    const setChildTableSearch = (searchKey) => {
+        childTableSearch.value = searchKey
+    }
+    const removeChildTableSearch = () => {
+        childTableSearch.value = ''
+    }
+
     return {
         conn,
         setConn,
@@ -61,6 +81,12 @@ export const Store = defineStore('big-user', () => {
         removeChildTable,
         displayType,
         setDisplayType,
-        removeDisplayType
+        removeDisplayType,
+        childTableSearch,
+        setChildTableSearch,
+        removeChildTableSearch,
+        superTableSearch,
+        setSuperTableSearch,
+        removeSuperTableSearch
     }
 })

@@ -56,6 +56,7 @@ function greet() {
   line-height: 30px;
   padding: 0 10px;
   background-color: rgba(240, 240, 240, 1);
+  //background-color: rgb(24, 72, 157);
   -webkit-font-smoothing: antialiased;
 }
 

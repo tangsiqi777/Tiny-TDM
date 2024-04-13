@@ -1,0 +1,214 @@
+/*
+ * @Author: roc_zhou
+ * 2019 1137938565@qq.com
+ * https://github.com/Roc-zhou/rz-ui
+ */
+
+* {
+  box-sizing: border-box !important;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  /*white-space: normal;*/
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+}
+
+.flex-box,
+.flex-auto,
+.flex-wrap,
+.flex-column,
+.items-start,
+.items-end,
+.items-center,
+.items-baseline,
+.items-strecth,
+.justify-start,
+.justify-end,
+.justify-center,
+.justify-between,
+.justify-around,
+.align-between,
+.align-center,
+.align-start,
+.align-end {
+  display: flex;
+  display: -webkit-flex;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+}
+
+.flex-column {
+  -webkit-flex-direction: column;
+  flex-direction: column;
+}
+
+.flex-auto>* {
+  -webkit-flex: 1;
+  flex: 1;
+}
+
+.items-start {
+  -webkit-align-items: flex-start;
+  align-items: flex-start;
+}
+
+.items-end {
+  -webkit-align-items: flex-end;
+  align-items: flex-end;
+}
+
+.items-center {
+  -webkit-align-items: center;
+  align-items: center;
+}
+
+.items-baseline {
+  -webkit-align-items: baseline;
+  align-items: baseline;
+}
+
+.items-strecth {
+  -webkit-align-items: strecth;
+  align-items: strecth;
+}
+
+.justify-start {
+  -webkit-justify-content: flex-start;
+  justify-content: flex-start;
+}
+
+.justify-end {
+  -webkit-justify-content: flex-end;
+  justify-content: flex-end;
+}
+
+.justify-center {
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.justify-between {
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+
+.justify-around {
+  -webkit-justify-content: space-around;
+  justify-content: space-around;
+}
+
+.align-between {
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+
+.align-center {
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+
+.align-start {
+  -webkit-justify-content: flex-start;
+  justify-content: flex-start;
+  -webkit-align-items: flex-start;
+  align-items: flex-start;
+}
+
+.align-end {
+  -webkit-justify-content: flex-end;
+  justify-content: flex-end;
+  -webkit-align-items: flex-end;
+  align-items: flex-end;
+}
+
+.relative-box {
+  position: relative;
+}
+
+.absolute-box {
+  position: absolute;
+}
+
+.fixed-box {
+  position: fixed;
+}
+
+img {
+  border: 0
+}
+
+/*鼠标状态*/
+.cursor-pointer {
+  /*连接*/
+  cursor: pointer;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
+}
+
+.cursor-grabbing {
+  cursor: grabbing;
+  /*手抓型*/
+}
+
+.cursor-crosshair {
+  /*十字架*/
+  cursor: crosshair
+}
+
+.cursor-move {
+  /*移动*/
+  cursor: move
+}
+
+.cursor-resize {
+  /*改变大小*/
+  cursor: e-resize
+}
+
+.cursor-text {
+  /*文字编辑*/
+  cursor: text
+}
+
+.cursor-wait {
+  /*等待*/
+  cursor: wait
+}
+
+.cursor-help {
+  /*帮助*/
+  cursor: help
+}
+
+.noselect {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Chrome/Safari/Opera */
+  -khtml-user-select: none;
+  /* Konqueror */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+}

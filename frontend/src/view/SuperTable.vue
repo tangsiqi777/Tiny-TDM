@@ -4,6 +4,8 @@ import SuperTableItem from "../components/SuperTableItem.vue";
 import {ref} from "vue";
 import {ListSuperTable} from "../../wailsjs/go/main/App.js";
 import {Store} from "../store.js";
+import {tmitt} from "../mitt.js";
+
 
 console.log("SuperTable List\n\n\n\n\n\n")
 
@@ -12,18 +14,23 @@ let superTableList = ref([])
 const store = Store()
 
 
+tmitt.on("searchSuperTable", (data) => {
+  displaySuperTable()
+});
+
 displaySuperTable()
 
 function displaySuperTable() {
   let database = store.database
-  ListSuperTable(store.conn.conn, database).then((superTables) => {
+  let superTableSearch = store.superTableSearch
+  console.log("update super table"+ superTableSearch)
+  ListSuperTable(store.conn.conn, database, superTableSearch).then((superTables) => {
     superTableList.value = superTables
     console.log("stable" + JSON.stringify(superTables))
   })
 }
 
 function toChildTable(superTable) {
-
   store.setSuperTable(superTable)
   store.setDisplayType(3)
 }

@@ -7,10 +7,10 @@ export function Check(arg1:string):Promise<any>;
 
 export function Greet(arg1:string):Promise<string>;
 
-export function ListChildTable(arg1:service.ConnectionConfig,arg2:string,arg3:string):Promise<Array<string>>;
+export function ListChildTable(arg1:service.ConnectionConfig,arg2:string,arg3:string,arg4:string):Promise<Array<string>>;
 
 export function ListDatabases(arg1:service.ConnectionConfig):Promise<Array<string>>;
 
-export function ListSuperTable(arg1:service.ConnectionConfig,arg2:string):Promise<Array<string>>;
+export function ListSuperTable(arg1:service.ConnectionConfig,arg2:string,arg3:string):Promise<Array<string>>;
 
 export function PageData1(arg1:service.ConnectionConfig,arg2:string,arg3:string):Promise<main.PageData>;
