@@ -61,39 +61,27 @@ function onOk(dateString, date) {
 </script>
 <template>
   <div class="select">
-    <a-button type="primary" status="success">24小时</a-button>
-    <a-button type="primary" status="normal">近一周</a-button>
-    <a-button type="primary" status="warning">近一个月</a-button>
+    <div class="quick-time">
+      <a-button type="primary" style="width: 100px" status="success">24小时</a-button>
+      <a-button type="primary" style="width: 100px"  status="normal">近一周</a-button>
+    </div>
+    <div class="select-time">
+      <a-range-picker
+          style="width: 360px; margin: 0;"
+          show-time
+          :time-picker-props="{ defaultValue: ['00:00:00', '00:00:00'] }"
+          format="YYYY-MM-DD HH:mm"
+          @change="onChange"
+          @select="onSelect"
+          @ok="onOk"
+      />
+    </div>
 
-    <a-date-picker
-        style="width: 220px; margin: 0;"
-        show-time
-        :time-picker-props="{ defaultValue: '09:09:06' }"
-        format="YYYY-MM-DD HH:mm:ss"
-        @change="onChange"
-        @select="onSelect"
-        @ok="onOk"
-    />
-    <a-date-picker
-        style="width: 220px; margin: 0;"
-        show-time
-        format="YYYY-MM-DD hh:mm"
-        @change="onChange"
-        @select="onSelect"
-        @ok="onOk"
-    />
-    <a-range-picker
-        style="width: 360px; margin: 0;"
-        show-time
-        :time-picker-props="{ defaultValue: ['00:00:00', '09:09:06'] }"
-        format="YYYY-MM-DD HH:mm"
-        @change="onChange"
-        @select="onSelect"
-        @ok="onOk"
-    />
+
   </div>
   <div class="data">
-      <a-table :columns="headList" :data="pageDataList" :pagination="false" style="height: calc(100vh - 120px);overflow-y: auto;"/>
+    <a-table :columns="headList" :data="pageDataList" :pagination="false"
+             style="height: calc(100vh - 120px);overflow-y: auto;"/>
   </div>
 
   <div class="page">
@@ -108,8 +96,22 @@ function onOk(dateString, date) {
 .select {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   height: 60px;
+
+}
+
+.quick-time{
+  width: 30%;
+  min-width: 220px;
+  display: flex;
+  justify-content: space-around;
+}
+.select-time{
+  width: 70%;
+  min-width: 600px;
+  display: flex;
+  justify-content: flex-start;
 }
 
 .data {

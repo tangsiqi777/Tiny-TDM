@@ -96,10 +96,13 @@ function dragControllerDiv() {
   <div class="content">
     <div class="slide">
       <div class="fun-item">
-        <img class="item-img" src="./assets/images/tmp/data.png" alt="">
+<!--        <img class="item-img" src="./assets/images/tmp/data.png" alt="">-->
+        <icon-computer size="35px" style="color: cornflowerblue"/>
       </div>
       <div class="fun-item">
-        <img class="item-img" src="./assets/images/tmp/log1.png" alt="">
+<!--        <img class="item-img" src="./assets/images/tmp/log1.png" alt="">-->
+<!--         style="color: #18489d"-->
+        <icon-list size="35px"/>
       </div>
     </div>
     <div class="main">
@@ -122,8 +125,9 @@ function dragControllerDiv() {
         </div>
 
         <div class="left-bottom">
-          <div class="back" @click="back">
-            <img src="./assets/images/tmp/back3.png" alt="" v-if="displayType>0">
+          <div class="back" @click="back" v-if="displayType>0">
+            <icon-left size="30px" strokeWidth="5"/>
+<!--            <img src="./assets/images/tmp/back3.png" alt="" v-if="displayType>0">-->
           </div>
 
           <div class="search" v-if="displayType >= 2">

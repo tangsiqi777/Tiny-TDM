@@ -7,13 +7,13 @@ const props = defineProps(['databaseName'])
 
 <template>
   <div class="database-item">
-    <div class="database"><img class="database-img" src="../assets/images/tmp/database.png" alt="">
+    <div class="database"><icon-storage size="30px" strokeWidth="3"/>
     </div>
     <div class="name">
       {{ props.databaseName }}
     </div>
     <div class="setting">
-      <img class="setting-img" src="../assets/images/setting.png" alt="">
+      <icon-settings size="22px" strokeWidth="2"/>
     </div>
   </div>
 </template>
@@ -50,7 +50,7 @@ const props = defineProps(['databaseName'])
   font-size: 18px;
   line-height: 30px;
   text-align: left;
-  color: #18489d;
+  color: #4d5869;
 }
 
 .setting {

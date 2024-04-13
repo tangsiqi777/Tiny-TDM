@@ -6,10 +6,10 @@ const props = defineProps(['superTable', 'num'])
 
 <template>
   <div class="super-table-item">
-    <div class="super-table"><img class="super-table-img" src="../assets/images/tmp/super-table1.png" alt=""></div>
+    <div class="super-table"><icon-nav size="30px" strokeWidth="3"/></div>
     <div class="name">{{ props.superTable }}</div>
     <div class="setting">
-      <img class="setting-img" src="../assets/images/setting.png" alt="">
+      <icon-settings size="22px" strokeWidth="2"/>
     </div>
   </div>
 </template>
@@ -46,7 +46,7 @@ const props = defineProps(['superTable', 'num'])
   font-size: 18px;
   line-height: 30px;
   text-align: left;
-  color: #18489d;
+  color: #4d5869;
 }
 
 .setting {

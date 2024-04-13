@@ -6,13 +6,13 @@ const props = defineProps(['connectionName'])
 
 <template>
   <div class="connection-item">
-    <div class="connection"><img class="connection-img" src="../assets/images/tmp/connection3.png" alt="">
+    <div class="connection"> <icon-desktop size="30px" strokeWidth="3"/>
     </div>
     <div class="name">
       {{ props.connectionName }}
     </div>
     <div class="setting">
-      <img class="setting-img" src="../assets/images/setting.png" alt="">
+      <icon-settings size="22px" strokeWidth="2"/>
     </div>
   </div>
 </template>
@@ -49,7 +49,7 @@ const props = defineProps(['connectionName'])
   font-size: 18px;
   line-height: 30px;
   text-align: left;
-  color: #18489d;
+  color: #4d5869;
 }
 
 .setting {

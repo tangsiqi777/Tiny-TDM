@@ -6,14 +6,14 @@ const props = defineProps(['childTable'])
 
 <template>
   <div class="child-table-item">
-    <div class="child-table"><img class="child-table-img" src="../assets/images/tmp/child-table.png" alt=""></div>
+    <div class="child-table"><icon-file size="30px" strokeWidth="3"/></div>
 
       <div class="name">{{ props.childTable }}</div>
 
 
 
     <div class="setting">
-      <img class="setting-img" src="../assets/images/setting.png" alt="">
+      <icon-settings size="22px" strokeWidth="2"/>
     </div>
   </div>
 </template>
@@ -51,7 +51,7 @@ const props = defineProps(['childTable'])
   font-size: 18px;
   line-height: 30px;
   text-align: left;
-  color: #18489d;
+  color: #4d5869;
 }
 
 .setting {
