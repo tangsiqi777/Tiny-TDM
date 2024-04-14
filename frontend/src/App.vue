@@ -7,7 +7,8 @@ import ChildTable from "./view/ChildTable.vue";
 import {Store} from "./store.js";
 import {storeToRefs} from "pinia";
 import RightData from "./view/RightData.vue";
-import Blank from "./view/Blank.vue";
+import Blank from "./components/Blank.vue";
+import AddConnection from "./components/AddConnection.vue";
 import Server from "./view/Server.vue";
 import {tmitt} from "./mitt.js";
 
@@ -23,7 +24,7 @@ onMounted(() => {
 
 function back() {
   console.log("displayType" + displayType.value)
-  searchValue.value=""
+  searchValue.value = ""
   if (displayType.value > 0) {
     store.setDisplayType(displayType.value - 1)
   }
@@ -94,17 +95,6 @@ function dragControllerDiv() {
 
 <template>
   <div class="content">
-<!--    <div class="slide">-->
-<!--      <div class="fun-item">-->
-<!--&lt;!&ndash;        <img class="item-img" src="./assets/images/tmp/data.png" alt="">&ndash;&gt;-->
-<!--        <icon-computer size="35px" style="color: cornflowerblue"/>-->
-<!--      </div>-->
-<!--      <div class="fun-item">-->
-<!--&lt;!&ndash;        <img class="item-img" src="./assets/images/tmp/log1.png" alt="">&ndash;&gt;-->
-<!--&lt;!&ndash;         style="color: #18489d"&ndash;&gt;-->
-<!--        <icon-list size="35px"/>-->
-<!--      </div>-->
-<!--    </div>-->
     <div class="main">
       <div class="left">
         <div class="left-top">
@@ -127,7 +117,7 @@ function dragControllerDiv() {
         <div class="left-bottom">
           <div class="back" @click="back" v-if="displayType>0">
             <icon-left size="30px" :strokeWidth="5"/>
-<!--            <img src="./assets/images/tmp/back3.png" alt="" v-if="displayType>0">-->
+            <!--            <img src="./assets/images/tmp/back3.png" alt="" v-if="displayType>0">-->
           </div>
 
           <div class="search" v-if="displayType >= 2">
@@ -142,13 +132,9 @@ function dragControllerDiv() {
       <div class="resize" title="收缩侧边栏"></div>
 
       <div class="right-data">
-        <div v-if="displayType===3">
-          <RightData></RightData>
-        </div>
-        <div v-if="displayType!==3">
-          <Blank></Blank>
-        </div>
-
+        <RightData v-if="displayType===3"></RightData>
+        <AddConnection v-if="displayType===0"></AddConnection>
+        <Blank v-if="displayType===1 || displayType === 2"></Blank>
       </div>
     </div>
 

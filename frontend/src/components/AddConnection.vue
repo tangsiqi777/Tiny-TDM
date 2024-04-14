@@ -2,6 +2,7 @@
 import {reactive, ref} from 'vue'
 import {checkNum, checkStrLen,} from '../valid.js'
 import {SaveConnection} from "../../wailsjs/go/service/ConnectionStorageService.js";
+import {tmitt} from "../mitt.js";
 
 const visible = ref(false);
 const form = reactive({
@@ -81,6 +82,7 @@ const handleBeforeOk = (done) => {
       form.Port = ''
       form.Username = ''
       form.Password = ''
+      tmitt.emit("displayConnection", null)
       return
     }
     // todo 完善错误处理
@@ -97,7 +99,13 @@ const handleCancel = () => {
 </script>
 
 <template>
-  <a-button @click="handleClick">新增连接信息</a-button>
+  <div class="add-connection" @click="handleClick">
+    <div>
+      <icon-link :size="80"/>
+      <div>新增连接信息</div>
+    </div>
+  </div>
+
   <a-modal v-model:visible="visible" title="新建连接" @cancel="handleCancel" @before-ok="handleBeforeOk">
     <a-form :model="form" ref="formRef">
       <a-form-item field="name" label="连接名称">
@@ -120,5 +128,17 @@ const handleCancel = () => {
 </template>
 
 <style scoped>
+
+
+.add-connection {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  line-height: 50px;
+  color: #7d7d7f;
+}
 
 </style>

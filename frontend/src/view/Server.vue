@@ -4,21 +4,29 @@ import {onMounted, reactive} from "vue";
 import {ListConnection} from "../../wailsjs/go/service/ConnectionStorageService.js";
 import {Store} from "../store.js";
 import ServerItem from "../components/ConnectionItem.vue";
+import {tmitt} from "../mitt.js";
 
 const connectionList = reactive({connectionList: []})
 onMounted(() => {
   displayConnection()
 })
 
+tmitt.on("displayConnection", () => {
+  console.log("ljdlajkl")
+  displayConnection()
+});
+
 
 function displayConnection() {
   ListConnection().then((connections) => {
     console.log("conn:" + JSON.stringify(connections))
+    connectionList.connectionList.length = 0
     for (let i = 0; i < connections.length; i++) {
       connectionList.connectionList.push(connections[i])
     }
   });
 }
+
 
 function toDatabase(conn) {
   console.log(JSON.stringify(conn))
