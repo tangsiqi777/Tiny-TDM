@@ -6,26 +6,29 @@ const props = defineProps(['connectionName'])
 
 <template>
   <div class="connection-item">
-    <div class="connection"> <icon-desktop size="30px" strokeWidth="3"/>
+    <div class="connection"> <icon-desktop size="30px" :strokeWidth="3"/>
     </div>
     <div class="name">
       {{ props.connectionName }}
     </div>
     <div class="setting">
-      <icon-settings size="22px" strokeWidth="2"/>
+      <icon-settings size="22px" :strokeWidth="2"/>
     </div>
   </div>
 </template>
 
 <style scoped>
 .connection-item {
-  min-height: 30px;
-  height: 30px;
+  min-height: 60px;
+  height: 60px;
   display: flex;
   align-items: center;
   min-width: 300px;
   width: 100%;
-  margin-top: 30px;
+}
+
+.connection-item:hover {
+  background: linear-gradient(#E0EAFC, #CFDEF3);
 }
 
 .connection {

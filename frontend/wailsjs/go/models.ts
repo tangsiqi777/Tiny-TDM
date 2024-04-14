@@ -1,3 +1,31 @@
+export namespace main {
+	
+	
+	export class Query {
+	    timeOrder: number;
+	    timeStart: string;
+	    timeEnd: string;
+	    primaryId: string;
+	    size: number;
+	    current: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new Query(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.timeOrder = source["timeOrder"];
+	        this.timeStart = source["timeStart"];
+	        this.timeEnd = source["timeEnd"];
+	        this.primaryId = source["primaryId"];
+	        this.size = source["size"];
+	        this.current = source["current"];
+	    }
+	}
+
+}
+
 export namespace service {
 	
 	export class ConnectionConfig {

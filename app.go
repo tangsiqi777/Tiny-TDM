@@ -149,20 +149,37 @@ func (a *App) ListChildTable(config service.ConnectionConfig, databaseName strin
 type PageData struct {
 	Data       []map[string]interface{}
 	HeaderList []string
+	Total      int64
 }
 
-func (a *App) PageData1(config service.ConnectionConfig, databaseName string, table string) PageData {
+type Query struct {
+	//0 降序 1升序
+	TimeOrder int    `json:"timeOrder" yaml:"timeOrder"`
+	TimeStart string `json:"timeStart" yaml:"timeStart"`
+	TimeEnd   string `json:"timeEnd" yaml:"timeEnd"`
+	PrimaryId string `json:"primaryId" yaml:"primaryId"`
+	Size      int    `json:"size" yaml:"size"`
+	Current   int    `json:"current" yaml:"current"`
+}
+
+func (a *App) PageData1(config service.ConnectionConfig, databaseName string, table string, query Query) PageData {
+	queryStr, _ := json.Marshal(query)
+	fmt.Println("go query：%s", string(queryStr))
+	fmt.Println("go query：%s", a.getPageSql(query, databaseName, table, 0))
+	fmt.Println("go query：%s", a.getPageSql(query, databaseName, table, 1))
 	var p PageData
 	dbConn, err := a.getConn(config)
 	if err != nil {
 		return p
 	}
-	rows, err := dbConn.Query("SELECT * FROM `" + databaseName + "`.`" + table + "` LIMIT 100;")
-	if err != nil {
+	rows, err1 := dbConn.Query(a.getPageSql(query, databaseName, table, 0))
+	total, err2 := dbConn.Query(a.getPageSql(query, databaseName, table, 1))
+	if err1 != nil || err2 != nil {
 		log.Println("failed to select from data1, err:", err)
 		return p
 	}
 	defer rows.Close()
+	defer total.Close()
 	rowList := make([]map[string]interface{}, 100)
 	var rowNum = 0
 	for rows.Next() {
@@ -190,11 +207,63 @@ func (a *App) PageData1(config service.ConnectionConfig, databaseName string, ta
 		if err != nil {
 			log.Println("\nscan error:", err)
 		}
-		fmt.Print(row[1])
 		rowNum++
 	}
-	p.Data = rowList
+	rowList1 := make([]map[string]interface{}, rowNum)
+	for i := 0; i < rowNum; i++ {
+		rowList1[i] = rowList[i]
+	}
+	p.Data = rowList1
+	fmt.Println(rowNum)
+
+	var totalNum int64 = 0
+	total.Next()
+	err3 := total.Scan(&totalNum)
+	if err3 != nil {
+		return p
+	}
+
+	p.Total = totalNum
+	fmt.Println(totalNum)
+
 	return p
+}
+
+func (a *App) getPageSql(query Query, databaseName string, table string, queryType int) string {
+	sqlWhere := ""
+	sqlOrder := ""
+	sqlLimit := ""
+	sqlType := " * "
+
+	if query.TimeStart != "" {
+		sqlWhere = "WHERE " + query.PrimaryId + " >=  " + "\"" + query.TimeStart + "\""
+		if query.TimeEnd != "" {
+			sqlWhere = sqlWhere + " AND " + query.PrimaryId + " <= " + "\"" + query.TimeEnd + "\""
+		}
+	} else {
+		if query.TimeEnd != "" {
+			sqlWhere = " AND " + query.PrimaryId + " <= " + "\"" + query.TimeEnd + "\""
+		}
+	}
+
+	if queryType == 1 {
+		sqlType = " COUNT(*) "
+	} else {
+		if query.TimeOrder == 0 {
+			sqlOrder = " ORDER BY " + query.PrimaryId + " DESC "
+		} else {
+			sqlOrder = " ORDER BY " + query.PrimaryId + " ASC "
+		}
+
+		if query.Size != 0 {
+			sqlLimit = "LIMIT " + fmt.Sprintf("%d", query.Size) + "OFFSET " + fmt.Sprintf("%d", (query.Current-1)*query.Size)
+		} else {
+			sqlLimit = " LIMIT 50 OFFSET " + fmt.Sprintf("%d", (query.Current-1)*query.Size)
+		}
+	}
+
+	sql1 := "SELECT " + sqlType + " FROM `" + databaseName + "`.`" + table + "` " + sqlWhere + sqlOrder + sqlLimit
+	return sql1
 }
 
 func (a *App) Check(strType string) interface{} {

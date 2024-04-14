@@ -94,17 +94,17 @@ function dragControllerDiv() {
 
 <template>
   <div class="content">
-    <div class="slide">
-      <div class="fun-item">
-<!--        <img class="item-img" src="./assets/images/tmp/data.png" alt="">-->
-        <icon-computer size="35px" style="color: cornflowerblue"/>
-      </div>
-      <div class="fun-item">
-<!--        <img class="item-img" src="./assets/images/tmp/log1.png" alt="">-->
-<!--         style="color: #18489d"-->
-        <icon-list size="35px"/>
-      </div>
-    </div>
+<!--    <div class="slide">-->
+<!--      <div class="fun-item">-->
+<!--&lt;!&ndash;        <img class="item-img" src="./assets/images/tmp/data.png" alt="">&ndash;&gt;-->
+<!--        <icon-computer size="35px" style="color: cornflowerblue"/>-->
+<!--      </div>-->
+<!--      <div class="fun-item">-->
+<!--&lt;!&ndash;        <img class="item-img" src="./assets/images/tmp/log1.png" alt="">&ndash;&gt;-->
+<!--&lt;!&ndash;         style="color: #18489d"&ndash;&gt;-->
+<!--        <icon-list size="35px"/>-->
+<!--      </div>-->
+<!--    </div>-->
     <div class="main">
       <div class="left">
         <div class="left-top">
@@ -126,7 +126,7 @@ function dragControllerDiv() {
 
         <div class="left-bottom">
           <div class="back" @click="back" v-if="displayType>0">
-            <icon-left size="30px" strokeWidth="5"/>
+            <icon-left size="30px" :strokeWidth="5"/>
 <!--            <img src="./assets/images/tmp/back3.png" alt="" v-if="displayType>0">-->
           </div>
 
@@ -176,7 +176,7 @@ body {
 }
 
 .main {
-  width: 97%;
+  width: 100%;
   height: 100%;
   display: flex;
   //background-color: #e7d0d0; height: 100%; background-color: white; display: flex; min-width: 600px; overflow: hidden;

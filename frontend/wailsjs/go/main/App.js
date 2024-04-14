@@ -22,6 +22,6 @@ export function ListSuperTable(arg1, arg2, arg3) {
   return window['go']['main']['App']['ListSuperTable'](arg1, arg2, arg3);
 }
 
-export function PageData1(arg1, arg2, arg3) {
-  return window['go']['main']['App']['PageData1'](arg1, arg2, arg3);
+export function PageData1(arg1, arg2, arg3, arg4) {
+  return window['go']['main']['App']['PageData1'](arg1, arg2, arg3, arg4);
 }

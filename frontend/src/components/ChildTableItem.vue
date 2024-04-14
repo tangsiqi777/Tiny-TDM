@@ -6,14 +6,14 @@ const props = defineProps(['childTable'])
 
 <template>
   <div class="child-table-item">
-    <div class="child-table"><icon-file size="30px" strokeWidth="3"/></div>
+    <div class="child-table"><icon-file size="30px" :strokeWidth="3"/></div>
 
       <div class="name">{{ props.childTable }}</div>
 
 
 
     <div class="setting">
-      <icon-settings size="22px" strokeWidth="2"/>
+      <icon-settings size="22px" :strokeWidth="2"/>
     </div>
   </div>
 </template>
@@ -21,13 +21,16 @@ const props = defineProps(['childTable'])
 <style scoped>
 
 .child-table-item {
-  min-height: 30px;
-  height: 30px;
+  min-height: 50px;
+  height: 50px;
   display: flex;
   align-items: center;
   min-width: 300px;
   width: 100%;
-  margin-top: 30px;
+}
+
+.child-table-item:hover {
+  background: linear-gradient(#E0EAFC, #CFDEF3);
 }
 
 .child-table {

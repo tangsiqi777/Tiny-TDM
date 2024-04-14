@@ -13,4 +13,4 @@ export function ListDatabases(arg1:service.ConnectionConfig):Promise<Array<strin
 
 export function ListSuperTable(arg1:service.ConnectionConfig,arg2:string,arg3:string):Promise<Array<string>>;
 
-export function PageData1(arg1:service.ConnectionConfig,arg2:string,arg3:string):Promise<main.PageData>;
+export function PageData1(arg1:service.ConnectionConfig,arg2:string,arg3:string,arg4:main.Query):Promise<main.PageData>;
