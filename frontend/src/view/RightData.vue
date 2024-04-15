@@ -10,6 +10,7 @@ console.log("Right Data\n\n\n\n\n\n")
 let headList = ref([])
 let pageDataList = ref([])
 let total = ref(1)
+let hideIcon = ref(true)
 const store = Store()
 let {database, childTable} = storeToRefs(store)
 let query = reactive({
@@ -19,11 +20,12 @@ let query = reactive({
   primaryId: "",
   size: 50,
   current: 1,
-  timeRange: -1,
+  timeRange: 2,
 })
 pageData()
 
 function pageData() {
+  hideIcon.value = false
   PageData1(store.conn.conn, database.value, childTable.value, query)
       .then((pageData) => {
         console.log(JSON.stringify(pageData))
@@ -32,6 +34,9 @@ function pageData() {
         total.value = pageData.Total
         console.log("headList:" + JSON.stringify(headList.value))
         console.log("pageDataList:" + JSON.stringify(pageDataList.value))
+        setTimeout(() => {
+          hideIcon.value = true
+        }, 300);
       })
 }
 
@@ -81,21 +86,9 @@ function changeTimeOrder() {
     return
   }
   if (query.timeOrder === 1) {
-    console.log("rrr")
     query.timeOrder = 0
     pageData()
   }
-}
-
-function queryDay(mouseEvent) {
-  query.timeStart = getCurrentDatePlusHours(24);
-  pageData()
-
-}
-
-function queryWeek(mouseEvent) {
-  query.timeStart = getCurrentDatePlusWeeks(1);
-  pageData()
 }
 
 function changeSize(pageSize) {
@@ -146,6 +139,10 @@ function changeRange(value) {
     query.timeStart = getCurrentDatePlusWeeks(1);
     pageData()
   }
+  if (value === 2) {
+    query.timeStart = "";
+    pageData()
+  }
 }
 
 console.log(getCurrentDatePlusHours(24));
@@ -157,6 +154,7 @@ console.log(getCurrentDatePlusWeeks(1));
   <div class="select">
     <div class="quick-time">
       <a-radio-group type="button" @change="changeRange" v-model="query.timeRange">
+        <a-radio :value="2">所有</a-radio>
         <a-radio :value="0">近一天</a-radio>
         <a-radio :value="1">近一周</a-radio>
       </a-radio-group>
@@ -173,8 +171,11 @@ console.log(getCurrentDatePlusWeeks(1));
       />
       <div class="time-order">
         <icon-arrow-down size="20px" :strokeWidth="3" v-if="query.timeOrder === 0" @click="changeTimeOrder"/>
-        <icon-arrow-up size="20px" :strokeWidth="3" v-if="query.timeOrder === 1" @click="changeCurrent"/>
+        <icon-arrow-up size="20px" :strokeWidth="3" v-if="query.timeOrder === 1" @click="changeTimeOrder"/>
         <!--        <icon-arrow-up />-->
+      </div>
+      <div>
+        <a-spin :hide-icon="hideIcon"/>
       </div>
     </div>
 
