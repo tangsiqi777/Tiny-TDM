@@ -4,9 +4,12 @@ import (
 	"context"
 	"embed"
 	"github.com/wailsapp/wails/v2"
+	"github.com/wailsapp/wails/v2/pkg/menu"
+	"github.com/wailsapp/wails/v2/pkg/menu/keys"
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
 	"github.com/wailsapp/wails/v2/pkg/options/windows"
+	"runtime"
 	"tinytdm/backend/service"
 )
 
@@ -18,11 +21,19 @@ func main() {
 	app := NewApp()
 	connectionStorageService := service.GetOneConnectionStorageService()
 
+	AppMenu := menu.NewMenu()
+	FileMenu := AppMenu.AddSubmenu("File")
+	FileMenu.AddSeparator()
+	FileMenu.AddText("Quit", keys.CmdOrCtrl("q"), func(_ *menu.CallbackData) {
+		//runtime.Quit(app.ctx)
+	})
+
 	// Create application with options
 	err := wails.Run(&options.App{
-		Title:  "tiny-tdm",
-		Width:  1024,
-		Height: 768,
+		Title:     "tiny-tdm",
+		Width:     1024,
+		Height:    768,
+		Frameless: runtime.GOOS != "darwin",
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},
@@ -35,6 +46,7 @@ func main() {
 			connectionStorageService,
 			app,
 		},
+		Menu: AppMenu,
 		Windows: &windows.Options{
 
 			//WebviewIsTransparent:              true, //网页透明

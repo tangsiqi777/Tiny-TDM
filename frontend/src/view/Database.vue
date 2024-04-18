@@ -5,6 +5,7 @@ import {onMounted, ref} from "vue";
 import {ListDatabases} from "../../wailsjs/go/main/App.js";
 import {useRouter} from "vue-router";
 import {Store} from "../store.js";
+import Back from "../components/Back.vue";
 
 console.log("Database List\n\n\n\n\n\n")
 
@@ -32,12 +33,26 @@ function toSuperTable(database) {
 </script>
 
 <template>
-  <div class="database-list">
-    <DatabaseItem :databaseName="item" v-for="item in databaseList" :key="item"
-                  @click="toSuperTable(item)"></DatabaseItem>
+  <div class="database">
+    <a-scrollbar outer-style="height:calc(100% - 45px);" style="height:100%;overflow: auto;" class="database-list">
+      <DatabaseItem :databaseName="item" v-for="item in databaseList" :key="item"
+                    @click="toSuperTable(item)"></DatabaseItem>
+    </a-scrollbar>
+
+    <Back class="back"></Back>
   </div>
+
 </template>
 
 <style scoped>
+
+.database-list {
+  width: 100%;
+  height: calc(100% - 45px);
+}
+
+.back {
+  height: 45px;
+}
 
 </style>

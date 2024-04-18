@@ -152,6 +152,10 @@ console.log(getCurrentDatePlusWeeks(1));
 </script>
 <template>
   <div class="select">
+
+    <div class="query-sql">
+      <a-button type="primary">执行SQL</a-button>
+    </div>
     <div class="quick-time">
       <a-radio-group type="button" @change="changeRange" v-model="query.timeRange">
         <a-radio :value="2">所有</a-radio>
@@ -172,10 +176,9 @@ console.log(getCurrentDatePlusWeeks(1));
       <div class="time-order">
         <icon-arrow-down size="20px" :strokeWidth="3" v-if="query.timeOrder === 0" @click="changeTimeOrder"/>
         <icon-arrow-up size="20px" :strokeWidth="3" v-if="query.timeOrder === 1" @click="changeTimeOrder"/>
-        <!--        <icon-arrow-up />-->
       </div>
       <div>
-        <a-spin :hide-icon="hideIcon"/>
+        <a-spin :hide-icon="hideIcon" size="large"/>
       </div>
     </div>
 
@@ -202,26 +205,32 @@ console.log(getCurrentDatePlusWeeks(1));
   align-items: center;
   justify-content: flex-start;
   height: 60px;
-
+  min-width: 700px;
 }
 
-.quick-time {
-  width: 20%;
-  min-width: 180px;
+.query-sql {
+  min-width: 140px;
+  width: 140px;
   display: flex;
   justify-content: space-around;
 }
 
+.quick-time {
+  min-width: 230px;
+  width: 230px;
+  display: flex;
+  justify-content: flex-start;
+}
+
 .select-time {
-  width: 50%;
-  min-width: 450px;
+  min-width: 400px;
+  width: 400px;
   display: flex;
   justify-content: flex-start;
 }
 
 .time-order {
-  width: 10%;
-  min-width: 90px;
+  min-width: 70px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -229,7 +238,6 @@ console.log(getCurrentDatePlusWeeks(1));
 
 .data {
   height: calc(100vh - 120px);
-
 }
 
 

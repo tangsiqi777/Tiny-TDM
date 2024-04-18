@@ -10,7 +10,11 @@ import RightData from "./view/RightData.vue";
 import Blank from "./components/Blank.vue";
 import AddConnection from "./components/AddConnection.vue";
 import Server from "./view/Server.vue";
-import {tmitt} from "./mitt.js";
+import {Quit, WindowMaximise, WindowMinimise, WindowUnmaximise} from "../wailsjs/runtime/runtime";
+// 是否非 Mac 平台
+const isNotMac = navigator.userAgent.toUpperCase().indexOf('MAC') < 0;
+// 是否最大化
+const isMaximised = ref(false);
 
 const store = Store()
 // 0 显示连接， 1显示数据库， 2显示超级表， 3显示子表
@@ -22,27 +26,17 @@ onMounted(() => {
   dragControllerDiv();
 })
 
-function back() {
-  console.log("displayType" + displayType.value)
-  searchValue.value = ""
-  if (displayType.value > 0) {
-    store.setDisplayType(displayType.value - 1)
+
+function windowChange() {
+  if (isMaximised.value === false) {
+    isMaximised.value = true
+    WindowMaximise()
+  } else {
+    isMaximised.value = false
+    WindowUnmaximise()
   }
 }
 
-
-function search(KeyboardEvent) {
-  console.log(JSON.stringify(KeyboardEvent))
-  if (displayType.value === 2) {
-    store.setSuperTableSearch(searchValue.value)
-    tmitt.emit("searchSuperTable", searchValue.value);
-    return;
-  }
-  if (displayType.value === 3) {
-    store.setChildTableSearch(searchValue.value)
-    tmitt.emit("searchChildTable", searchValue.value);
-  }
-}
 
 function dragControllerDiv() {
   const main = document.getElementsByClassName('main');
@@ -94,39 +88,75 @@ function dragControllerDiv() {
 </script>
 
 <template>
+  <!-- windows 定制化窗口按钮 -->
+  <div v-if="isNotMac" class="win-tap">
+    <div class="logo">
+      <img class="logo-img" src="./assets/images/tmp/tdengine.ico" alt=""/>
+      <span>Tiny TDM</span>
+    </div>
+    <div class="tap">
+      <div @click="WindowMinimise" class="minimise">
+        <icon-minus size="20px" :strokeWidth="3"/>
+      </div>
+      <div @click="windowChange" v-if="isMaximised" class="un-maximise">
+        <icon-shrink size="20px" :strokeWidth="3"/>
+      </div>
+      <div @click="windowChange" v-if="!isMaximised" class="maximise">
+        <icon-expand size="20px" :strokeWidth="3"/>
+      </div>
+      <div @click="Quit" class="quit">
+        <icon-close size="20px" :strokeWidth="3"/>
+      </div>
+    </div>
+
+  </div>
   <div class="content">
     <div class="main">
       <div class="left">
-        <div class="left-top">
-          <a-scrollbar style="height: calc(100vh - 60px);overflow-y: auto;">
-            <div v-if="displayType===0">
-              <Server></Server>
-            </div>
-            <div v-if="displayType===1">
-              <Database></Database>
-            </div>
-            <div v-if="displayType===2">
-              <SuperTable></SuperTable>
-            </div>
-            <div v-if="displayType===3">
-              <ChildTable></ChildTable>
-            </div>
-          </a-scrollbar>
-        </div>
 
-        <div class="left-bottom">
-          <div class="back" @click="back" v-if="displayType>0">
-            <icon-left size="30px" :strokeWidth="5"/>
-            <!--            <img src="./assets/images/tmp/back3.png" alt="" v-if="displayType>0">-->
-          </div>
 
-          <div class="search" v-if="displayType >= 2">
-            <a-input class="search-input" :style="{width:'220px'}" size="large" v-model="searchValue"
-                     del-value="searchValue"
-                     @press-enter="search"
-                     placeholder="输入子表或超级表名称"/>
-          </div>
-        </div>
+        <Server class="left-fun" v-if="displayType===0"></Server>
+
+
+        <Database class="left-fun" v-if="displayType===1"></Database>
+
+
+        <SuperTable class="left-fun" v-if="displayType===2"></SuperTable>
+
+
+        <ChildTable class="left-fun" v-if="displayType===3"></ChildTable>
+
+
+        <!--        <div class="left-bottom">
+                  <div class="back" @click="back" v-if="displayType>0">
+                    <icon-left size="30px" :strokeWidth="5"/>
+                  </div>
+
+                  <div class="search" v-if="displayType >= 2">
+                    <a-input class="search-input" size="large" v-model="searchValue"
+                             del-value="searchValue"
+                             @press-enter="search"
+                             placeholder="输入子表或超级表名称"/>
+                  </div>
+                </div>-->
+        <!--        <div class="left-top">
+                  <a-scrollbar style="height: calc(100vh - 60px);overflow-y: auto; overflow-x: hidden">
+                    <div v-if="displayType===0">
+                      <Server></Server>
+                    </div>
+                    <div v-if="displayType===1">
+                      <Database></Database>
+                    </div>
+                    <div v-if="displayType===2">
+                      <SuperTable></SuperTable>
+                    </div>
+                    <div v-if="displayType===3">
+                      <ChildTable></ChildTable>
+                    </div>
+                  </a-scrollbar>
+                </div>-->
+
+
       </div>
 
       <div class="resize" title="收缩侧边栏"></div>
@@ -143,66 +173,104 @@ function dragControllerDiv() {
 
 </template>
 <style>
-//1296db
+/*1296db*/
 html,
 body {
   height: 100%;
 }
 
-.content {
+.win-tap {
+  height: 40px;
+  background-color: white;
+  width: 100%;
   display: flex;
-  height: 100%;
+  justify-content: space-between;
+  border-bottom: #E0EAFC solid 1px;
 }
 
-.slide {
-  width: 3%;
-  box-sizing: border-box;
-  background-color: white;
-  border-top: 1px solid #dbdbdc;
+.logo {
+  height: 35px;
+  width: 130px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+.logo span {
+  font-size: 15px;
+  font-weight: bold;
+  padding-left: 10px;
+}
+
+.logo img {
+  height: 32px;
+  width: 32px;
+}
+
+.tap {
+  width: 105px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 35px;
+}
+
+.tap > div {
+  height: 35px;
+  width: 35px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.minimise:hover {
+  background-color: #dadadb;
+}
+
+.un-maximise:hover {
+  background-color: #dadadb;
+}
+
+.maximise:hover {
+  background-color: #dadadb;
+}
+
+.quit:hover {
+  background-color: #f96c6d;
+}
+
+
+.content {
+  display: flex;
+  height: calc(100% - 40px);
+}
+
 
 .main {
   width: 100%;
   height: 100%;
   display: flex;
-  //background-color: #e7d0d0; height: 100%; background-color: white; display: flex; min-width: 600px; overflow: hidden;
+  background-color: white;
+  min-width: 600px;
+  overflow: hidden;
 }
 
 .left {
   min-width: 300px;
   width: calc(20% - 6px); /*左侧初始化宽度*/
-  height: 100vh;
-  border-top: 1px solid #dbdbdc;
-  border-left: 1px solid #dbdbdc;
-  border-right: 1px solid #dbdbdc;
-  //border-right: 1px  solid #dbdbdc;
-  float: left;
+  height: 100%;
+}
+
+.left-fun {
+  height: 100%;
 }
 
 .right-data {
-  //overflow-y: scroll;
-  float: left;
   width: 80%; /*右侧初始化宽度*/
   height: 100vh;
   background: #fff;
-  border-top: 1px solid #dbdbdc;
 }
 
-
-.fun-item {
-  width: 100%;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-  margin-bottom: 60px;
-}
-
-.item-img {
-  width: 40px;
-  height: 40px;
-}
 
 .item-img img {
   width: 40px;
@@ -223,13 +291,12 @@ body {
   text-align: left;
   display: flex;
   align-items: center;
-  border-top: 1px solid #dbdbdc;
 }
 
 .back {
   height: 60px;
   min-width: 60px;
-  width: 10%;
+  width: 15%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -247,8 +314,8 @@ body {
 }
 
 
-.search {
-  width: 80%;
+.query-sql {
+  width: 20%;
   height: 60px;
   display: flex;
   align-items: center;
@@ -266,7 +333,6 @@ body {
   height: 30px;
   background-color: #858383;
   z-index: 9999;
-  //border: #909399 solid 1px;
 }
 
 /*拖拽区鼠标悬停样式*/

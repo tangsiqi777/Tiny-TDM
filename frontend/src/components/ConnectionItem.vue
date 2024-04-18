@@ -6,7 +6,8 @@ const props = defineProps(['connectionName'])
 
 <template>
   <div class="connection-item">
-    <div class="connection"> <icon-desktop size="30px" :strokeWidth="3"/>
+    <div class="connection">
+      <icon-desktop size="30px" :strokeWidth="3"/>
     </div>
     <div class="name">
       {{ props.connectionName }}
@@ -53,6 +54,7 @@ const props = defineProps(['connectionName'])
   line-height: 30px;
   text-align: left;
   color: #4d5869;
+  overflow: hidden;
 }
 
 .setting {

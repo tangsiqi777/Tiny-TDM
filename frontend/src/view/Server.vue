@@ -38,12 +38,17 @@ function toDatabase(conn) {
 </script>
 
 <template>
-  <div class="connection-list">
+  <a-scrollbar outer-style="height:100%;" style="height:100%;overflow: auto;" class="connection-list">
     <ServerItem :connectionName="item.name" v-for="item in connectionList.connectionList" :key="item.id"
                 @click="toDatabase(item)"></ServerItem>
-  </div>
+  </a-scrollbar>
 </template>
 
 <style scoped>
+.connection-list {
+  width: 100%;
+  height: 100%;
+}
+
 
 </style>

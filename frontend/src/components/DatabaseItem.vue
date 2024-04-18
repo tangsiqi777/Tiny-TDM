@@ -53,6 +53,7 @@ const props = defineProps(['databaseName'])
   line-height: 30px;
   text-align: left;
   color: #4d5869;
+  overflow: hidden;
 }
 
 .setting {

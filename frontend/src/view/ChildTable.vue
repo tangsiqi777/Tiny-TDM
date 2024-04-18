@@ -4,6 +4,8 @@ import ChildTableList from "../components/ChildTableItem.vue";
 import {ListChildTable} from "../../wailsjs/go/main/App.js";
 import {Store} from "../store.js";
 import {tmitt} from "../mitt.js";
+import Back from "../components/Back.vue";
+import Search from "../components/Search.vue";
 
 console.log("ChildTable List\n\n\n\n\n\n")
 const store = Store()
@@ -24,8 +26,11 @@ function displayChildTable() {
   let database = store.database
   let superTable = store.superTable
   let childTableSearch = store.childTableSearch
+  let start = new Date().getTime();
   ListChildTable(store.conn.conn, database, superTable, childTableSearch).then((childTables) => {
     childTableList.value = childTables
+    let end = new Date().getTime();
+    console.log("获取子表耗时:" + (end - start) + JSON.stringify(childTables))
   })
 }
 
@@ -39,11 +44,43 @@ function toChildTableData(table) {
 
 <template>
   <div class="table-list">
-    <ChildTableList :child-table="item" v-for="item in childTableList" :key="item"
-                    @click="toChildTableData(item)"></ChildTableList>
+    <div class="search-input">
+      <Search :display-type="3" class="search-input1"></Search>
+    </div>
+    <a-scrollbar outer-style="height:calc(100% - 90px);" style="height:100%;overflow: auto;" class="table-item-list">
+      <ChildTableList :child-table="item" v-for="item in childTableList" :key="item"
+                      @click="toChildTableData(item)"></ChildTableList>
+    </a-scrollbar>
+    <Back class="back"></Back>
   </div>
 </template>
 
 <style scoped>
+.table-list {
+  width: 100%;
+  height: 100%;
+}
+
+.search-input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 45px;
+  width: 100%;
+}
+
+.search-input1 {
+  height: 80%;
+  width: 70%;
+}
+
+.table-item-list {
+  height: calc(100% - 90px);
+}
+
+.back {
+  height: 45px;
+}
+
 
 </style>
