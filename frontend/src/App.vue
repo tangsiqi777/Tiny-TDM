@@ -293,14 +293,6 @@ body {
   align-items: center;
 }
 
-.back {
-  height: 60px;
-  min-width: 60px;
-  width: 15%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
 .back img {
   height: 22px;

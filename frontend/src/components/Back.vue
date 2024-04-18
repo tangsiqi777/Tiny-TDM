@@ -13,23 +13,23 @@ function back() {
 </script>
 
 <template>
-  <div class="back" @click="back()">
-    <icon-arrow-left size="25px"/>
+  <div class="back-c" @click="back()">
+    <icon-arrow-left size="28px"/>
   </div>
 
 </template>
 
 <style scoped>
 
-.back {
-  width: 45px;
-  height: 45px;
+.back-c {
+  width: 50px;
+  height: 35px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.back:hover {
+.back-c:hover {
   background-color: #E0EAFC;
 }
 

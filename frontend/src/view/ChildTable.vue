@@ -6,6 +6,8 @@ import {Store} from "../store.js";
 import {tmitt} from "../mitt.js";
 import Back from "../components/Back.vue";
 import Search from "../components/Search.vue";
+import SqlQuery from "../components/SqlQuery.vue";
+import TablePage from "../components/TablePage.vue";
 
 console.log("ChildTable List\n\n\n\n\n\n")
 const store = Store()
@@ -46,12 +48,17 @@ function toChildTableData(table) {
   <div class="table-list">
     <div class="search-input">
       <Search :display-type="3" class="search-input1"></Search>
+      <SqlQuery></SqlQuery>
     </div>
-    <a-scrollbar outer-style="height:calc(100% - 90px);" style="height:100%;overflow: auto;" class="table-item-list">
+    <a-scrollbar outer-style="height:calc(100% - 80px);" style="height:100%;overflow: auto;" class="table-item-list">
       <ChildTableList :child-table="item" v-for="item in childTableList" :key="item"
                       @click="toChildTableData(item)"></ChildTableList>
     </a-scrollbar>
-    <Back class="back"></Back>
+    <div class="bottom">
+      <Back></Back>
+      <TablePage :total="200" class="table-page"></TablePage>
+    </div>
+
   </div>
 </template>
 
@@ -75,12 +82,26 @@ function toChildTableData(table) {
 }
 
 .table-item-list {
-  height: calc(100% - 90px);
+  height: calc(100% - 80px);
 }
 
-.back {
-  height: 45px;
+.bottom{
+  display: flex;
+  height: 35px;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
 }
+
+.table-page{
+  width: 200px
+
+}
+
+
+
+
+
 
 
 </style>

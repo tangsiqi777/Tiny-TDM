@@ -7,6 +7,7 @@ import {Store} from "../store.js";
 import {tmitt} from "../mitt.js";
 import Search from "../components/Search.vue";
 import Back from "../components/Back.vue";
+import SqlQuery from "../components/SqlQuery.vue";
 
 
 console.log("SuperTable List\n\n\n\n\n\n")
@@ -44,13 +45,17 @@ function toChildTable(superTable) {
   <div class="super-table">
     <div class="search-input">
       <Search :display-type="2" class="search-input1"></Search>
+      <SqlQuery></SqlQuery>
     </div>
 
-    <a-scrollbar outer-style="height:calc(100% - 90px);" style="height:100%;overflow: auto;" class="table-list">
+    <a-scrollbar outer-style="height:calc(100% - 80px);" style="height:100%;overflow: auto;" class="table-list">
       <SuperTableItem :superTable="item" v-for="item in superTableList" :key="item"
                       @click="toChildTable(item)"></SuperTableItem>
     </a-scrollbar>
-    <Back class="back"></Back>
+
+    <Back></Back>
+
+
   </div>
 </template>
 
@@ -73,13 +78,7 @@ function toChildTable(superTable) {
   width: 70%;
 }
 
-.table-list{
-  height: calc(100% - 90px);
+.table-list {
+  height: calc(100% - 80px);
 }
-
-.back {
-  height: 45px;
-}
-
-
 </style>
