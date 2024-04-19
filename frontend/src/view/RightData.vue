@@ -26,6 +26,7 @@ pageData()
 
 function pageData() {
   hideIcon.value = false
+  query.primaryId = store.primaryId
   PageData1(store.conn.conn, database.value, childTable.value, query)
       .then((pageData) => {
         console.log(JSON.stringify(pageData))
@@ -53,10 +54,10 @@ function convertArrayToObject(arr) {
   });
 }
 
-// 示例用法
-const arr = ["ts", "value"];
+// 示例用法 查询前获取数据库元信息 todo
+/*const arr = ["ts", "value"];
 const result = convertArrayToObject(arr);
-console.log(result);
+console.log(result);*/
 
 // 可以直接侦听一个 ref
 watch(childTable, async (newQuestion, oldQuestion) => {
@@ -132,17 +133,26 @@ function getCurrentDatePlusWeeks(weeks) {
 function changeRange(value) {
   if (value === 0) {
     query.timeStart = getCurrentDatePlusHours(24);
+    query.timeEnd = "";
     pageData()
     return
   }
   if (value === 1) {
     query.timeStart = getCurrentDatePlusWeeks(1);
+    query.timeEnd = "";
     pageData()
   }
   if (value === 2) {
     query.timeStart = "";
+    query.timeEnd = "";
     pageData()
   }
+}
+
+function clearTime(){
+  query.timeStart = "";
+  query.timeEnd = "";
+  pageData()
 }
 
 console.log(getCurrentDatePlusHours(24));
@@ -152,10 +162,6 @@ console.log(getCurrentDatePlusWeeks(1));
 </script>
 <template>
   <div class="select">
-
-    <div class="query-sql">
-      <a-button type="primary">执行SQL</a-button>
-    </div>
     <div class="quick-time">
       <a-radio-group type="button" @change="changeRange" v-model="query.timeRange">
         <a-radio :value="2">所有</a-radio>
@@ -172,6 +178,7 @@ console.log(getCurrentDatePlusWeeks(1));
           @change="onChange"
           @select="onSelect"
           @ok="onOk"
+          @clear="clearTime"
       />
       <div class="time-order">
         <icon-arrow-down size="20px" :strokeWidth="3" v-if="query.timeOrder === 0" @click="changeTimeOrder"/>
@@ -186,7 +193,7 @@ console.log(getCurrentDatePlusWeeks(1));
   </div>
   <div class="data">
     <a-table :columns="headList" :data="pageDataList" :pagination="false"
-             style="height: calc(100vh - 120px);overflow-y: auto;"/>
+             style="height: calc(100%);overflow-y: auto;"/>
   </div>
 
   <div class="page">
@@ -206,13 +213,6 @@ console.log(getCurrentDatePlusWeeks(1));
   justify-content: flex-start;
   height: 60px;
   min-width: 700px;
-}
-
-.query-sql {
-  min-width: 140px;
-  width: 140px;
-  display: flex;
-  justify-content: space-around;
 }
 
 .quick-time {
@@ -237,7 +237,7 @@ console.log(getCurrentDatePlusWeeks(1));
 }
 
 .data {
-  height: calc(100vh - 120px);
+  height: calc(100% - 120px);
 }
 
 

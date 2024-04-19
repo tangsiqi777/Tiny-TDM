@@ -11,6 +11,8 @@ import Blank from "./components/Blank.vue";
 import AddConnection from "./components/AddConnection.vue";
 import Server from "./view/Server.vue";
 import {Quit, WindowMaximise, WindowMinimise, WindowUnmaximise} from "../wailsjs/runtime/runtime";
+import {tmitt} from "./mitt.js";
+import SqlQueryPage from "./view/SqlQueryPage.vue";
 // 是否非 Mac 平台
 const isNotMac = navigator.userAgent.toUpperCase().indexOf('MAC') < 0;
 // 是否最大化
@@ -19,12 +21,18 @@ const isMaximised = ref(false);
 const store = Store()
 // 0 显示连接， 1显示数据库， 2显示超级表， 3显示子表
 let {displayType} = storeToRefs(store)
+let sqlQuery = ref(false)
 
 let searchValue = ref("")
 
 onMounted(() => {
   dragControllerDiv();
 })
+
+tmitt.on("displaySqlQuery", (selected) => {
+  console.log(selected)
+  sqlQuery.value = selected
+});
 
 
 function windowChange() {
@@ -89,7 +97,7 @@ function dragControllerDiv() {
 
 <template>
   <!-- windows 定制化窗口按钮 -->
-  <div v-if="isNotMac" class="win-tap">
+  <div v-if="isNotMac" class="win-tap" style="--wails-draggable:drag">
     <div class="logo">
       <img class="logo-img" src="./assets/images/tmp/tdengine.ico" alt=""/>
       <span>Tiny TDM</span>
@@ -108,66 +116,32 @@ function dragControllerDiv() {
         <icon-close size="20px" :strokeWidth="3"/>
       </div>
     </div>
-
   </div>
   <div class="content">
     <div class="main">
       <div class="left">
-
-
         <Server class="left-fun" v-if="displayType===0"></Server>
-
 
         <Database class="left-fun" v-if="displayType===1"></Database>
 
-
         <SuperTable class="left-fun" v-if="displayType===2"></SuperTable>
 
-
         <ChildTable class="left-fun" v-if="displayType===3"></ChildTable>
-
-
-        <!--        <div class="left-bottom">
-                  <div class="back" @click="back" v-if="displayType>0">
-                    <icon-left size="30px" :strokeWidth="5"/>
-                  </div>
-
-                  <div class="search" v-if="displayType >= 2">
-                    <a-input class="search-input" size="large" v-model="searchValue"
-                             del-value="searchValue"
-                             @press-enter="search"
-                             placeholder="输入子表或超级表名称"/>
-                  </div>
-                </div>-->
-        <!--        <div class="left-top">
-                  <a-scrollbar style="height: calc(100vh - 60px);overflow-y: auto; overflow-x: hidden">
-                    <div v-if="displayType===0">
-                      <Server></Server>
-                    </div>
-                    <div v-if="displayType===1">
-                      <Database></Database>
-                    </div>
-                    <div v-if="displayType===2">
-                      <SuperTable></SuperTable>
-                    </div>
-                    <div v-if="displayType===3">
-                      <ChildTable></ChildTable>
-                    </div>
-                  </a-scrollbar>
-                </div>-->
-
-
       </div>
 
       <div class="resize" title="收缩侧边栏"></div>
 
       <div class="right-data">
-        <RightData v-if="displayType===3"></RightData>
-        <AddConnection v-if="displayType===0"></AddConnection>
-        <Blank v-if="displayType===1 || displayType === 2"></Blank>
+        <div v-if="sqlQuery === false" class="right-data-inner">
+          <RightData v-if="displayType===3"></RightData>
+          <AddConnection v-if="displayType===0"></AddConnection>
+          <Blank v-if="displayType===1 || displayType === 2"></Blank>
+        </div>
+        <div v-if="sqlQuery === true" class="right-data-inner">
+          <SqlQueryPage></SqlQueryPage>
+        </div>
       </div>
     </div>
-
 
   </div>
 
@@ -267,8 +241,12 @@ body {
 
 .right-data {
   width: 80%; /*右侧初始化宽度*/
-  height: 100vh;
+  height: 100%;
   background: #fff;
+}
+
+.right-data-inner{
+  height: 100%;
 }
 
 
@@ -278,41 +256,11 @@ body {
 }
 
 
-.left-top {
-  width: 100%;
-  height: calc(100% - 60px);
-  min-width: 300px;
-}
-
-.left-bottom {
-  height: 60px;
-  min-width: 300px;
-  width: 100%;
-  text-align: left;
-  display: flex;
-  align-items: center;
-}
-
-
 .back img {
   height: 22px;
   width: 22px;
 }
 
-
-.back:hover {
-  transform: scale(1.2);
-  transition: 0.2s;
-}
-
-
-.query-sql {
-  width: 20%;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
 /*拖拽区div样式*/
 .resize {

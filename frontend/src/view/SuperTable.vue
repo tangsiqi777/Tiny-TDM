@@ -2,7 +2,7 @@
 
 import SuperTableItem from "../components/SuperTableItem.vue";
 import {ref} from "vue";
-import {ListSuperTable} from "../../wailsjs/go/main/App.js";
+import {DescTable, ListSuperTable} from "../../wailsjs/go/main/App.js";
 import {Store} from "../store.js";
 import {tmitt} from "../mitt.js";
 import Search from "../components/Search.vue";
@@ -26,6 +26,7 @@ displaySuperTable()
 function displaySuperTable() {
   let database = store.database
   let superTableSearch = store.superTableSearch
+  console.log("hhhhhhhhhhhhhhhhhh"+superTableSearch)
   console.log("update super table" + superTableSearch)
   ListSuperTable(store.conn.conn, database, superTableSearch).then((superTables) => {
     superTableList.value = superTables
@@ -34,8 +35,16 @@ function displaySuperTable() {
 }
 
 function toChildTable(superTable) {
-  store.setSuperTable(superTable)
-  store.setDisplayType(3)
+  let database = store.database
+  DescTable(store.conn.conn, database, superTable).then((tableInfo) => {
+    console.log(tableInfo)
+    if (tableInfo !== undefined && tableInfo !== null && tableInfo.length > 0) {
+      store.setPrimaryId(tableInfo[0].field)
+    }
+    store.setSuperTable(superTable)
+    store.setDisplayType(3)
+  })
+
 }
 
 </script>
@@ -43,19 +52,16 @@ function toChildTable(superTable) {
 
 <template>
   <div class="super-table">
-    <div class="search-input">
-      <Search :display-type="2" class="search-input1"></Search>
-      <SqlQuery></SqlQuery>
+    <div class="search">
+      <Back class="back"></Back>
+      <Search :display-type="2" class="search-input"></Search>
+      <SqlQuery class="sql-query"></SqlQuery>
     </div>
 
-    <a-scrollbar outer-style="height:calc(100% - 80px);" style="height:100%;overflow: auto;" class="table-list">
+    <a-scrollbar outer-style="height:calc(100% - 45px);" style="height:100%;overflow: auto;" class="table-list">
       <SuperTableItem :superTable="item" v-for="item in superTableList" :key="item"
                       @click="toChildTable(item)"></SuperTableItem>
     </a-scrollbar>
-
-    <Back></Back>
-
-
   </div>
 </template>
 
@@ -65,7 +71,7 @@ function toChildTable(superTable) {
   height: 100%;
 }
 
-.search-input {
+.search {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -73,12 +79,24 @@ function toChildTable(superTable) {
   width: 100%;
 }
 
-.search-input1 {
-  height: 80%;
+.search-input {
+  height: 70%;
   width: 70%;
 }
 
-.table-list {
-  height: calc(100% - 80px);
+.back {
+  width: 15%;
+  height: 45px;
 }
+
+.sql-query {
+  height: 45px;
+  width: 15%;
+}
+
+.table-list {
+  height: calc(100% - 45px);
+}
+
+
 </style>

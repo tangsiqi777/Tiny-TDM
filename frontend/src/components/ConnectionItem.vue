@@ -29,7 +29,8 @@ const props = defineProps(['connectionName'])
 }
 
 .connection-item:hover {
-  background: linear-gradient(#E0EAFC, #CFDEF3);
+  /*background: linear-gradient(#E0EAFC, #CFDEF3);*/
+  background: #dadadb;
 }
 
 .connection {

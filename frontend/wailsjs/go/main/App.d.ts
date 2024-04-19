@@ -5,6 +5,8 @@ import {main} from '../models';
 
 export function Check(arg1:string):Promise<any>;
 
+export function DescTable(arg1:service.ConnectionConfig,arg2:string,arg3:string):Promise<Array<main.TableField>>;
+
 export function Greet(arg1:string):Promise<string>;
 
 export function ListChildTable(arg1:service.ConnectionConfig,arg2:string,arg3:string,arg4:string):Promise<Array<string>>;
@@ -14,3 +16,5 @@ export function ListDatabases(arg1:service.ConnectionConfig):Promise<Array<strin
 export function ListSuperTable(arg1:service.ConnectionConfig,arg2:string,arg3:string):Promise<Array<string>>;
 
 export function PageData1(arg1:service.ConnectionConfig,arg2:string,arg3:string,arg4:main.Query):Promise<main.PageData>;
+
+export function SqlQuery(arg1:service.ConnectionConfig,arg2:string):Promise<main.PageData>;

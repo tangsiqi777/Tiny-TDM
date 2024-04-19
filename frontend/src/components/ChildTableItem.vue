@@ -1,13 +1,30 @@
 <script setup>
 
+import {ref} from "vue";
+import {tmitt} from "../mitt.js";
+
 const props = defineProps(['childTable'])
+
+let selectedCss = ref("")
+
+
+tmitt.on("clickChildTable", (childTableName) => {
+  console.log(childTableName);
+  if (childTableName === props.childTable) {
+    selectedCss.value = 'background: #dadadb;'
+  } else {
+    selectedCss.value = ""
+  }
+});
 
 </script>
 
 <template>
-  <div class="child-table-item">
-    <div class="child-table"><icon-file size="30px" :strokeWidth="3"/></div>
-      <div class="name" >{{ props.childTable }}</div>
+  <div class="child-table-item" :style="selectedCss">
+    <div class="child-table">
+      <icon-file size="30px" :strokeWidth="3"/>
+    </div>
+    <div class="name">{{ props.childTable }}</div>
     <div class="setting">
       <icon-settings size="22px" :strokeWidth="2"/>
     </div>
@@ -26,7 +43,8 @@ const props = defineProps(['childTable'])
 }
 
 .child-table-item:hover {
-  background: linear-gradient(#E0EAFC, #CFDEF3);
+  /*background: linear-gradient(#E0EAFC, #CFDEF3);*/
+  background: #dadadb;
 }
 
 .child-table {
@@ -38,10 +56,6 @@ const props = defineProps(['childTable'])
   justify-content: center;
 }
 
-.child-table-img {
-  width: 30px;
-  height: 30px;
-}
 
 .name {
   width: 80%;
@@ -63,9 +77,5 @@ const props = defineProps(['childTable'])
   justify-content: flex-start;
 }
 
-.setting-img {
-  width: 22px;
-  height: 22px;
-}
 
 </style>

@@ -141,7 +141,7 @@ func (a *App) ListChildTable(config service.ConnectionConfig, databaseName strin
 			return []string{}
 		}
 		slice = append(slice, childName)
-		log.Println(childName)
+		//log.Println(childName)
 	}
 	return slice
 }
@@ -229,6 +229,60 @@ func (a *App) PageData1(config service.ConnectionConfig, databaseName string, ta
 	return p
 }
 
+func (a *App) SqlQuery(config service.ConnectionConfig, sql string) PageData {
+
+	var p PageData
+	dbConn, err := a.getConn(config)
+	if err != nil {
+		return p
+	}
+	rows, err1 := dbConn.Query(sql)
+	if err1 != nil {
+		log.Println("failed to select from data1, err:", err)
+		return p
+	}
+	defer rows.Close()
+	rowList := make([]map[string]interface{}, 2000)
+	var rowNum = 0
+	for rows.Next() {
+		cols, _ := rows.Columns()
+		row := make([]interface{}, len(cols))
+		for i, _ := range cols {
+			t, _ := rows.ColumnTypes()
+			row[i] = a.Check(t[i].ScanType().Name())
+
+		}
+		err := rows.Scan(row...)
+
+		rowMap := make(map[string]interface{})
+		headerList := make([]string, len(cols))
+		for i := 0; i < len(cols); i++ {
+			t, _ := rows.ColumnTypes()
+			columnName := t[i].Name()
+			headerList[i] = columnName
+			rowMap[columnName] = row[i]
+		}
+		if rowNum == 0 {
+			p.HeaderList = headerList
+		}
+		rowList[rowNum] = rowMap
+		if err != nil {
+			log.Println("\nscan error:", err)
+		}
+		rowNum++
+		if rowNum > 2000 {
+			break
+		}
+	}
+	rowList1 := make([]map[string]interface{}, rowNum)
+	for i := 0; i < rowNum; i++ {
+		rowList1[i] = rowList[i]
+	}
+	p.Data = rowList1
+	fmt.Println(rowNum)
+	return p
+}
+
 func (a *App) getPageSql(query Query, databaseName string, table string, queryType int) string {
 	sqlWhere := ""
 	sqlOrder := ""
@@ -256,14 +310,50 @@ func (a *App) getPageSql(query Query, databaseName string, table string, queryTy
 		}
 
 		if query.Size != 0 {
-			sqlLimit = "LIMIT " + fmt.Sprintf("%d", query.Size) + "OFFSET " + fmt.Sprintf("%d", (query.Current-1)*query.Size)
+			sqlLimit = "LIMIT " + fmt.Sprintf("%d", query.Size) + " OFFSET " + fmt.Sprintf("%d", (query.Current-1)*query.Size)
 		} else {
 			sqlLimit = " LIMIT 50 OFFSET " + fmt.Sprintf("%d", (query.Current-1)*query.Size)
 		}
 	}
 
 	sql1 := "SELECT " + sqlType + " FROM `" + databaseName + "`.`" + table + "` " + sqlWhere + sqlOrder + sqlLimit
+	fmt.Println(sql1)
 	return sql1
+}
+
+type TableField struct {
+	Field  string `json:"field" yaml:"field"`
+	Type   string `json:"type" yaml:"type"`
+	Length int    `json:"length" yaml:"length"`
+	Note   string `json:"note" yaml:"note"`
+}
+
+func (a *App) DescTable(config service.ConnectionConfig, databaseName string, superTable string) []TableField {
+	querySql := "DESC `" + databaseName + "`.`" + superTable + "`;"
+	dbConn, err := a.getConn(config)
+	if err != nil {
+		return []TableField{}
+	}
+
+	rows, err := dbConn.Query(querySql)
+	if err != nil {
+		log.Println("failed to desc table, err:", err)
+		return []TableField{}
+	}
+	defer rows.Close()
+	var slice []TableField
+	for rows.Next() {
+		var tableField TableField
+
+		err := rows.Scan(&tableField.Field, &tableField.Type, &tableField.Length, &tableField.Note)
+		if err != nil {
+			log.Println("scan error:\n", err)
+			return []TableField{}
+		}
+		slice = append(slice, tableField)
+	}
+	log.Println(slice)
+	return slice
 }
 
 func (a *App) Check(strType string) interface{} {

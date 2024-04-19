@@ -34,12 +34,13 @@ function toSuperTable(database) {
 
 <template>
   <div class="database">
-    <a-scrollbar outer-style="height:calc(100% - 35px);" style="height:100%;overflow: auto;" class="database-list">
+    <Back class="back"></Back>
+    <a-scrollbar outer-style="height:calc(100% - 45px);" style="height:100%;overflow: auto;" class="database-list">
       <DatabaseItem :databaseName="item" v-for="item in databaseList" :key="item"
                     @click="toSuperTable(item)"></DatabaseItem>
     </a-scrollbar>
 
-    <Back class="back"></Back>
+
   </div>
 
 </template>
@@ -49,6 +50,11 @@ function toSuperTable(database) {
 .database-list {
   width: 100%;
   height: calc(100% - 35px);
+}
+
+.back{
+  width: 50px;
+  height: 45px;
 }
 
 

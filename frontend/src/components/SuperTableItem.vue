@@ -6,7 +6,9 @@ const props = defineProps(['superTable', 'num'])
 
 <template>
   <div class="super-table-item">
-    <div class="super-table"><icon-nav size="30px" :strokeWidth="3"/></div>
+    <div class="super-table">
+      <icon-nav size="30px" :strokeWidth="3"/>
+    </div>
     <div class="name">{{ props.superTable }}</div>
     <div class="setting">
       <icon-settings size="22px" :strokeWidth="2"/>
@@ -25,7 +27,9 @@ const props = defineProps(['superTable', 'num'])
 }
 
 .super-table-item:hover {
-  background: linear-gradient(#E0EAFC, #CFDEF3);
+  /* background: linear-gradient(#E0EAFC, #CFDEF3);*/
+  background: #dadadb;
+
 }
 
 .super-table {

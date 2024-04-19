@@ -6,6 +6,10 @@ export function Check(arg1) {
   return window['go']['main']['App']['Check'](arg1);
 }
 
+export function DescTable(arg1, arg2, arg3) {
+  return window['go']['main']['App']['DescTable'](arg1, arg2, arg3);
+}
+
 export function Greet(arg1) {
   return window['go']['main']['App']['Greet'](arg1);
 }
@@ -24,4 +28,8 @@ export function ListSuperTable(arg1, arg2, arg3) {
 
 export function PageData1(arg1, arg2, arg3, arg4) {
   return window['go']['main']['App']['PageData1'](arg1, arg2, arg3, arg4);
+}
+
+export function SqlQuery(arg1, arg2) {
+  return window['go']['main']['App']['SqlQuery'](arg1, arg2);
 }

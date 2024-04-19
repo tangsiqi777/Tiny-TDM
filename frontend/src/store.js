@@ -51,6 +51,7 @@ export const Store = defineStore('big-user', () => {
 
     const superTableSearch = ref('')
     const setSuperTableSearch = (searchKey) => {
+
         superTableSearch.value = searchKey
     }
     const removeSuperTableSearch = () => {
@@ -64,6 +65,14 @@ export const Store = defineStore('big-user', () => {
     }
     const removeChildTableSearch = () => {
         childTableSearch.value = ''
+    }
+
+    const primaryId = ref('')
+    const setPrimaryId = (primary) => {
+        primaryId.value = primary
+    }
+    const removePrimaryId = () => {
+        primaryId.value = ''
     }
 
     return {
@@ -87,6 +96,9 @@ export const Store = defineStore('big-user', () => {
         removeChildTableSearch,
         superTableSearch,
         setSuperTableSearch,
-        removeSuperTableSearch
+        removeSuperTableSearch,
+        primaryId,
+        setPrimaryId,
+        removePrimaryId
     }
 })

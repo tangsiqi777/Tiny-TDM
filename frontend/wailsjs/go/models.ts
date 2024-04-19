@@ -23,6 +23,24 @@ export namespace main {
 	        this.current = source["current"];
 	    }
 	}
+	export class TableField {
+	    field: string;
+	    type: string;
+	    length: number;
+	    note: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new TableField(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.field = source["field"];
+	        this.type = source["type"];
+	        this.length = source["length"];
+	        this.note = source["note"];
+	    }
+	}
 
 }
 

@@ -7,7 +7,6 @@ import {tmitt} from "../mitt.js";
 import Back from "../components/Back.vue";
 import Search from "../components/Search.vue";
 import SqlQuery from "../components/SqlQuery.vue";
-import TablePage from "../components/TablePage.vue";
 
 console.log("ChildTable List\n\n\n\n\n\n")
 const store = Store()
@@ -36,29 +35,30 @@ function displayChildTable() {
   })
 }
 
-function toChildTableData(table) {
+function toChildTableData(childTable) {
   console.log("update table")
-  store.setChildTable(table)
+  tmitt.emit("clickChildTable", childTable)
+  store.setChildTable(childTable)
 }
+
 
 
 </script>
 
 <template>
   <div class="table-list">
-    <div class="search-input">
-      <Search :display-type="3" class="search-input1"></Search>
-      <SqlQuery></SqlQuery>
+    <div class="search">
+      <Back class="back"></Back>
+      <Search :display-type="3" class="search-input"></Search>
+      <SqlQuery class="sql-query"></SqlQuery>
     </div>
     <a-scrollbar outer-style="height:calc(100% - 80px);" style="height:100%;overflow: auto;" class="table-item-list">
       <ChildTableList :child-table="item" v-for="item in childTableList" :key="item"
                       @click="toChildTableData(item)"></ChildTableList>
     </a-scrollbar>
-    <div class="bottom">
-      <Back></Back>
-      <TablePage :total="200" class="table-page"></TablePage>
-    </div>
-
+    <!--    <div class="bottom">
+          <TablePage :total="200" class="table-page"></TablePage>
+        </div>-->
   </div>
 </template>
 
@@ -68,7 +68,7 @@ function toChildTableData(table) {
   height: 100%;
 }
 
-.search-input {
+.search {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -76,16 +76,26 @@ function toChildTableData(table) {
   width: 100%;
 }
 
-.search-input1 {
-  height: 80%;
+.search-input {
+  height: 70%;
   width: 70%;
+}
+
+.back {
+  width: 15%;
+  height: 45px;
+}
+
+.sql-query {
+  height: 45px;
+  width: 15%;
 }
 
 .table-item-list {
   height: calc(100% - 80px);
 }
 
-.bottom{
+.bottom {
   display: flex;
   height: 35px;
   width: 100%;
@@ -93,15 +103,10 @@ function toChildTableData(table) {
   justify-content: space-between;
 }
 
-.table-page{
+.table-page {
   width: 200px
 
 }
-
-
-
-
-
 
 
 </style>

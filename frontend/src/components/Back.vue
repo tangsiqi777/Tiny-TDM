@@ -22,15 +22,13 @@ function back() {
 <style scoped>
 
 .back-c {
-  width: 50px;
-  height: 35px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .back-c:hover {
-  background-color: #E0EAFC;
+  background-color: #dadadb;
 }
 
 

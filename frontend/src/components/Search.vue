@@ -22,18 +22,27 @@ function search(KeyboardEvent) {
 </script>
 
 <template>
-  <div class="search">
-    <a-input class="search-input" size="large" v-model="props.searchValue"
+  <div class="search-c">
+    <a-input class="search-input-c" v-model="searchValue"
              @press-enter="search"
-             placeholder="输入子表或超级表名称"/>
+             placeholder="表名称回车搜索"/>
   </div>
 </template>
 
 <style scoped>
-.search {
+.search-c {
   width: 100%;
   height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+.search-input-c {
+  width: 85%;
+  height: 100%;
+}
+
 </style>
 
 

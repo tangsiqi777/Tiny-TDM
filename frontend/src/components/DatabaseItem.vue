@@ -28,7 +28,8 @@ const props = defineProps(['databaseName'])
   width: 100%;
 }
 .database-item:hover {
-  background: linear-gradient(#E0EAFC, #CFDEF3);
+  /*background: linear-gradient(#E0EAFC, #CFDEF3);*/
+  background: #dadadb;
 }
 
 .database {
