@@ -10,6 +10,11 @@ let pageDataList = ref([])
 let sql = ref("")
 const store = Store()
 
+const scrollPercent = {
+  x: '100%',
+  y: 'calc(100% - 230px)'
+};
+
 function subSql() {
   SqlQuery(store.conn.conn, sql.value).then((pageData) => {
     console.log(JSON.stringify(pageData))
@@ -52,7 +57,7 @@ function convertArrayToObject(arr) {
 
 
     <div class="data-c">
-      <a-table :columns="headList" :data="pageDataList" :pagination="false"
+      <a-table :columns="headList" :data="pageDataList" :pagination="false" :scroll="scrollPercent" :scrollbar="true"
                style="height: 100%;overflow-y: auto;"/>
     </div>
   </div>

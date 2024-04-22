@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"encoding/json"
+	"github.com/labstack/gommon/log"
 	"sync"
 	"tinytdm/backend/storage"
 )
@@ -64,10 +65,12 @@ func (c *ConnectionStorageService) SaveConnection(newConnection ConnectionConfig
 			maxId = conn.Id
 		}
 		if conn.Name == name {
+			log.Print("连接名称重复")
 			return "连接名称重复"
 		}
 	}
-	newConnection.Id = maxId
+	log.Print(maxId)
+	newConnection.Id = maxId + 1
 	connections = append(connections, newConnection)
 	connectionsJson, err := json.Marshal(connections)
 	if err != nil {

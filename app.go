@@ -116,9 +116,9 @@ func (a *App) ListSuperTable(config service.ConnectionConfig, databaseName strin
 }
 
 func (a *App) ListChildTable(config service.ConnectionConfig, databaseName string, superTable string, childTableSearch string) []string {
-	querySql := "SELECT DISTINCT TBNAME FROM `" + databaseName + "`.`" + superTable + "`;"
+	querySql := "SELECT DISTINCT TBNAME FROM `" + databaseName + "`.`" + superTable + "` ORDER BY TBNAME ASC;"
 	if childTableSearch != "" {
-		querySql = "SELECT DISTINCT TBNAME FROM `" + databaseName + "`.`" + superTable + "`" + "where TBNAME LIKE \"%" + childTableSearch + "%\";"
+		querySql = "SELECT DISTINCT TBNAME FROM `" + databaseName + "`.`" + superTable + "`" + "where TBNAME LIKE \"%" + childTableSearch + "%\" ORDER BY TBNAME ASC;"
 	}
 	dbConn, err := a.getConn(config)
 	if err != nil {

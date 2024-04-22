@@ -7,6 +7,11 @@ import {storeToRefs} from "pinia";
 
 console.log("Right Data\n\n\n\n\n\n")
 
+const scrollPercent = {
+  x: '100%',
+  y: 'calc(100% - 120px)'
+};
+
 let headList = ref([])
 let pageDataList = ref([])
 let total = ref(1)
@@ -192,7 +197,7 @@ console.log(getCurrentDatePlusWeeks(1));
 
   </div>
   <div class="data">
-    <a-table :columns="headList" :data="pageDataList" :pagination="false"
+    <a-table :columns="headList" :data="pageDataList" :pagination="false" :scroll="scrollPercent" :scrollbar="true"
              style="height: calc(100%);overflow-y: auto;"/>
   </div>
 
