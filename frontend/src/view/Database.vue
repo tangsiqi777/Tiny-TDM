@@ -2,7 +2,7 @@
 
 import DatabaseItem from "../components/DatabaseItem.vue";
 import {onMounted, ref} from "vue";
-import {ListDatabases} from "../../wailsjs/go/main/App.js";
+import {ListDatabases} from "../../wailsjs/go/service/SqlService.js";
 import {useRouter} from "vue-router";
 import {Store} from "../store.js";
 import Back from "../components/Back.vue";

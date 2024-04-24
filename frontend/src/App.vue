@@ -11,30 +11,32 @@ import Blank from "./components/Blank.vue";
 import AddConnection from "./components/AddConnection.vue";
 import Server from "./view/Server.vue";
 import {Quit, WindowMaximise, WindowMinimise, WindowUnmaximise} from "../wailsjs/runtime/runtime";
-import {tmitt} from "./mitt.js";
+import {SingleMitt} from "./mitt.js";
 import SqlQueryPage from "./view/SqlQueryPage.vue";
-// 是否非 Mac 平台
-const isNotMac = navigator.userAgent.toUpperCase().indexOf('MAC') < 0;
-// 是否最大化
-const isMaximised = ref(false);
 
 const store = Store()
-// 0 显示连接， 1显示数据库， 2显示超级表， 3显示子表
-let {displayType} = storeToRefs(store)
-let sqlQuery = ref(false)
-
-let searchValue = ref("")
 
 onMounted(() => {
   dragControllerDiv();
 })
 
-tmitt.on("displaySqlQuery", (selected) => {
-  console.log(selected)
-  sqlQuery.value = selected
+SingleMitt.on("displaySqlQuery", (selected) => {
+  disPlayQueryWindow.value = selected
 });
 
 
+// 当前页面状态
+
+// 是否非 Mac 平台
+const isNotMac = navigator.userAgent.toUpperCase().indexOf('MAC') < 0;
+// 是否最大化
+const isMaximised = ref(false);
+// 0 显示连接， 1显示数据库， 2显示超级表， 3显示子表
+let {displayType} = storeToRefs(store)
+let disPlayQueryWindow = ref(false)
+
+
+//最大最小化窗口
 function windowChange() {
   if (isMaximised.value === false) {
     isMaximised.value = true
@@ -45,7 +47,7 @@ function windowChange() {
   }
 }
 
-
+// 拖动改变窗口大小
 function dragControllerDiv() {
   const main = document.getElementsByClassName('main');
   const left = document.getElementsByClassName('left');
@@ -54,13 +56,16 @@ function dragControllerDiv() {
 
   const right = document.getElementsByClassName('right');
 
-
+  // resize.length 元素个数
   for (let i = 0; i < resize.length; i++) {
+    console.log("hhhasdaf")
     // 鼠标按下事件
     resize[i].onmousedown = function (e) {
       //颜色改变提醒
-      resize[i].style.background = '#5d5a5a';
+      resize[i].style.background = '#d3d3d3';
+      //按下鼠标的坐标X
       const startX = e.clientX;
+      //左上交偏移值
       resize[i].left = resize[i].offsetLeft;
       // 鼠标拖动事件
       document.onmousemove = function (e) {
@@ -81,7 +86,7 @@ function dragControllerDiv() {
       // 鼠标松开事件
       document.onmouseup = function (evt) {
         //颜色恢复
-        resize[i].style.background = '#d6d6d6';
+        resize[i].style.background = '#E0EAFC';
         document.onmousemove = null;
         document.onmouseup = null;
         resize[i].releaseCapture && resize[i].releaseCapture(); //当你不在需要继续获得鼠标消息就要应该调用ReleaseCapture()释放掉
@@ -99,7 +104,7 @@ function dragControllerDiv() {
   <!-- windows 定制化窗口按钮 -->
   <div v-if="isNotMac" class="win-tap" style="--wails-draggable:drag">
     <div class="logo">
-      <img class="logo-img" src="./assets/images/tmp/tdengine.ico" alt=""/>
+      <img class="logo-img" src="../src/assets/images/Tdengine.ico" alt=""/>
       <span>Tiny TDM</span>
     </div>
     <div class="tap">
@@ -132,12 +137,12 @@ function dragControllerDiv() {
       <div class="resize" title="收缩侧边栏"></div>
 
       <div class="right-data">
-        <div v-if="sqlQuery === false" class="right-data-inner">
+        <div v-if="disPlayQueryWindow === false" class="right-data-inner">
           <RightData v-if="displayType===3"></RightData>
           <AddConnection v-if="displayType===0"></AddConnection>
           <Blank v-if="displayType===1 || displayType === 2"></Blank>
         </div>
-        <div v-if="sqlQuery === true" class="right-data-inner">
+        <div v-if="disPlayQueryWindow === true" class="right-data-inner">
           <SqlQueryPage></SqlQueryPage>
         </div>
       </div>
@@ -231,7 +236,7 @@ body {
 
 .left {
   min-width: 300px;
-  width: calc(20% - 6px); /*左侧初始化宽度*/
+  width: 20%; /*左侧初始化宽度*/
   height: 100%;
 }
 
@@ -240,12 +245,12 @@ body {
 }
 
 .right-data {
-  width: 80%; /*右侧初始化宽度*/
+  width: calc(80% - 2px); /*右侧初始化宽度*/
   height: 100%;
   background: #fff;
 }
 
-.right-data-inner{
+.right-data-inner {
   height: 100%;
 }
 
@@ -265,19 +270,15 @@ body {
 /*拖拽区div样式*/
 .resize {
   cursor: col-resize;
-  float: left;
-  position: relative;
-  top: 45%;
-  border-radius: 5px;
-  width: 6px;
-  height: 30px;
-  background-color: #858383;
-  z-index: 9999;
+  border-radius: 2px;
+  width: 3px;
+  height: 100%;
+  background-color: #E0EAFC;
 }
 
 /*拖拽区鼠标悬停样式*/
 .resize:hover {
-  background-color: #444444;
+  background-color: #d3d3d3;
 }
 
 </style>

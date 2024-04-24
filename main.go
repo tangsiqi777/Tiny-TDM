@@ -17,15 +17,15 @@ import (
 var assets embed.FS
 
 func main() {
-	// Create an instance of the app structure
-	app := NewApp()
+	// Create an instance of the sqlService structure
+	sqlService := service.NewSqlService()
 	connectionStorageService := service.GetOneConnectionStorageService()
 
 	AppMenu := menu.NewMenu()
 	FileMenu := AppMenu.AddSubmenu("File")
 	FileMenu.AddSeparator()
 	FileMenu.AddText("Quit", keys.CmdOrCtrl("q"), func(_ *menu.CallbackData) {
-		//runtime.Quit(app.ctx)
+		//runtime.Quit(sqlService.ctx)
 	})
 
 	// Create application with options
@@ -40,11 +40,11 @@ func main() {
 		BackgroundColour: &options.RGBA{R: 27, G: 38, B: 54, A: 1},
 		OnStartup: func(ctx context.Context) {
 			connectionStorageService.Startup(ctx)
-			app.startup(ctx)
+			sqlService.Startup(ctx)
 		},
 		Bind: []interface{}{
 			connectionStorageService,
-			app,
+			sqlService,
 		},
 		Menu: AppMenu,
 		Windows: &windows.Options{

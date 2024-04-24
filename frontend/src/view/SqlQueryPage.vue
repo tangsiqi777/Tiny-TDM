@@ -1,7 +1,7 @@
 <script setup>
 
 import {ref} from "vue";
-import {SqlQuery} from "../../wailsjs/go/main/App.js";
+import {SqlQuery} from "../../wailsjs/go/service/SqlService.js";
 import {Store} from "../store.js";
 
 

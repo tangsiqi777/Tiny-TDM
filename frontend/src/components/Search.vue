@@ -1,6 +1,6 @@
 <script setup>
 import {ref} from "vue";
-import {tmitt} from "../mitt.js";
+import {SingleMitt} from "../mitt.js";
 import {Store} from "../store.js";
 
 let searchValue = ref("")
@@ -11,12 +11,12 @@ function search(KeyboardEvent) {
   console.log(JSON.stringify(KeyboardEvent))
   if (props.displayType === 2) {
     store.setSuperTableSearch(searchValue.value)
-    tmitt.emit("searchSuperTable", searchValue.value);
+    SingleMitt.emit("searchSuperTable", searchValue.value);
     return;
   }
   if (props.displayType === 3) {
     store.setChildTableSearch(searchValue.value)
-    tmitt.emit("searchChildTable", searchValue.value);
+    SingleMitt.emit("searchChildTable", searchValue.value);
   }
 }
 </script>

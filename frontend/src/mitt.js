@@ -1,22 +1,20 @@
 import Mitt from "mitt";
 
-const emitter = Mitt();
-
 //创建单例
 class MittSingleInstance {
     //添加静态私有属性
-    static #instanse;
+    static mittInstance;
 
     //添加静态方法
-    static getInstanse() {
+    static getInstance() {
         //判断静态私有属性内是否有实例，如果没有就创建一个并返回，如果有就直接返回
-        if (this.#instanse === undefined) {
-            this.#instanse = new Mitt();
+        if (this.mittInstance === undefined) {
+            this.mittInstance = new Mitt();
         }
-        return this.#instanse;
+        return this.mittInstance;
     }
 }
 
-const tmitt = MittSingleInstance.getInstanse();
+const SingleMitt = MittSingleInstance.getInstance();
 
-export  {tmitt}
+export {SingleMitt}

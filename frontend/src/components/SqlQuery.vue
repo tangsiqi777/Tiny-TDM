@@ -1,6 +1,6 @@
 <script setup>
 
-import {tmitt} from "../mitt.js";
+import {SingleMitt} from "../mitt.js";
 import {ref} from "vue";
 
 let selectedCss = ref("")
@@ -17,7 +17,7 @@ function displaySqlQuery() {
 
   }
 
-  tmitt.emit("displaySqlQuery", selected.value);
+  SingleMitt.emit("displaySqlQuery", selected.value);
 }
 
 </script>

@@ -23,22 +23,23 @@ type ConnectionConfig struct {
 	Password string `json:"password,omitempty" yaml:"password,omitempty"`
 }
 
-func (c *ConnectionStorageService) Startup(ctx context.Context) {
-	c.ctx = ctx
-}
-
 var connectionStorageService *ConnectionStorageService
 var onceConnectionStorageService sync.Once
 
 func GetOneConnectionStorageService() *ConnectionStorageService {
-	if connectionStorageService == nil {
-		onceConnectionStorageService.Do(func() {
-			connectionStorageService = &ConnectionStorageService{
-				LocalStorage: storage.NewLocalStore("connection.txt"),
-			}
-		})
+	if connectionStorageService != nil {
+		return connectionStorageService
 	}
+	onceConnectionStorageService.Do(func() {
+		connectionStorageService = &ConnectionStorageService{
+			LocalStorage: storage.NewLocalStore("connection.txt"),
+		}
+	})
 	return connectionStorageService
+}
+
+func (c *ConnectionStorageService) Startup(ctx context.Context) {
+	c.ctx = ctx
 }
 
 // ListConnection 显示所有连接

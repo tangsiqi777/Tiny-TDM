@@ -1,14 +1,14 @@
 <script setup>
 
 import {ref} from "vue";
-import {tmitt} from "../mitt.js";
+import {SingleMitt} from "../mitt.js";
 
 const props = defineProps(['childTable'])
 
 let selectedCss = ref("")
 
 
-tmitt.on("clickChildTable", (childTableName) => {
+SingleMitt.on("clickChildTable", (childTableName) => {
   console.log(childTableName);
   if (childTableName === props.childTable) {
     selectedCss.value = 'background: #dadadb;'

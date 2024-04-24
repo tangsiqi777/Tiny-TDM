@@ -2,7 +2,7 @@
 import {reactive, ref} from 'vue'
 import {checkNum, checkStrLen,} from '../valid.js'
 import {SaveConnection} from "../../wailsjs/go/service/ConnectionStorageService.js";
-import {tmitt} from "../mitt.js";
+import {SingleMitt} from "../mitt.js";
 
 const visible = ref(false);
 const form = reactive({
@@ -82,7 +82,7 @@ const handleBeforeOk = (done) => {
       form.Port = ''
       form.Username = ''
       form.Password = ''
-      tmitt.emit("displayConnection", null)
+      SingleMitt.emit("displayConnection", null)
       return
     }
     // todo 完善错误处理

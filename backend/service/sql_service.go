@@ -1,4 +1,4 @@
-package main
+package service
 
 import (
 	"context"
@@ -8,31 +8,30 @@ import (
 	_ "github.com/taosdata/driver-go/v3/taosRestful"
 	"log"
 	"time"
-	"tinytdm/backend/service"
 )
 
-// App struct
-type App struct {
+// SqlService struct
+type SqlService struct {
 	ctx context.Context
 }
 
-// NewApp creates a new App application struct
-func NewApp() *App {
-	return &App{}
+// NewSqlService creates a new SqlService application struct
+func NewSqlService() *SqlService {
+	return &SqlService{}
 }
 
 // startup is called when the app starts. The context is saved
 // so we can call the runtime methods
-func (a *App) startup(ctx context.Context) {
+func (a *SqlService) Startup(ctx context.Context) {
 	a.ctx = ctx
 }
 
 // Greet returns a greeting for the given name
-func (a *App) Greet(name string) string {
+func (a *SqlService) Greet(name string) string {
 	return fmt.Sprintf("Hello %s, It's show time!", name)
 }
 
-func (a *App) getConn(config service.ConnectionConfig) (*sql.DB, error) {
+func (a *SqlService) getConn(config ConnectionConfig) (*sql.DB, error) {
 	configStr, _ := json.Marshal(config)
 	fmt.Println("go conn：%s", string(configStr))
 	var url = config.Username + ":" + config.Password + "@http(" + config.Addr + ":" + fmt.Sprintf("%d", config.Port) + ")/"
@@ -46,19 +45,7 @@ func (a *App) getConn(config service.ConnectionConfig) (*sql.DB, error) {
 	}
 }
 
-func (a *App) getConn1() (*sql.DB, error) {
-	var url = "root:taosdata@http(192.168.56.19:6041)/"
-	dbConn, err := sql.Open("taosRestful", url)
-	if err != nil {
-		fmt.Println("failed to connect TDengine, err:", err)
-		return nil, err
-	} else {
-		fmt.Println("success conn")
-		return dbConn, nil
-	}
-}
-
-func (a *App) ListDatabases(config service.ConnectionConfig) []string {
+func (a *SqlService) ListDatabases(config ConnectionConfig) []string {
 	dbConn, err := a.getConn(config)
 	if err != nil {
 		fmt.Println("empty db")
@@ -85,7 +72,7 @@ func (a *App) ListDatabases(config service.ConnectionConfig) []string {
 	return slice
 }
 
-func (a *App) ListSuperTable(config service.ConnectionConfig, databaseName string, superTableSearch string) []string {
+func (a *SqlService) ListSuperTable(config ConnectionConfig, databaseName string, superTableSearch string) []string {
 	querySql := "show `" + databaseName + "`.stables;"
 	if superTableSearch != "" {
 		querySql = "show `" + databaseName + "`.stables LIKE \"%" + superTableSearch + "%\";"
@@ -115,7 +102,7 @@ func (a *App) ListSuperTable(config service.ConnectionConfig, databaseName strin
 	return slice
 }
 
-func (a *App) ListChildTable(config service.ConnectionConfig, databaseName string, superTable string, childTableSearch string) []string {
+func (a *SqlService) ListChildTable(config ConnectionConfig, databaseName string, superTable string, childTableSearch string) []string {
 	querySql := "SELECT DISTINCT TBNAME FROM `" + databaseName + "`.`" + superTable + "` ORDER BY TBNAME ASC;"
 	if childTableSearch != "" {
 		querySql = "SELECT DISTINCT TBNAME FROM `" + databaseName + "`.`" + superTable + "`" + "where TBNAME LIKE \"%" + childTableSearch + "%\" ORDER BY TBNAME ASC;"
@@ -162,7 +149,7 @@ type Query struct {
 	Current   int    `json:"current" yaml:"current"`
 }
 
-func (a *App) PageData1(config service.ConnectionConfig, databaseName string, table string, query Query) PageData {
+func (a *SqlService) PageData1(config ConnectionConfig, databaseName string, table string, query Query) PageData {
 	queryStr, _ := json.Marshal(query)
 	fmt.Println("go query：%s", string(queryStr))
 	fmt.Println("go query：%s", a.getPageSql(query, databaseName, table, 0))
@@ -229,7 +216,7 @@ func (a *App) PageData1(config service.ConnectionConfig, databaseName string, ta
 	return p
 }
 
-func (a *App) SqlQuery(config service.ConnectionConfig, sql string) PageData {
+func (a *SqlService) SqlQuery(config ConnectionConfig, sql string) PageData {
 
 	var p PageData
 	dbConn, err := a.getConn(config)
@@ -283,7 +270,7 @@ func (a *App) SqlQuery(config service.ConnectionConfig, sql string) PageData {
 	return p
 }
 
-func (a *App) getPageSql(query Query, databaseName string, table string, queryType int) string {
+func (a *SqlService) getPageSql(query Query, databaseName string, table string, queryType int) string {
 	sqlWhere := ""
 	sqlOrder := ""
 	sqlLimit := ""
@@ -328,7 +315,7 @@ type TableField struct {
 	Note   string `json:"note" yaml:"note"`
 }
 
-func (a *App) DescTable(config service.ConnectionConfig, databaseName string, superTable string) []TableField {
+func (a *SqlService) DescTable(config ConnectionConfig, databaseName string, superTable string) []TableField {
 	querySql := "DESC `" + databaseName + "`.`" + superTable + "`;"
 	dbConn, err := a.getConn(config)
 	if err != nil {
@@ -356,7 +343,7 @@ func (a *App) DescTable(config service.ConnectionConfig, databaseName string, su
 	return slice
 }
 
-func (a *App) Check(strType string) interface{} {
+func (a *SqlService) Check(strType string) interface{} {
 	switch strType {
 	case "NullString":
 		return new(string)

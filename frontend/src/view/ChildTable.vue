@@ -1,9 +1,9 @@
 <script setup>
 import {onMounted, ref} from "vue";
 import ChildTableList from "../components/ChildTableItem.vue";
-import {ListChildTable} from "../../wailsjs/go/main/App.js";
+import {ListChildTable} from "../../wailsjs/go/service/SqlService.js";
 import {Store} from "../store.js";
-import {tmitt} from "../mitt.js";
+import {SingleMitt} from "../mitt.js";
 import Back from "../components/Back.vue";
 import Search from "../components/Search.vue";
 import SqlQuery from "../components/SqlQuery.vue";
@@ -18,7 +18,7 @@ onMounted(() => {
   displayChildTable()
 })
 
-tmitt.on("searchChildTable", (data) => {
+SingleMitt.on("searchChildTable", (data) => {
   console.log(data); //A组件的数据
   displayChildTable()
 });
@@ -37,7 +37,7 @@ function displayChildTable() {
 
 function toChildTableData(childTable) {
   console.log("update table")
-  tmitt.emit("clickChildTable", childTable)
+  SingleMitt.emit("clickChildTable", childTable)
   store.setChildTable(childTable)
 }
 

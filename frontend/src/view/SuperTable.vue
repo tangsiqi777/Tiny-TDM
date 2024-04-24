@@ -2,9 +2,9 @@
 
 import SuperTableItem from "../components/SuperTableItem.vue";
 import {ref} from "vue";
-import {DescTable, ListSuperTable} from "../../wailsjs/go/main/App.js";
+import {DescTable, ListSuperTable} from "../../wailsjs/go/service/SqlService.js";
 import {Store} from "../store.js";
-import {tmitt} from "../mitt.js";
+import {SingleMitt} from "../mitt.js";
 import Search from "../components/Search.vue";
 import Back from "../components/Back.vue";
 import SqlQuery from "../components/SqlQuery.vue";
@@ -17,7 +17,7 @@ let superTableList = ref([])
 const store = Store()
 
 
-tmitt.on("searchSuperTable", (data) => {
+SingleMitt.on("searchSuperTable", (data) => {
   displaySuperTable()
 });
 

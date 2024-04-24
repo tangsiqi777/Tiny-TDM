@@ -1,6 +1,6 @@
 <script setup>
 
-import {PageData1} from "../../wailsjs/go/main/App.js";
+import {PageData1} from "../../wailsjs/go/service/SqlService.js";
 import {reactive, ref, watch} from "vue";
 import {Store} from "../store.js";
 import {storeToRefs} from "pinia";
