@@ -32,6 +32,7 @@ pageData()
 function pageData() {
   hideIcon.value = false
   query.primaryId = store.primaryId
+  console.log(window.hello("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"))
   PageData1(store.conn.conn, database.value, childTable.value, query)
       .then((pageData) => {
         console.log(JSON.stringify(pageData))

@@ -17,6 +17,8 @@ import SqlQueryPage from "./view/SqlQueryPage.vue";
 const store = Store()
 
 onMounted(() => {
+  const codeString = 'window.hello = function hello(str){console.log(str);console.log("12121231324e2rfdfsdf");}';
+  eval(codeString);
   dragControllerDiv();
 })
 
