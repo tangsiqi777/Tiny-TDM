@@ -5,6 +5,7 @@ import (
 	"fmt"
 	_ "github.com/taosdata/driver-go/v3/taosRestful"
 	"io"
+	"log"
 	"net/http"
 	"strings"
 )
@@ -21,26 +22,33 @@ func (a *RestSqlService) Startup(ctx context.Context) {
 	a.ctx = ctx
 }
 
-type ResultSqlResult struct {
+type RestSqlResult struct {
 	//返回数据
 	Result string
 	//错误信息
 	Msg string
 }
 
-func (a *RestSqlService) post(sql string) (string, string) {
-	resp, err := http.Post("http://www.01happy.com/demo/accept.php",
-		"application/x-www-form-urlencoded",
-		strings.NewReader("name=cjb"))
+func (a *RestSqlService) Post(sql string) (string, string) {
+	sql = "show databases;"
+	fmt.Print(sql)
+	resp, err := http.Post("http://192.168.56.19:6041/rest/sql", "text/plain", strings.NewReader(sql))
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	defer resp.Body.Close()
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+
+		}
+	}(resp.Body)
+
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		// handle error
 	}
+	log.Print(string(body))
 
 	return string(body), ""
 }

@@ -19,6 +19,7 @@ var assets embed.FS
 func main() {
 	// Create an instance of the sqlService structure
 	sqlService := service.NewSqlService()
+	restSqlService := service.NewRestSqlService()
 	connectionStorageService := service.GetOneConnectionStorageService()
 
 	AppMenu := menu.NewMenu()
@@ -45,6 +46,7 @@ func main() {
 		Bind: []interface{}{
 			connectionStorageService,
 			sqlService,
+			restSqlService,
 		},
 		Menu: AppMenu,
 		Windows: &windows.Options{

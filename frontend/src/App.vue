@@ -13,6 +13,7 @@ import Server from "./view/Server.vue";
 import {Quit, WindowMaximise, WindowMinimise, WindowUnmaximise} from "../wailsjs/runtime/runtime";
 import {SingleMitt} from "./mitt.js";
 import SqlQueryPage from "./view/SqlQueryPage.vue";
+import {Post} from "../wailsjs/go/service/RestSqlService.js";
 
 const store = Store()
 
@@ -36,6 +37,7 @@ const isMaximised = ref(false);
 // 0 显示连接， 1显示数据库， 2显示超级表， 3显示子表
 let {displayType} = storeToRefs(store)
 let disPlayQueryWindow = ref(false)
+
 
 
 //最大最小化窗口
