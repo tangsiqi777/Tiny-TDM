@@ -2,10 +2,11 @@
 
 import DatabaseItem from "../components/DatabaseItem.vue";
 import {onMounted, ref} from "vue";
-import {ListDatabases} from "../../wailsjs/go/service/SqlService.js";
 import {useRouter} from "vue-router";
 import {Store} from "../store.js";
 import Back from "../components/Back.vue";
+import {ListDatabases} from "../../wailsjs/go/service/RestSqlService.js";
+import {parseNestedJsonAndGetData} from "../TdengineRestData.js";
 
 console.log("Database List\n\n\n\n\n\n")
 
@@ -20,8 +21,8 @@ onMounted(() => {
 
 function displayDatabase(conn) {
   ListDatabases(conn).then((databases) => {
-    databaseList.value = databases
-    console.log("db" + JSON.stringify(databases))
+    databaseList.value = parseNestedJsonAndGetData(databases)
+    console.log("db" + JSON.stringify(parseNestedJsonAndGetData(databases)))
   });
 }
 
@@ -36,8 +37,8 @@ function toSuperTable(database) {
   <div class="database">
     <Back class="back"></Back>
     <a-scrollbar outer-style="height:calc(100% - 45px);" style="height:100%;overflow: auto;" class="database-list">
-      <DatabaseItem :databaseName="item" v-for="item in databaseList" :key="item"
-                    @click="toSuperTable(item)"></DatabaseItem>
+      <DatabaseItem :databaseName="item.name" v-for="item in databaseList" :key="item"
+                    @click="toSuperTable(item.name)"></DatabaseItem>
     </a-scrollbar>
 
 
@@ -52,7 +53,7 @@ function toSuperTable(database) {
   height: calc(100% - 35px);
 }
 
-.back{
+.back {
   width: 50px;
   height: 45px;
 }

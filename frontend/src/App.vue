@@ -13,7 +13,6 @@ import Server from "./view/Server.vue";
 import {Quit, WindowMaximise, WindowMinimise, WindowUnmaximise} from "../wailsjs/runtime/runtime";
 import {SingleMitt} from "./mitt.js";
 import SqlQueryPage from "./view/SqlQueryPage.vue";
-import {Post} from "../wailsjs/go/service/RestSqlService.js";
 
 const store = Store()
 

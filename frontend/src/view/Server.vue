@@ -5,7 +5,6 @@ import {ListConnection} from "../../wailsjs/go/service/ConnectionStorageService.
 import {Store} from "../store.js";
 import ServerItem from "../components/ConnectionItem.vue";
 import {SingleMitt} from "../mitt.js";
-import {Post} from "../../wailsjs/go/service/RestSqlService.js";
 
 const connectionList = reactive({connectionList: []})
 onMounted(() => {
@@ -30,7 +29,6 @@ function displayConnection() {
 
 
 function toDatabase(conn) {
-  Post("1")
   console.log(JSON.stringify(conn))
   const store = Store()
   store.setConn(conn)

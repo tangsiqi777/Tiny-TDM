@@ -11,6 +11,8 @@ const form = reactive({
   Port: '',
   Username: '',
   Password: '',
+  // 默认3.0
+  Version: 'v3.0'
 });
 
 const formRef = ref()

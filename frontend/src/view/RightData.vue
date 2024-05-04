@@ -1,9 +1,10 @@
 <script setup>
 
-import {PageData1} from "../../wailsjs/go/service/SqlService.js";
+import {CountData, PageData} from "../../wailsjs/go/service/RestSqlService.js";
 import {reactive, ref, watch} from "vue";
 import {Store} from "../store.js";
 import {storeToRefs} from "pinia";
+import {getHead, parseNestedJsonAndGetData} from "../TdengineRestData.js";
 
 console.log("Right Data\n\n\n\n\n\n")
 
@@ -14,6 +15,7 @@ const scrollPercent = {
 
 let headList = ref([])
 let pageDataList = ref([])
+
 let total = ref(1)
 let hideIcon = ref(true)
 const store = Store()
@@ -32,13 +34,21 @@ pageData()
 function pageData() {
   hideIcon.value = false
   query.primaryId = store.primaryId
-  console.log(window.hello("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"))
-  PageData1(store.conn.conn, database.value, childTable.value, query)
+  console.log(window.hello("测试将函数绑定到window"))
+  console.log("childTableQuery:" + childTable.value)
+  PageData(store.conn.conn, database.value, childTable.value, query)
       .then((pageData) => {
+
+        CountData(store.conn.conn, database.value, childTable.value, query).then((count) => {
+          console.log("count" + JSON.stringify(count))
+          total.value = parseNestedJsonAndGetData(count)[0].total
+          console.log("total" + total.value)
+        })
         console.log(JSON.stringify(pageData))
-        headList.value = convertArrayToObject(pageData.HeaderList)
-        pageDataList.value = pageData.Data
-        total.value = pageData.Total
+        console.log(JSON.stringify((getHead(pageData))))
+        headList.value = (getHead(pageData))
+        pageDataList.value = parseNestedJsonAndGetData(pageData)
+
         console.log("headList:" + JSON.stringify(headList.value))
         console.log("pageDataList:" + JSON.stringify(pageDataList.value))
         setTimeout(() => {
@@ -47,18 +57,6 @@ function pageData() {
       })
 }
 
-function convertArrayToObject(arr) {
-  if (arr === null || arr === undefined || arr.length === 0) {
-    return
-  }
-  query.primaryId = arr[0]
-  return arr.map(item => {
-    return {
-      title: item,
-      dataIndex: item,
-    };
-  });
-}
 
 // 示例用法 查询前获取数据库元信息 todo
 /*const arr = ["ts", "value"];
@@ -66,7 +64,8 @@ const result = convertArrayToObject(arr);
 console.log(result);*/
 
 // 可以直接侦听一个 ref
-watch(childTable, async (newQuestion, oldQuestion) => {
+watch(childTable, async (newChildTable, oldChildTable) => {
+  console.log(newChildTable + ":" + oldChildTable)
   pageData()
 })
 
@@ -155,7 +154,7 @@ function changeRange(value) {
   }
 }
 
-function clearTime(){
+function clearTime() {
   query.timeStart = "";
   query.timeEnd = "";
   pageData()

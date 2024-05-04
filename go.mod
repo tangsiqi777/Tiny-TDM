@@ -8,7 +8,7 @@ require (
 	github.com/labstack/gommon v0.4.0
 	github.com/taosdata/driver-go/v3 v3.5.3
 	github.com/vrischmann/userdir v0.0.0-20151206171402-20f291cebd68
-	github.com/wailsapp/wails/v2 v2.8.0
+	github.com/wailsapp/wails/v2 v2.8.1
 )
 
 require (

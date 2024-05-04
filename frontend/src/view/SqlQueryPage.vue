@@ -1,14 +1,21 @@
 <script setup>
 
 import {ref} from "vue";
-import {SqlQuery} from "../../wailsjs/go/service/SqlService.js";
 import {Store} from "../store.js";
+import {isNotEmpty} from "../valid.js";
+import {SqlQuery} from "../../wailsjs/go/service/RestSqlService.js";
+import {getHead, parseNestedJsonAndGetData} from "../TdengineRestData.js";
 
-
+const store = Store()
 let headList = ref([])
 let pageDataList = ref([])
-let sql = ref("")
-const store = Store()
+
+let selectedDatabase = store.database
+let selectedTable = isNotEmpty(store.childTable) ? store.childTable : (isNotEmpty(store.superTable) ? store.superTable : "table1")
+let defaultSql = "SELECT * FROM `" + selectedDatabase + "`.`" + selectedTable + "` LIMIT 100"
+
+let sql = ref(defaultSql)
+
 
 const scrollPercent = {
   x: '100%',
@@ -18,8 +25,8 @@ const scrollPercent = {
 function subSql() {
   SqlQuery(store.conn.conn, sql.value).then((pageData) => {
     console.log(JSON.stringify(pageData))
-    headList.value = convertArrayToObject(pageData.HeaderList)
-    pageDataList.value = pageData.Data
+    headList.value = (getHead(pageData))
+    pageDataList.value = parseNestedJsonAndGetData(pageData)
     console.log("headList:" + JSON.stringify(headList.value))
     console.log("pageDataList:" + JSON.stringify(pageDataList.value))
   })
@@ -44,12 +51,12 @@ function convertArrayToObject(arr) {
       <a-alert>1. SQL需要带上数据库限定<br/>
         2. 对于有大写数据库名数据库表的SQL需要对该字段使用``转义<br/>
         3. 为了避免卡顿返回最多显示2000条<br/>
-      </a-alert >
+      </a-alert>
     </div>
     <div class="sql-input-c">
       <a-textarea placeholder="输入SQL"
-          v-model="sql" style="height: 150px"
-           allow-clear/>
+                  v-model="sql" style="height: 150px"
+                  allow-clear/>
     </div>
     <div class="sql-sub-c">
       <a-button type="primary" @click="subSql">提交SQL</a-button>
@@ -74,7 +81,7 @@ function convertArrayToObject(arr) {
   height: 100%;
 }
 
-.info-c{
+.info-c {
   padding-bottom: 20px;
 }
 

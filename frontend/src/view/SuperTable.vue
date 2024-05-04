@@ -2,12 +2,13 @@
 
 import SuperTableItem from "../components/SuperTableItem.vue";
 import {ref} from "vue";
-import {DescTable, ListSuperTable} from "../../wailsjs/go/service/SqlService.js";
+import {DescTable, ListSuperTable} from "../../wailsjs/go/service/RestSqlService.js";
 import {Store} from "../store.js";
 import {SingleMitt} from "../mitt.js";
 import Search from "../components/Search.vue";
 import Back from "../components/Back.vue";
 import SqlQuery from "../components/SqlQuery.vue";
+import {parseNestedJsonAndGetData} from "../TdengineRestData.js";
 
 
 console.log("SuperTable List\n\n\n\n\n\n")
@@ -26,19 +27,18 @@ displaySuperTable()
 function displaySuperTable() {
   let database = store.database
   let superTableSearch = store.superTableSearch
-  console.log("hhhhhhhhhhhhhhhhhh"+superTableSearch)
-  console.log("update super table" + superTableSearch)
   ListSuperTable(store.conn.conn, database, superTableSearch).then((superTables) => {
-    superTableList.value = superTables
-    console.log("stable" + JSON.stringify(superTables))
+    superTableList.value = parseNestedJsonAndGetData(superTables)
   })
 }
 
 function toChildTable(superTable) {
   let database = store.database
-  DescTable(store.conn.conn, database, superTable).then((tableInfo) => {
-    console.log(tableInfo)
+  DescTable(store.conn.conn, database, superTable).then((tableInfoRet) => {
+    let tableInfo = parseNestedJsonAndGetData(tableInfoRet)
+    console.log("tableInfo:" + JSON.stringify(tableInfo) )
     if (tableInfo !== undefined && tableInfo !== null && tableInfo.length > 0) {
+      console.log("tableInfo:" + tableInfo[0].field)
       store.setPrimaryId(tableInfo[0].field)
     }
     store.setSuperTable(superTable)
@@ -59,8 +59,8 @@ function toChildTable(superTable) {
     </div>
 
     <a-scrollbar outer-style="height:calc(100% - 45px);" style="height:100%;overflow: auto;" class="table-list">
-      <SuperTableItem :superTable="item" v-for="item in superTableList" :key="item"
-                      @click="toChildTable(item)"></SuperTableItem>
+      <SuperTableItem :superTable="item.stableName" v-for="item in superTableList" :key="item"
+                      @click="toChildTable(item.stableName)"></SuperTableItem>
     </a-scrollbar>
   </div>
 </template>

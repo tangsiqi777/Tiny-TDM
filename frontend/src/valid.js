@@ -1,8 +1,8 @@
 /*
  * 校验是否为空(null/空串)
  */
-export const checkNull = function (str) {
-    return !(str == null || str === "");
+export const isNotEmpty = function (str) {
+    return str || str !== "";
 };
 
 export const checkStrLen = function (str, len) {
@@ -114,8 +114,6 @@ export const checkEmail = function (emailStr) {
  */
 export const checkCharacter = function (charValue) {
     const reg = /^[\u4e00-\u9fa5]{0,}$/;
-    if (!reg.test(charValue)) {
-        return false;
-    }
-    return true;
+    return reg.test(charValue);
+
 };

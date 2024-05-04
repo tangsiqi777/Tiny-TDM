@@ -18,7 +18,7 @@ var assets embed.FS
 
 func main() {
 	// Create an instance of the sqlService structure
-	sqlService := service.NewSqlService()
+	sqlService := service.NewRestSqlService()
 	restSqlService := service.NewRestSqlService()
 	connectionStorageService := service.GetOneConnectionStorageService()
 
