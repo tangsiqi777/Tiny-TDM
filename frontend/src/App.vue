@@ -1,6 +1,6 @@
 <script setup>
 
-import {onMounted, ref} from 'vue'
+import {onMounted, reactive, ref} from 'vue'
 import Database from "./view/Database.vue";
 import SuperTable from "./view/SuperTable.vue";
 import ChildTable from "./view/ChildTable.vue";
@@ -9,11 +9,10 @@ import {storeToRefs} from "pinia";
 import RightData from "./view/RightData.vue";
 import Blank from "./components/Blank.vue";
 import AddConnection from "./components/AddConnection.vue";
-import Server from "./view/Connection.vue";
+import Connection from "./view/Connection.vue";
 import {Quit, WindowMaximise, WindowMinimise, WindowUnmaximise} from "../wailsjs/runtime/runtime";
 import {SingleMitt} from "./mitt.js";
 import SqlQueryPage from "./view/SqlQueryPage.vue";
-import Connection from "./view/Connection.vue";
 
 const store = Store()
 
@@ -39,7 +38,6 @@ let {displayType} = storeToRefs(store)
 let disPlayQueryWindow = ref(false)
 
 
-
 //最大最小化窗口
 function windowChange() {
   if (isMaximised.value === false) {
@@ -50,6 +48,50 @@ function windowChange() {
     WindowUnmaximise()
   }
 }
+
+
+SingleMitt.on("displayInfo", (info) => {
+  console.log("displayInfo:" + JSON.stringify(info.data, null, 2))
+  if (info.infoType === 0) {
+    infoTitle.value = "连接信息"
+    infoForm.info = JSON.stringify(info.data, null, 2)
+  }
+  if (info.infoType === 1) {
+    infoTitle.value = "数据库信息"
+    infoForm.info = JSON.stringify(info.data, null, 2)
+  }
+  if (info.infoType === 2) {
+    infoTitle.value = "超级表信息"
+    infoForm.info = JSON.stringify(info.data, null, 2)
+  }
+  if (info.infoType === 3) {
+    infoTitle.value = "子表信息"
+    infoForm.info = JSON.stringify(info.data, null, 2)
+  }
+  infoHandleClick();
+});
+
+// 统一控制模态框不然每个地方都要写
+const infoVisible = ref(false);
+const infoTitle = ref("");
+let infoForm = reactive({
+  name: '',
+  info: ''
+})
+
+function infoHandleClick() {
+  infoVisible.value = true;
+}
+
+function infoHandleBeforeOk(done) {
+  //不需要延时关闭
+  done()
+}
+
+function infoHandleCancel() {
+  infoVisible.value = false;
+}
+
 
 // 拖动改变窗口大小
 function dragControllerDiv() {
@@ -151,7 +193,18 @@ function dragControllerDiv() {
         </div>
       </div>
     </div>
+  </div>
 
+  <div class="info-modal">
+    <a-modal v-model:visible="infoVisible" :title="infoTitle" @cancel="infoHandleCancel" :hideCancel="true"
+             @before-ok="infoHandleBeforeOk">
+      <a-typography>
+        <a-typography-title :heading="5">{{ infoForm.name }}</a-typography-title>
+        <a-typography-paragraph style="white-space: pre-wrap;">
+          {{ infoForm.info }}
+        </a-typography-paragraph>
+      </a-typography>
+    </a-modal>
   </div>
 
 </template>
@@ -284,6 +337,12 @@ body {
 .resize:hover {
   background-color: #d3d3d3;
 }
+
+.info-modal {
+  width: 0;
+  height: 0;
+}
+
 
 </style>
 

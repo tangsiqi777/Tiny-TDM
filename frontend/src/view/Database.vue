@@ -36,10 +36,7 @@ function displayDatabase(conn) {
   });
 }
 
-function toSuperTable(database) {
-  store.setDatabase(database)
-  store.setDisplayType(2)
-}
+
 
 </script>
 
@@ -47,8 +44,7 @@ function toSuperTable(database) {
   <div class="database">
     <Back class="back"></Back>
     <a-scrollbar outer-style="height:calc(100% - 45px);" style="height:100%;overflow: auto;" class="database-list">
-      <DatabaseItem :databaseName="item.name" v-for="item in databaseList" :key="item"
-                    @click="toSuperTable(item.name)"></DatabaseItem>
+      <DatabaseItem :databaseName="item.name" v-for="item in databaseList" :key="item"></DatabaseItem>
     </a-scrollbar>
 
 

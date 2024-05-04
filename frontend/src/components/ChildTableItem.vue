@@ -2,9 +2,13 @@
 
 import {ref} from "vue";
 import {SingleMitt} from "../mitt.js";
+import {Store} from "../store.js";
+import {SqlQuery} from "../../wailsjs/go/service/RestSqlService.js";
+import {hasError, parseNestedJsonAndGetData} from "../TdengineRestData.js";
+import {Message} from "@arco-design/web-vue";
 
 const props = defineProps(['childTable'])
-
+const store = Store()
 let selectedCss = ref("")
 
 
@@ -17,6 +21,29 @@ SingleMitt.on("clickChildTable", (childTableName) => {
   }
 });
 
+function toChildTableData(childTable) {
+  console.log("display table" + childTable)
+  SingleMitt.emit("clickChildTable", childTable)
+  store.setChildTable(childTable)
+}
+
+function getChildTableInfo() {
+  SqlQuery(store.conn.conn, "SHOW CREATE TABLE `" + store.database + "`.`" + props.childTable + "`")
+      .then((childTableInfo) => {
+        console.log("info:" + JSON.stringify(childTableInfo))
+        let errorMsg = hasError(childTableInfo);
+        if (errorMsg !== "") {
+          Message.error({
+            id: 'getSuperTableInfo',
+            content: errorMsg,
+            duration: 2000
+          });
+          return
+        }
+        SingleMitt.emit("displayInfo", {"infoType": 3, "data": parseNestedJsonAndGetData(childTableInfo)})
+      })
+}
+
 </script>
 
 <template>
@@ -24,9 +51,9 @@ SingleMitt.on("clickChildTable", (childTableName) => {
     <div class="child-table">
       <icon-file size="30px" :strokeWidth="3"/>
     </div>
-    <div class="name">{{ props.childTable }}</div>
-    <div class="setting">
-      <icon-settings size="22px" :strokeWidth="2"/>
+    <div class="name" @click="toChildTableData(props.childTable)">{{ props.childTable }}</div>
+    <div class="info" @click="getChildTableInfo">
+      <icon-info-circle size="22px" :strokeWidth="2"/>
     </div>
   </div>
 </template>
@@ -34,8 +61,8 @@ SingleMitt.on("clickChildTable", (childTableName) => {
 <style scoped>
 
 .child-table-item {
-  min-height: 60px;
-  height: 60px;
+  min-height: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   min-width: 300px;
@@ -47,8 +74,8 @@ SingleMitt.on("clickChildTable", (childTableName) => {
 }
 
 .child-table {
-  width: 60px;
-  height: 60px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -56,8 +83,8 @@ SingleMitt.on("clickChildTable", (childTableName) => {
 
 
 .name {
-  width: calc(100% - 120px);
-  min-width: 180px;
+  width: calc(100% - 80px);
+  min-width: 220px;
   height: 30px;
   font-size: 18px;
   line-height: 30px;
@@ -66,12 +93,17 @@ SingleMitt.on("clickChildTable", (childTableName) => {
   overflow: hidden;
 }
 
-.setting {
-  width: 60px;
-  height: 60px;
+.info {
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+
+.info:hover {
+  background: #f96c6d;
 }
 
 

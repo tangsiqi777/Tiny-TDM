@@ -46,13 +46,6 @@ function displayChildTable() {
   })
 }
 
-function toChildTableData(childTable) {
-  console.log("display table" + childTable)
-  SingleMitt.emit("clickChildTable", childTable)
-  store.setChildTable(childTable)
-}
-
-
 </script>
 
 <template>
@@ -63,8 +56,7 @@ function toChildTableData(childTable) {
       <SqlQuery class="sql-query"></SqlQuery>
     </div>
     <a-scrollbar outer-style="height:calc(100% - 80px);" style="height:100%;overflow: auto;" class="table-item-list">
-      <ChildTableList :child-table="item.tbname" v-for="item in childTableList" :key="item"
-                      @click="toChildTableData(item.tbname)"></ChildTableList>
+      <ChildTableList :child-table="item.tbname" v-for="item in childTableList" :key="item"></ChildTableList>
     </a-scrollbar>
     <!--    <div class="bottom">
           <TablePage :total="200" class="table-page"></TablePage>

@@ -128,7 +128,7 @@ func (c *ConnectionStorageService) DeleteConnection(id int) string {
 	if deleteIndex == -1 {
 		return "操作对象不存在请刷新"
 	}
-	connectionsJson, err := json.Marshal(newConnections[:len(connections)-1])
+	connectionsJson, err := json.Marshal(newConnections)
 	fmt.Print("当前连接:" + string(connectionsJson))
 	if err != nil {
 		return "发生未知错误"

@@ -7,7 +7,7 @@ import {SingleMitt} from "../mitt.js";
 const props = defineProps({connection: Object})
 
 function toDatabase(conn) {
-  console.log("conn" + JSON.stringify(conn))
+  console.log("conn to db" + JSON.stringify(conn))
   const store = Store()
   store.setConn(conn)
   store.setDisplayType(1)
@@ -33,6 +33,10 @@ function deleteConnection(conn) {
   })
 }
 
+function getConnectionInfo() {
+  SingleMitt.emit("displayInfo", {"infoType": 0, "data": props.connection})
+}
+
 </script>
 
 <template>
@@ -43,7 +47,10 @@ function deleteConnection(conn) {
     <div class="name" @click="toDatabase(props.connection)">
       {{ props.connection.name }}
     </div>
-    <div class="setting" @click="deleteConnection(props.connection)">
+    <div class="info" @click.stop="getConnectionInfo()">
+      <icon-info-circle size="22px" class="info-img" :strokeWidth="2"/>
+    </div>
+    <div class="setting" @click.stop="deleteConnection(props.connection)">
       <icon-delete size="22px" class="setting-img" :strokeWidth="2"/>
     </div>
   </div>
@@ -51,8 +58,8 @@ function deleteConnection(conn) {
 
 <style scoped>
 .connection-item {
-  min-height: 60px;
-  height: 60px;
+  min-height: 50px;
+  height: 50px;
   display: flex;
   align-items: center;
   min-width: 300px;
@@ -60,22 +67,20 @@ function deleteConnection(conn) {
 }
 
 .connection-item:hover {
-  /*background: linear-gradient(#E0EAFC, #CFDEF3);*/
   background: #dadadb;
 }
 
 .connection {
-  min-width: 60px;
-  height: 60px;
+  min-width: 50px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-
 .name {
-  width: calc(100% - 120px);
-  min-width: 180px;
+  width: calc(100% - 150px);
+  min-width: 150px;
   height: 30px;
   font-size: 18px;
   line-height: 30px;
@@ -85,9 +90,9 @@ function deleteConnection(conn) {
 }
 
 .setting {
-  min-width: 60px;
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
+  min-width: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -98,6 +103,24 @@ function deleteConnection(conn) {
 }
 
 .setting-img {
+  width: 22px;
+  height: 22px;
+}
+
+.info {
+  width: 50px;
+  height: 50px;
+  min-width: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.info:hover {
+  background: #f96c6d;
+}
+
+.info-img {
   width: 22px;
   height: 22px;
 }
