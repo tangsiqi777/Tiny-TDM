@@ -4,7 +4,8 @@ import {CountData, PageData} from "../../wailsjs/go/service/RestSqlService.js";
 import {reactive, ref, watch} from "vue";
 import {Store} from "../store.js";
 import {storeToRefs} from "pinia";
-import {getHead, parseNestedJsonAndGetData} from "../TdengineRestData.js";
+import {getHead, hasError, parseNestedJsonAndGetData} from "../TdengineRestData.js";
+import {Message} from "@arco-design/web-vue";
 
 console.log("Right Data\n\n\n\n\n\n")
 
@@ -29,7 +30,6 @@ let query = reactive({
   current: 1,
   timeRange: 2,
 })
-pageData()
 
 function pageData() {
   hideIcon.value = false
@@ -38,14 +38,21 @@ function pageData() {
   console.log("childTableQuery:" + childTable.value)
   PageData(store.conn.conn, database.value, childTable.value, query)
       .then((pageData) => {
+        let errorMsg = hasError(pageData);
+        if (errorMsg !== "") {
+          Message.error({
+            id: 'pageData',
+            content: errorMsg,
+            duration: 2000
+          });
+          return;
+        }
 
         CountData(store.conn.conn, database.value, childTable.value, query).then((count) => {
           console.log("count" + JSON.stringify(count))
           total.value = parseNestedJsonAndGetData(count)[0].total
           console.log("total" + total.value)
         })
-        console.log(JSON.stringify(pageData))
-        console.log(JSON.stringify((getHead(pageData))))
         headList.value = (getHead(pageData))
         pageDataList.value = parseNestedJsonAndGetData(pageData)
 

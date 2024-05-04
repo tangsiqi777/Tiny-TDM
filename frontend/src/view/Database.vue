@@ -6,7 +6,8 @@ import {useRouter} from "vue-router";
 import {Store} from "../store.js";
 import Back from "../components/Back.vue";
 import {ListDatabases} from "../../wailsjs/go/service/RestSqlService.js";
-import {parseNestedJsonAndGetData} from "../TdengineRestData.js";
+import {hasError, parseNestedJsonAndGetData} from "../TdengineRestData.js";
+import {Message} from '@arco-design/web-vue';
 
 console.log("Database List\n\n\n\n\n\n")
 
@@ -21,8 +22,17 @@ onMounted(() => {
 
 function displayDatabase(conn) {
   ListDatabases(conn).then((databases) => {
+    console.log("databases:" + JSON.stringify(databases))
+    let errorMsg = hasError(databases);
+    if (errorMsg !== "") {
+      Message.error({
+        id: 'displayDatabase',
+        content: conn.name + " : " + errorMsg,
+        duration: 2000
+      });
+      return;
+    }
     databaseList.value = parseNestedJsonAndGetData(databases)
-    console.log("db" + JSON.stringify(parseNestedJsonAndGetData(databases)))
   });
 }
 

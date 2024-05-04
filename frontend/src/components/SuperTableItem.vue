@@ -18,8 +18,8 @@ const props = defineProps(['superTable', 'num'])
 
 <style scoped>
 .super-table-item {
-  min-height: 50px;
-  height: 50px;
+  min-height: 60px;
+  height: 60px;
   display: flex;
   align-items: center;
   min-width: 300px;
@@ -27,7 +27,6 @@ const props = defineProps(['superTable', 'num'])
 }
 
 .super-table-item:hover {
-  /* background: linear-gradient(#E0EAFC, #CFDEF3);*/
   background: #dadadb;
 
 }
@@ -35,7 +34,6 @@ const props = defineProps(['superTable', 'num'])
 .super-table {
   min-width: 60px;
   height: 60px;
-  width: 10%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -47,8 +45,8 @@ const props = defineProps(['superTable', 'num'])
 }
 
 .name {
-  width: 80%;
-  min-width: 210px;
+  width: calc(100% - 120px);
+  min-width: 180px;
   height: 30px;
   font-size: 18px;
   line-height: 30px;
@@ -58,12 +56,11 @@ const props = defineProps(['superTable', 'num'])
 }
 
 .setting {
-  min-width: 60px;
-  width: 10%;
+  width: 60px;
   height: 60px;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
 }
 
 .setting-img {

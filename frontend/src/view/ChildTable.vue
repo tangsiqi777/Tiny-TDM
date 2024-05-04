@@ -7,7 +7,8 @@ import {SingleMitt} from "../mitt.js";
 import Back from "../components/Back.vue";
 import Search from "../components/Search.vue";
 import SqlQuery from "../components/SqlQuery.vue";
-import {parseNestedJsonAndGetData} from "../TdengineRestData.js";
+import {hasError, parseNestedJsonAndGetData} from "../TdengineRestData.js";
+import {Message} from "@arco-design/web-vue";
 
 console.log("ChildTable List\n\n\n\n\n\n")
 const store = Store()
@@ -30,6 +31,15 @@ function displayChildTable() {
   let childTableSearch = store.childTableSearch
   let start = new Date().getTime();
   ListChildTable(store.conn.conn, database, superTable, childTableSearch).then((childTables) => {
+    let errorMsg = hasError(childTables);
+    if (errorMsg !== "") {
+      Message.error({
+        id: 'displayChildTable',
+        content: errorMsg,
+        duration: 2000
+      });
+      return;
+    }
     childTableList.value = parseNestedJsonAndGetData(childTables)
     let end = new Date().getTime();
     console.log("获取子表耗时:" + (end - start) + JSON.stringify(childTables))

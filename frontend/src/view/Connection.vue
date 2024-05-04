@@ -2,7 +2,6 @@
 
 import {onMounted, reactive} from "vue";
 import {ListConnection} from "../../wailsjs/go/service/ConnectionStorageService.js";
-import {Store} from "../store.js";
 import ServerItem from "../components/ConnectionItem.vue";
 import {SingleMitt} from "../mitt.js";
 
@@ -12,7 +11,6 @@ onMounted(() => {
 })
 
 SingleMitt.on("displayConnection", () => {
-  console.log("ljdlajkl")
   displayConnection()
 });
 
@@ -27,20 +25,11 @@ function displayConnection() {
   });
 }
 
-
-function toDatabase(conn) {
-  console.log(JSON.stringify(conn))
-  const store = Store()
-  store.setConn(conn)
-  store.setDisplayType(1)
-}
-
 </script>
 
 <template>
   <a-scrollbar outer-style="height:100%;" style="height:100%;overflow: auto;" class="connection-list">
-    <ServerItem :connectionName="item.name" v-for="item in connectionList.connectionList" :key="item.id"
-                @click="toDatabase(item)"></ServerItem>
+    <ServerItem :connection="item" v-for="item in connectionList.connectionList" :key="item.id"></ServerItem>
   </a-scrollbar>
 </template>
 

@@ -7,13 +7,14 @@ const props = defineProps(['databaseName'])
 
 <template>
   <div class="database-item">
-    <div class="database"><icon-storage size="30px" :strokeWidth="3"/>
+    <div class="database">
+      <icon-storage size="30px" :strokeWidth="3"/>
     </div>
     <div class="name">
       {{ props.databaseName }}
     </div>
     <div class="setting">
-      <icon-settings size="22px" :strokeWidth="2"/>
+      <icon-settings size="22px"  :strokeWidth="2"/>
     </div>
   </div>
 </template>
@@ -27,28 +28,24 @@ const props = defineProps(['databaseName'])
   min-width: 300px;
   width: 100%;
 }
+
 .database-item:hover {
   /*background: linear-gradient(#E0EAFC, #CFDEF3);*/
   background: #dadadb;
 }
 
 .database {
-  min-width: 60px;
+  width: 60px;
   height: 60px;
-  width: 10%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.database-img {
-  width: 30px;
-  height: 30px;
-}
 
 .name {
-  width: 80%;
-  min-width: 210px;
+  width: calc(100% - 120px);
+  min-width: 180px;
   height: 30px;
   font-size: 18px;
   line-height: 30px;
@@ -58,16 +55,11 @@ const props = defineProps(['databaseName'])
 }
 
 .setting {
-  min-width: 60px;
-  width: 10%;
+  width: 60px;
   height: 60px;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
 }
 
-.setting-img {
-  width: 22px;
-  height: 22px;
-}
 </style>

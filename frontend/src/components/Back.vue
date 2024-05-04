@@ -8,6 +8,7 @@ function back() {
   let displayType = store.displayType
   if (displayType > 0) {
     store.setDisplayType(displayType - 1)
+    console.log("click back" + store.displayType)
   }
 }
 </script>

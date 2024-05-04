@@ -3,6 +3,7 @@ import {reactive, ref} from 'vue'
 import {checkNum, checkStrLen,} from '../valid.js'
 import {SaveConnection} from "../../wailsjs/go/service/ConnectionStorageService.js";
 import {SingleMitt} from "../mitt.js";
+import {Message} from "@arco-design/web-vue";
 
 const visible = ref(false);
 const form = reactive({
@@ -77,18 +78,17 @@ const handleBeforeOk = (done) => {
   console.log(form)
   SaveConnection(form).then(errMsg => {
     if ('ok' === errMsg) {
-      console.log("conn add ok")
       done()
       form.Name = ''
       form.Addr = ''
       form.Port = ''
       form.Username = ''
       form.Password = ''
+      Message.success('新增连接成功')
       SingleMitt.emit("displayConnection", null)
       return
     }
-    // todo 完善错误处理
-    console.log("conn add ok error" + errMsg)
+    Message.warning('新增连接失败' + errMsg)
     done()
   })
 }

@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"github.com/labstack/gommon/log"
 	"sync"
 	"tinytdm/backend/storage"
@@ -15,8 +16,8 @@ type ConnectionStorageService struct {
 }
 
 type ConnectionConfig struct {
-	Id       int    `json:"id" yaml:"id"`
-	Name     string `json:"name" yaml:"name"`
+	Id       int    `json:"id,omitempty" yaml:"id,omitempty"`
+	Name     string `json:"name,omitempty" yaml:"name,omitempty"`
 	Addr     string `json:"addr,omitempty" yaml:"addr,omitempty"`
 	Port     int    `json:"port,omitempty" yaml:"port,omitempty"`
 	Username string `json:"username,omitempty" yaml:"username,omitempty"`
@@ -114,7 +115,7 @@ func (c *ConnectionStorageService) UpdateConnection(newConnection ConnectionConf
 
 func (c *ConnectionStorageService) DeleteConnection(id int) string {
 	connections := c.ListConnection()
-	newConnections := make([]ConnectionConfig, len(connections))
+	var newConnections []ConnectionConfig
 	deleteIndex := -1
 	for i := 0; i < len(connections); i++ {
 		conn := connections[i]
@@ -127,7 +128,8 @@ func (c *ConnectionStorageService) DeleteConnection(id int) string {
 	if deleteIndex == -1 {
 		return "操作对象不存在请刷新"
 	}
-	connectionsJson, err := json.Marshal(newConnections)
+	connectionsJson, err := json.Marshal(newConnections[:len(connections)-1])
+	fmt.Print("当前连接:" + string(connectionsJson))
 	if err != nil {
 		return "发生未知错误"
 	}

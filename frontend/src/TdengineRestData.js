@@ -70,3 +70,22 @@ export function getHead(jsonObject) {
         return [];
     }
 }
+
+export const hasError = function (jsonObjRet) {
+    console.log("check:" + JSON.stringify(jsonObjRet))
+    if (jsonObjRet === undefined || jsonObjRet === null) {
+        return "返回为空"
+    }
+    let connectionErrorMsg = jsonObjRet.Msg
+    if (connectionErrorMsg !== undefined && connectionErrorMsg !== null && connectionErrorMsg !== "") {
+        return connectionErrorMsg
+    }
+    if (jsonObjRet.Result && jsonObjRet.Result.trim() !== '') {
+        let queryData = JSON.parse(jsonObjRet.Result);
+        if (queryData && queryData.code === 0) {
+            return ""
+        }
+        return queryData.desc
+    }
+    return "返回为空"
+};

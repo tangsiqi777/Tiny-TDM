@@ -1,6 +1,37 @@
 <script setup>
-const props = defineProps(['connectionName'])
+import {Store} from "../store.js";
+import {DeleteConnection} from "../../wailsjs/go/service/ConnectionStorageService.js";
+import {Message} from "@arco-design/web-vue";
+import {SingleMitt} from "../mitt.js";
 
+const props = defineProps({connection: Object})
+
+function toDatabase(conn) {
+  console.log("conn" + JSON.stringify(conn))
+  const store = Store()
+  store.setConn(conn)
+  store.setDisplayType(1)
+}
+
+function deleteConnection(conn) {
+  console.log("conn" + JSON.stringify(conn))
+  DeleteConnection(conn.id).then(result => {
+    if (result === "ok") {
+      Message.success({
+        id: 'deleteConnection',
+        content: "删除成功",
+        duration: 2000
+      });
+    } else {
+      Message.error({
+        id: 'deleteConnection',
+        content: result,
+        duration: 2000
+      });
+    }
+    SingleMitt.emit("displayConnection", null)
+  })
+}
 
 </script>
 
@@ -9,11 +40,11 @@ const props = defineProps(['connectionName'])
     <div class="connection">
       <icon-desktop size="30px" :strokeWidth="3"/>
     </div>
-    <div class="name">
-      {{ props.connectionName }}
+    <div class="name" @click="toDatabase(props.connection)">
+      {{ props.connection.name }}
     </div>
-    <div class="setting">
-      <icon-settings size="22px" :strokeWidth="2"/>
+    <div class="setting" @click="deleteConnection(props.connection)">
+      <icon-delete size="22px" class="setting-img" :strokeWidth="2"/>
     </div>
   </div>
 </template>
@@ -36,20 +67,15 @@ const props = defineProps(['connectionName'])
 .connection {
   min-width: 60px;
   height: 60px;
-  width: 10%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.connection-img {
-  width: 30px;
-  height: 30px;
-}
 
 .name {
-  width: 80%;
-  min-width: 210px;
+  width: calc(100% - 120px);
+  min-width: 180px;
   height: 30px;
   font-size: 18px;
   line-height: 30px;
@@ -60,11 +86,15 @@ const props = defineProps(['connectionName'])
 
 .setting {
   min-width: 60px;
-  width: 10%;
+  width: 60px;
   height: 60px;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
+}
+
+.setting:hover {
+  background: #f96c6d;
 }
 
 .setting-img {

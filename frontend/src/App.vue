@@ -9,10 +9,11 @@ import {storeToRefs} from "pinia";
 import RightData from "./view/RightData.vue";
 import Blank from "./components/Blank.vue";
 import AddConnection from "./components/AddConnection.vue";
-import Server from "./view/Server.vue";
+import Server from "./view/Connection.vue";
 import {Quit, WindowMaximise, WindowMinimise, WindowUnmaximise} from "../wailsjs/runtime/runtime";
 import {SingleMitt} from "./mitt.js";
 import SqlQueryPage from "./view/SqlQueryPage.vue";
+import Connection from "./view/Connection.vue";
 
 const store = Store()
 
@@ -128,7 +129,7 @@ function dragControllerDiv() {
   <div class="content">
     <div class="main">
       <div class="left">
-        <Server class="left-fun" v-if="displayType===0"></Server>
+        <Connection class="left-fun" v-if="displayType===0"></Connection>
 
         <Database class="left-fun" v-if="displayType===1"></Database>
 

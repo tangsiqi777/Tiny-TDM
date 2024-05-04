@@ -1,8 +1,8 @@
 export namespace service {
 	
 	export class ConnectionConfig {
-	    id: number;
-	    name: string;
+	    id?: number;
+	    name?: string;
 	    addr?: string;
 	    port?: number;
 	    username?: string;

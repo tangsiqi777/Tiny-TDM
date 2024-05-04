@@ -8,7 +8,8 @@ import {SingleMitt} from "../mitt.js";
 import Search from "../components/Search.vue";
 import Back from "../components/Back.vue";
 import SqlQuery from "../components/SqlQuery.vue";
-import {parseNestedJsonAndGetData} from "../TdengineRestData.js";
+import {hasError, parseNestedJsonAndGetData} from "../TdengineRestData.js";
+import {Message} from "@arco-design/web-vue";
 
 
 console.log("SuperTable List\n\n\n\n\n\n")
@@ -28,6 +29,15 @@ function displaySuperTable() {
   let database = store.database
   let superTableSearch = store.superTableSearch
   ListSuperTable(store.conn.conn, database, superTableSearch).then((superTables) => {
+    let errorMsg = hasError(superTables);
+    if (errorMsg !== "") {
+      Message.error({
+        id: 'displaySuperTable',
+        content: errorMsg,
+        duration: 2000
+      });
+      return;
+    }
     superTableList.value = parseNestedJsonAndGetData(superTables)
   })
 }
@@ -36,7 +46,7 @@ function toChildTable(superTable) {
   let database = store.database
   DescTable(store.conn.conn, database, superTable).then((tableInfoRet) => {
     let tableInfo = parseNestedJsonAndGetData(tableInfoRet)
-    console.log("tableInfo:" + JSON.stringify(tableInfo) )
+    console.log("tableInfo:" + JSON.stringify(tableInfo))
     if (tableInfo !== undefined && tableInfo !== null && tableInfo.length > 0) {
       console.log("tableInfo:" + tableInfo[0].field)
       store.setPrimaryId(tableInfo[0].field)

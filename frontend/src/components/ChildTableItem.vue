@@ -34,8 +34,8 @@ SingleMitt.on("clickChildTable", (childTableName) => {
 <style scoped>
 
 .child-table-item {
-  min-height: 50px;
-  height: 50px;
+  min-height: 60px;
+  height: 60px;
   display: flex;
   align-items: center;
   min-width: 300px;
@@ -43,14 +43,12 @@ SingleMitt.on("clickChildTable", (childTableName) => {
 }
 
 .child-table-item:hover {
-  /*background: linear-gradient(#E0EAFC, #CFDEF3);*/
   background: #dadadb;
 }
 
 .child-table {
-  min-width: 60px;
+  width: 60px;
   height: 60px;
-  width: 10%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -58,8 +56,8 @@ SingleMitt.on("clickChildTable", (childTableName) => {
 
 
 .name {
-  width: 80%;
-  min-width: 210px;
+  width: calc(100% - 120px);
+  min-width: 180px;
   height: 30px;
   font-size: 18px;
   line-height: 30px;
@@ -69,12 +67,11 @@ SingleMitt.on("clickChildTable", (childTableName) => {
 }
 
 .setting {
-  min-width: 60px;
-  width: 10%;
+  width: 60px;
   height: 60px;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
 }
 
 

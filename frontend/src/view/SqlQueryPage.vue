@@ -4,7 +4,8 @@ import {ref} from "vue";
 import {Store} from "../store.js";
 import {isNotEmpty} from "../valid.js";
 import {SqlQuery} from "../../wailsjs/go/service/RestSqlService.js";
-import {getHead, parseNestedJsonAndGetData} from "../TdengineRestData.js";
+import {getHead, hasError, parseNestedJsonAndGetData} from "../TdengineRestData.js";
+import {Message} from "@arco-design/web-vue";
 
 const store = Store()
 let headList = ref([])
@@ -24,6 +25,15 @@ const scrollPercent = {
 
 function subSql() {
   SqlQuery(store.conn.conn, sql.value).then((pageData) => {
+    let errorMsg = hasError(pageData);
+    if (errorMsg !== "") {
+      Message.error({
+        id: 'subSql',
+        content: errorMsg,
+        duration: 2000
+      });
+      return;
+    }
     console.log(JSON.stringify(pageData))
     headList.value = (getHead(pageData))
     pageDataList.value = parseNestedJsonAndGetData(pageData)

@@ -32,11 +32,14 @@ type RestSqlResult struct {
 
 func (a *RestSqlService) DoPost(config ConnectionConfig, sql string) RestSqlResult {
 	restSqlResult := RestSqlResult{}
-	client := &http.Client{}
+	client := &http.Client{
+		Timeout: time.Second * 10,
+	}
 	req, err := http.NewRequest("POST", "http://"+config.Addr+":"+fmt.Sprintf("%d", config.Port)+"/rest/sql", strings.NewReader(sql))
 	if err != nil {
+		fmt.Println("连接参数错误")
 		restSqlResult.Result = ""
-		restSqlResult.Msg = err.Error()
+		restSqlResult.Msg = "连接参数错误:" + err.Error()
 		return restSqlResult
 	}
 	userAndPwd := "Basic " + base64.StdEncoding.EncodeToString([]byte((config.Username + ":" + config.Password)))
@@ -46,15 +49,17 @@ func (a *RestSqlService) DoPost(config ConnectionConfig, sql string) RestSqlResu
 	resp, err := client.Do(req)
 
 	if err != nil {
+		fmt.Println("连接错误")
 		restSqlResult.Result = ""
-		restSqlResult.Msg = err.Error()
+		restSqlResult.Msg = "连接错误:" + err.Error()
 		return restSqlResult
 	}
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
+		fmt.Println("读取数据错误")
 		restSqlResult.Result = ""
-		restSqlResult.Msg = err.Error()
+		restSqlResult.Msg = "读取数据错误:" + err.Error()
 		return restSqlResult
 	}
 	restSqlResult.Result = string(body)
