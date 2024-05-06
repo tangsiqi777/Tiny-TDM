@@ -4,7 +4,7 @@ import {ref} from "vue";
 import {Store} from "../util/store.js";
 import {isNotEmpty} from "../util/valid.js";
 import {SqlQuery} from "../../wailsjs/go/service/RestSqlService.js";
-import {hasError, restDataToJsonObj} from "../version/restDataHandle.js";
+import {getHead, hasError, restDataToJsonObj} from "../version/restDataHandle.js";
 import {Message} from "@arco-design/web-vue";
 
 const store = Store()
