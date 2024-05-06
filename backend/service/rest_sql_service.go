@@ -31,6 +31,7 @@ type RestSqlResult struct {
 }
 
 func (a *RestSqlService) DoPost(config ConnectionConfig, sql string) RestSqlResult {
+	fmt.Print(sql)
 	restSqlResult := RestSqlResult{}
 	client := &http.Client{
 		Timeout: time.Second * 10,
@@ -77,14 +78,22 @@ func (a *RestSqlService) ListSuperTable(config ConnectionConfig, databaseName st
 	if superTableSearch != "" {
 		querySql = "show `" + databaseName + "`.stables LIKE \"%" + superTableSearch + "%\";"
 	}
-	fmt.Print(querySql)
 	return a.DoPost(config, querySql)
 }
 
-func (a *RestSqlService) ListChildTable(config ConnectionConfig, databaseName string, superTable string, childTableSearch string) RestSqlResult {
-	querySql := "SELECT DISTINCT TBNAME FROM `" + databaseName + "`.`" + superTable + "` ORDER BY TBNAME ASC;"
+func (a *RestSqlService) ListChildTable(config ConnectionConfig, databaseName string, superTable string, childTableSearch string, size int32, page int32) RestSqlResult {
+	offset := (page - 1) * size
+	querySql := "SELECT DISTINCT TBNAME FROM `" + databaseName + "`.`" + superTable + "` ORDER BY TBNAME ASC LIMIT " + fmt.Sprintf("%d", size) + " OFFSET " + fmt.Sprintf("%d", offset) + ";"
 	if childTableSearch != "" {
-		querySql = "SELECT DISTINCT TBNAME FROM `" + databaseName + "`.`" + superTable + "`" + "where TBNAME LIKE \"%" + childTableSearch + "%\" ORDER BY TBNAME ASC;"
+		querySql = "SELECT DISTINCT TBNAME FROM `" + databaseName + "`.`" + superTable + "`" + "WHERE TBNAME LIKE \"%" + childTableSearch + "%\" ORDER BY TBNAME ASC LIMIT " + fmt.Sprintf("%d", size) + " OFFSET " + fmt.Sprintf("%d", offset) + ";"
+	}
+	return a.DoPost(config, querySql)
+}
+
+func (a *RestSqlService) CountChildTable(config ConnectionConfig, databaseName string, superTable string, childTableSearch string) RestSqlResult {
+	querySql := "SELECT  COUNT(TBNAME) AS num FROM `" + databaseName + "`.`" + superTable + "`;"
+	if childTableSearch != "" {
+		querySql = "SELECT COUNT(TBNAME) AS num FROM `" + databaseName + "`.`" + superTable + "`" + "WHERE TBNAME LIKE \"%" + childTableSearch + "%\";"
 	}
 	return a.DoPost(config, querySql)
 }
@@ -159,7 +168,6 @@ func (a *RestSqlService) getPageSql(query Query, databaseName string, table stri
 	}
 
 	sql1 := "SELECT " + sqlType + " FROM `" + databaseName + "`.`" + table + "` " + sqlWhere + sqlOrder + sqlLimit
-	fmt.Println(sql1)
 	return sql1
 }
 

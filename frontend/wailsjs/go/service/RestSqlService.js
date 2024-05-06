@@ -6,6 +6,10 @@ export function Check(arg1) {
   return window['go']['service']['RestSqlService']['Check'](arg1);
 }
 
+export function CountChildTable(arg1, arg2, arg3, arg4) {
+  return window['go']['service']['RestSqlService']['CountChildTable'](arg1, arg2, arg3, arg4);
+}
+
 export function CountData(arg1, arg2, arg3, arg4) {
   return window['go']['service']['RestSqlService']['CountData'](arg1, arg2, arg3, arg4);
 }
@@ -18,8 +22,8 @@ export function DoPost(arg1, arg2) {
   return window['go']['service']['RestSqlService']['DoPost'](arg1, arg2);
 }
 
-export function ListChildTable(arg1, arg2, arg3, arg4) {
-  return window['go']['service']['RestSqlService']['ListChildTable'](arg1, arg2, arg3, arg4);
+export function ListChildTable(arg1, arg2, arg3, arg4, arg5, arg6) {
+  return window['go']['service']['RestSqlService']['ListChildTable'](arg1, arg2, arg3, arg4, arg5, arg6);
 }
 
 export function ListDatabases(arg1) {

@@ -5,7 +5,7 @@ const props = defineProps(['total'])
 <template>
 
   <div class="table-page-c">
-    <a-pagination :total="props.total" simple/>
+
   </div>
 
 </template>

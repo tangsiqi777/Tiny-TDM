@@ -5,13 +5,15 @@ import {context} from '../models';
 
 export function Check(arg1:string):Promise<any>;
 
+export function CountChildTable(arg1:service.ConnectionConfig,arg2:string,arg3:string,arg4:string):Promise<service.RestSqlResult>;
+
 export function CountData(arg1:service.ConnectionConfig,arg2:string,arg3:string,arg4:service.Query):Promise<service.RestSqlResult>;
 
 export function DescTable(arg1:service.ConnectionConfig,arg2:string,arg3:string):Promise<service.RestSqlResult>;
 
 export function DoPost(arg1:service.ConnectionConfig,arg2:string):Promise<service.RestSqlResult>;
 
-export function ListChildTable(arg1:service.ConnectionConfig,arg2:string,arg3:string,arg4:string):Promise<service.RestSqlResult>;
+export function ListChildTable(arg1:service.ConnectionConfig,arg2:string,arg3:string,arg4:string,arg5:number,arg6:number):Promise<service.RestSqlResult>;
 
 export function ListDatabases(arg1:service.ConnectionConfig):Promise<service.RestSqlResult>;
 

@@ -14,10 +14,11 @@ let selectedCss = ref("")
 
 SingleMitt.on("clickChildTable", (childTableName) => {
   console.log(childTableName);
+  if (selectedCss.value !== "") {
+    selectedCss.value = ""
+  }
   if (childTableName === props.childTable) {
     selectedCss.value = 'background: #dadadb;'
-  } else {
-    selectedCss.value = ""
   }
 });
 

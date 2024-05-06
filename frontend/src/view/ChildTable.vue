@@ -1,7 +1,7 @@
 <script setup>
 import {onMounted, ref} from "vue";
 import ChildTableItem from "../components/ChildTableItem.vue";
-import {ListChildTable} from "../../wailsjs/go/service/RestSqlService.js";
+import {CountChildTable, ListChildTable} from "../../wailsjs/go/service/RestSqlService.js";
 import {Store} from "../util/store.js";
 import {SingleMitt} from "../util/mitt.js";
 import Back from "../components/Back.vue";
@@ -15,6 +15,12 @@ const store = Store()
 
 let childTableList = ref([])
 
+const PAGE_SIZE = 500;
+
+let current = ref(1)
+let size = ref(PAGE_SIZE)
+let total = ref(0)
+
 
 onMounted(() => {
   displayChildTable()
@@ -25,27 +31,47 @@ SingleMitt.on("searchChildTable", (data) => {
   displayChildTable()
 });
 
+function changeCurrent(cur) {
+  current.value = parseInt(cur)
+  displayChildTable();
+}
+
 function displayChildTable() {
   let database = store.database
   let superTable = store.superTable
   let childTableSearch = store.childTableSearch
   let start = new Date().getTime();
-  ListChildTable(store.conn.conn, database, superTable, childTableSearch).then((childTables) => {
-    let errorMsg = hasError(childTables);
+  CountChildTable(store.conn.conn, database, superTable, childTableSearch).then((countChildTable) => {
+    let errorMsg = hasError(countChildTable);
     if (errorMsg !== "") {
       Message.error({
-        id: 'displayChildTable',
+        id: 'countChildTable',
         content: errorMsg,
         duration: 2000
       });
       return;
     }
-    childTableList.value = restDataToJsonObj(childTables)
-    let end = new Date().getTime();
-    console.log("获取子表耗时:" + (end - start) + JSON.stringify(childTables))
-  })
-}
+    total.value = restDataToJsonObj(countChildTable)[0].num
+    console.log("count:" + total.value)
 
+
+    ListChildTable(store.conn.conn, database, superTable, childTableSearch, PAGE_SIZE, current.value).then((childTables) => {
+      let errorMsg = hasError(childTables);
+      if (errorMsg !== "") {
+        Message.error({
+          id: 'displayChildTable',
+          content: errorMsg,
+          duration: 2000
+        });
+        return;
+      }
+      childTableList.value = restDataToJsonObj(childTables)
+      let end = new Date().getTime();
+      console.log("获取子表耗时:" + (end - start) + JSON.stringify(childTables))
+    })
+  })
+
+}
 </script>
 
 <template>
@@ -55,13 +81,14 @@ function displayChildTable() {
       <Search :display-type="3" class="search-input"></Search>
       <SqlQuery class="sql-query"></SqlQuery>
     </div>
-    <a-scrollbar outer-style="height:calc(100% - 80px);" style="height:100%;overflow: auto;" class="table-item-list">
-      <ChildTableItem :style="selectedCss" :child-table="item.tbname" v-for="item in childTableList"
-                      :key="item"></ChildTableItem>
+    <a-scrollbar outer-style="height:calc(100% - 105px);" style="height:100%;overflow: auto;" class="table-item-list">
+      <ChildTableItem :child-table="item.tbname" v-for="item in childTableList"
+                      :key="item.tbname"></ChildTableItem>
     </a-scrollbar>
-    <!--    <div class="bottom">
-          <TablePage :total="200" class="table-page"></TablePage>
-        </div>-->
+    <div class="bottom">
+      <a-pagination :total="total" :page-size="size" :current="current" :show-total="true" @change="changeCurrent"
+                    simple/>
+    </div>
   </div>
 </template>
 
@@ -95,21 +122,14 @@ function displayChildTable() {
 }
 
 .table-item-list {
-  height: calc(100% - 80px);
+  height: calc(100% - 105px);
 }
 
 .bottom {
   display: flex;
-  height: 35px;
+  height: 60px;
   width: 100%;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
 }
-
-.table-page {
-  width: 200px
-
-}
-
-
 </style>

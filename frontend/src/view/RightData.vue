@@ -195,12 +195,10 @@ console.log(getCurrentDatePlusWeeks(1));
         <icon-arrow-down size="20px" :strokeWidth="3" v-if="query.timeOrder === 0" @click="changeTimeOrder"/>
         <icon-arrow-up size="20px" :strokeWidth="3" v-if="query.timeOrder === 1" @click="changeTimeOrder"/>
       </div>
-      <div>
+      <div class="loading">
         <a-spin :hide-icon="hideIcon" size="large"/>
       </div>
     </div>
-
-
   </div>
   <div class="data">
     <a-table :columns="headList" :data="pageDataList" :pagination="false" :scroll="scrollPercent" :scrollbar="true"
@@ -234,14 +232,21 @@ console.log(getCurrentDatePlusWeeks(1));
 }
 
 .select-time {
-  min-width: 400px;
-  width: 400px;
+  min-width: 350px;
+  width: 350px;
   display: flex;
   justify-content: flex-start;
 }
 
 .time-order {
   min-width: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading {
+  min-width: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
