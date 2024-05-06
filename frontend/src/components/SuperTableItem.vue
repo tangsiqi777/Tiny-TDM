@@ -1,9 +1,9 @@
 <script setup>
 
 import {DescTable, SqlQuery} from "../../wailsjs/go/service/RestSqlService.js";
-import {hasError, parseNestedJsonAndGetData} from "../TdengineRestData.js";
-import {Store} from "../store.js";
-import {SingleMitt} from "../mitt.js";
+import {hasError, restDataToJsonObj} from "../version/restDataHandle.js";
+import {Store} from "../util/store.js";
+import {SingleMitt} from "../util/mitt.js";
 import {Message} from "@arco-design/web-vue";
 
 let store = Store();
@@ -13,7 +13,7 @@ const props = defineProps(['superTable', 'num'])
 function toChildTable(superTable) {
   let database = store.database
   DescTable(store.conn.conn, database, superTable).then((tableInfoRet) => {
-    let tableInfo = parseNestedJsonAndGetData(tableInfoRet)
+    let tableInfo = restDataToJsonObj(tableInfoRet)
     console.log("tableInfo:" + JSON.stringify(tableInfo))
     if (tableInfo !== undefined && tableInfo !== null && tableInfo.length > 0) {
       console.log("tableInfo:" + tableInfo[0].field)
@@ -37,7 +37,7 @@ function getSuperTableInfo() {
           });
           return
         }
-        SingleMitt.emit("displayInfo", {"infoType": 2, "data": parseNestedJsonAndGetData(stableInfo)})
+        SingleMitt.emit("displayInfo", {"infoType": 2, "data": restDataToJsonObj(stableInfo)})
       })
 }
 

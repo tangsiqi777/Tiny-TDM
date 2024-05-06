@@ -7,6 +7,7 @@ export namespace service {
 	    port?: number;
 	    username?: string;
 	    password?: string;
+	    version?: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new ConnectionConfig(source);
@@ -20,6 +21,7 @@ export namespace service {
 	        this.port = source["port"];
 	        this.username = source["username"];
 	        this.password = source["password"];
+	        this.version = source["version"];
 	    }
 	}
 	export class Query {

@@ -3,7 +3,7 @@
 import {onMounted, reactive} from "vue";
 import {ListConnection} from "../../wailsjs/go/service/ConnectionStorageService.js";
 import ServerItem from "../components/ConnectionItem.vue";
-import {SingleMitt} from "../mitt.js";
+import {SingleMitt} from "../util/mitt.js";
 
 const connectionList = reactive({connectionList: []})
 onMounted(() => {

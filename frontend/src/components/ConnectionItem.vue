@@ -1,8 +1,8 @@
 <script setup>
-import {Store} from "../store.js";
+import {Store} from "../util/store.js";
 import {DeleteConnection} from "../../wailsjs/go/service/ConnectionStorageService.js";
 import {Message} from "@arco-design/web-vue";
-import {SingleMitt} from "../mitt.js";
+import {SingleMitt} from "../util/mitt.js";
 
 const props = defineProps({connection: Object})
 

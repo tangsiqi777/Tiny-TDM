@@ -1,6 +1,7 @@
 <script setup>
 
-import {Store} from "../store.js";
+import {Store} from "../util/store.js";
+import {SingleMitt} from "../util/mitt.js";
 
 let store = Store()
 
@@ -9,6 +10,9 @@ function back() {
   if (displayType > 0) {
     store.setDisplayType(displayType - 1)
     console.log("click back" + store.displayType)
+  }
+  if (displayType < 2) {
+    SingleMitt.emit("displaySqlQuery", false);
   }
 }
 </script>

@@ -3,12 +3,12 @@
 import SuperTableItem from "../components/SuperTableItem.vue";
 import {ref} from "vue";
 import {ListSuperTable} from "../../wailsjs/go/service/RestSqlService.js";
-import {Store} from "../store.js";
-import {SingleMitt} from "../mitt.js";
+import {Store} from "../util/store.js";
+import {SingleMitt} from "../util/mitt.js";
 import Search from "../components/Search.vue";
 import Back from "../components/Back.vue";
 import SqlQuery from "../components/SqlQuery.vue";
-import {hasError, parseNestedJsonAndGetData} from "../TdengineRestData.js";
+import {hasError, restDataToJsonObj} from "../version/restDataHandle.js";
 import {Message} from "@arco-design/web-vue";
 
 
@@ -38,7 +38,7 @@ function displaySuperTable() {
       });
       return;
     }
-    superTableList.value = parseNestedJsonAndGetData(superTables)
+    superTableList.value = restDataToJsonObj(superTables)
   })
 }
 </script>
@@ -53,7 +53,7 @@ function displaySuperTable() {
     </div>
 
     <a-scrollbar outer-style="height:calc(100% - 45px);" style="height:100%;overflow: auto;" class="table-list">
-      <SuperTableItem :superTable="item.stableName" v-for="item in superTableList" :key="item"></SuperTableItem>
+      <SuperTableItem :superTable="item.stable_name" v-for="item in superTableList" :key="item"></SuperTableItem>
     </a-scrollbar>
   </div>
 </template>

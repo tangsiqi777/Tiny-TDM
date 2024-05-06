@@ -1,19 +1,19 @@
 <script setup>
 import {reactive, ref} from 'vue'
-import {checkNum, checkStrLen,} from '../valid.js'
+import {checkNum, checkStrLen,} from '../util/valid.js'
 import {SaveConnection} from "../../wailsjs/go/service/ConnectionStorageService.js";
-import {SingleMitt} from "../mitt.js";
+import {SingleMitt} from "../util/mitt.js";
 import {Message} from "@arco-design/web-vue";
 
 const visible = ref(false);
 const form = reactive({
   Name: '',
   Addr: '',
-  Port: '',
-  Username: '',
-  Password: '',
-  // 默认3.0
-  Version: 'v3.0'
+  Port: 6041,
+  Username: 'root',
+  Password: 'taosdata',
+  // 默认3
+  Version: 'v3'
 });
 
 const formRef = ref()
@@ -81,9 +81,9 @@ const handleBeforeOk = (done) => {
       done()
       form.Name = ''
       form.Addr = ''
-      form.Port = ''
-      form.Username = ''
-      form.Password = ''
+      form.Port = 6041
+      form.Username = 'root'
+      form.Password = 'taosdata'
       Message.success('新增连接成功')
       SingleMitt.emit("displayConnection", null)
       return
@@ -124,6 +124,12 @@ const handleCancel = () => {
       </a-form-item>
       <a-form-item field="password" label="密码">
         <a-input v-model="form.Password" placeholder="taosdata"/>
+      </a-form-item>
+      <a-form-item field="version" label="版本(默认v3)">
+        <a-select :style="{width:'160px'}" :defaultValue="'v3'" v-model="form.Version">
+          <a-option>v3</a-option>
+          <a-option>v2</a-option>
+        </a-select>
       </a-form-item>
     </a-form>
   </a-modal>

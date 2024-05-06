@@ -1,6 +1,6 @@
 import {createRouter, createWebHashHistory} from 'vue-router'
-import childTableData from "./view/RightData.vue";
-import blank from "./components/AddConnection.vue";
+import childTableData from "../view/RightData.vue";
+import blank from "../components/AddConnection.vue";
 
 const routes = [
     {

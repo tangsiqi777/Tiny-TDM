@@ -4,14 +4,14 @@ import {onMounted, reactive, ref} from 'vue'
 import Database from "./view/Database.vue";
 import SuperTable from "./view/SuperTable.vue";
 import ChildTable from "./view/ChildTable.vue";
-import {Store} from "./store.js";
+import {Store} from "./util/store.js";
 import {storeToRefs} from "pinia";
 import RightData from "./view/RightData.vue";
 import Blank from "./components/Blank.vue";
 import AddConnection from "./components/AddConnection.vue";
 import Connection from "./view/Connection.vue";
 import {Quit, WindowMaximise, WindowMinimise, WindowUnmaximise} from "../wailsjs/runtime/runtime";
-import {SingleMitt} from "./mitt.js";
+import {SingleMitt} from "./util/mitt.js";
 import SqlQueryPage from "./view/SqlQueryPage.vue";
 
 const store = Store()

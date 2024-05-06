@@ -1,6 +1,6 @@
 <script setup>
 
-import {SingleMitt} from "../mitt.js";
+import {SingleMitt} from "../util/mitt.js";
 import {ref} from "vue";
 
 let selectedCss = ref("")
@@ -13,7 +13,7 @@ function displaySqlQuery() {
     selectedCss.value = ''
   } else {
     selected.value = true
-    selectedCss.value = 'background: #ACE2E1;'
+    selectedCss.value = 'background: #e7f1fd;'
 
   }
 
@@ -36,8 +36,7 @@ function displaySqlQuery() {
 }
 
 .sql-query-c:hover {
-  //background-color: #F0EBE3;
-  background-color: #ACE2E1;
+  background-color: #e7f1fd;
 }
 
 </style>

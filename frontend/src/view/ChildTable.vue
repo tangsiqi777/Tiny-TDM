@@ -1,13 +1,13 @@
 <script setup>
 import {onMounted, ref} from "vue";
-import ChildTableList from "../components/ChildTableItem.vue";
+import ChildTableItem from "../components/ChildTableItem.vue";
 import {ListChildTable} from "../../wailsjs/go/service/RestSqlService.js";
-import {Store} from "../store.js";
-import {SingleMitt} from "../mitt.js";
+import {Store} from "../util/store.js";
+import {SingleMitt} from "../util/mitt.js";
 import Back from "../components/Back.vue";
 import Search from "../components/Search.vue";
 import SqlQuery from "../components/SqlQuery.vue";
-import {hasError, parseNestedJsonAndGetData} from "../TdengineRestData.js";
+import {hasError, restDataToJsonObj} from "../version/restDataHandle.js";
 import {Message} from "@arco-design/web-vue";
 
 console.log("ChildTable List\n\n\n\n\n\n")
@@ -40,7 +40,7 @@ function displayChildTable() {
       });
       return;
     }
-    childTableList.value = parseNestedJsonAndGetData(childTables)
+    childTableList.value = restDataToJsonObj(childTables)
     let end = new Date().getTime();
     console.log("获取子表耗时:" + (end - start) + JSON.stringify(childTables))
   })
@@ -56,7 +56,8 @@ function displayChildTable() {
       <SqlQuery class="sql-query"></SqlQuery>
     </div>
     <a-scrollbar outer-style="height:calc(100% - 80px);" style="height:100%;overflow: auto;" class="table-item-list">
-      <ChildTableList :child-table="item.tbname" v-for="item in childTableList" :key="item"></ChildTableList>
+      <ChildTableItem :style="selectedCss" :child-table="item.tbname" v-for="item in childTableList"
+                      :key="item"></ChildTableItem>
     </a-scrollbar>
     <!--    <div class="bottom">
           <TablePage :total="200" class="table-page"></TablePage>

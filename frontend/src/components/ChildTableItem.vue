@@ -1,10 +1,10 @@
 <script setup>
 
 import {ref} from "vue";
-import {SingleMitt} from "../mitt.js";
-import {Store} from "../store.js";
+import {SingleMitt} from "../util/mitt.js";
+import {Store} from "../util/store.js";
 import {SqlQuery} from "../../wailsjs/go/service/RestSqlService.js";
-import {hasError, parseNestedJsonAndGetData} from "../TdengineRestData.js";
+import {hasError, restDataToJsonObj} from "../version/restDataHandle.js";
 import {Message} from "@arco-design/web-vue";
 
 const props = defineProps(['childTable'])
@@ -23,8 +23,8 @@ SingleMitt.on("clickChildTable", (childTableName) => {
 
 function toChildTableData(childTable) {
   console.log("display table" + childTable)
-  SingleMitt.emit("clickChildTable", childTable)
   store.setChildTable(childTable)
+  SingleMitt.emit("clickChildTable", childTable)
 }
 
 function getChildTableInfo() {
@@ -40,7 +40,10 @@ function getChildTableInfo() {
           });
           return
         }
-        SingleMitt.emit("displayInfo", {"infoType": 3, "data": parseNestedJsonAndGetData(childTableInfo)})
+        SingleMitt.emit("displayInfo", {
+          "infoType": 3,
+          "data": restDataToJsonObj(childTableInfo)
+        })
       })
 }
 

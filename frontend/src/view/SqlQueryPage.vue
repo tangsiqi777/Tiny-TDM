@@ -1,10 +1,10 @@
 <script setup>
 
 import {ref} from "vue";
-import {Store} from "../store.js";
-import {isNotEmpty} from "../valid.js";
+import {Store} from "../util/store.js";
+import {isNotEmpty} from "../util/valid.js";
 import {SqlQuery} from "../../wailsjs/go/service/RestSqlService.js";
-import {getHead, hasError, parseNestedJsonAndGetData} from "../TdengineRestData.js";
+import {hasError, restDataToJsonObj} from "../version/restDataHandle.js";
 import {Message} from "@arco-design/web-vue";
 
 const store = Store()
@@ -36,7 +36,7 @@ function subSql() {
     }
     console.log(JSON.stringify(pageData))
     headList.value = (getHead(pageData))
-    pageDataList.value = parseNestedJsonAndGetData(pageData)
+    pageDataList.value = restDataToJsonObj(pageData)
     console.log("headList:" + JSON.stringify(headList.value))
     console.log("pageDataList:" + JSON.stringify(pageDataList.value))
   })

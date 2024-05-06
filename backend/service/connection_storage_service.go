@@ -22,6 +22,7 @@ type ConnectionConfig struct {
 	Port     int    `json:"port,omitempty" yaml:"port,omitempty"`
 	Username string `json:"username,omitempty" yaml:"username,omitempty"`
 	Password string `json:"password,omitempty" yaml:"password,omitempty"`
+	Version  string `json:"version,omitempty" yaml:"version,omitempty"`
 }
 
 var connectionStorageService *ConnectionStorageService

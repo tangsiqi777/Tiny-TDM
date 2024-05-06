@@ -1,13 +1,16 @@
-export function parseNestedJsonAndGetData(jsonObject) {
+/**
+ * v3将返回解析成对象形式
+ * @param jsonObject
+ * @returns {*[]}
+ */
+export function restDataToJsonObj(jsonObject) {
     try {
         // 确保Result字段存在且不为空
         if (jsonObject.Result && jsonObject.Result.trim() !== '') {
             // 第二次解析Result字段中的JSON字符串
             let innerJsonObject = JSON.parse(jsonObject.Result);
             // 确保data和column_meta字段存在且不为空
-            if (innerJsonObject.data && Array.isArray(innerJsonObject.data) &&
-                innerJsonObject.column_meta && Array.isArray(innerJsonObject.column_meta[0]) &&
-                innerJsonObject.column_meta[0].length > 0) {
+            if (innerJsonObject.data && Array.isArray(innerJsonObject.data) && innerJsonObject.column_meta && Array.isArray(innerJsonObject.column_meta[0]) && innerJsonObject.column_meta[0].length > 0) {
 
                 // 获取第一列的列名
                 let columnMeta = [];
@@ -21,7 +24,7 @@ export function parseNestedJsonAndGetData(jsonObject) {
                     let rowData = innerJsonObject.data[i]
                     console.log("rowData" + JSON.stringify(rowData))
                     for (let j = 0; j < columnMeta.length; j++) {
-                        rowObj[toCamelCase(columnMeta[j])] = rowData[j]
+                        rowObj[columnMeta[j]] = rowData[j]
                     }
                     result.push(rowObj)
                 }
@@ -39,13 +42,12 @@ export function parseNestedJsonAndGetData(jsonObject) {
     }
 }
 
-export function toCamelCase(str) {
-    // 使用正则表达式将下划线及其后面的字符转换为大写，并且去掉下划线
-    return str.replace(/_(\w)/g, function (match, group1) {
-        return group1.toUpperCase();
-    });
-}
 
+/**
+ * v3从返回从获取列名信息
+ * @param jsonObject
+ * @returns {*|*[]}
+ */
 export function getHead(jsonObject) {
     try {
         // 确保Result字段存在且不为空
@@ -56,8 +58,7 @@ export function getHead(jsonObject) {
             // 确保data字段存在且不为空，并构建结果数组
             if (innerJsonObject.column_meta && Array.isArray(innerJsonObject.column_meta) && innerJsonObject.column_meta.length > 0) {
                 return innerJsonObject.column_meta.map(row => ({
-                    title: row[0],
-                    dataIndex: row[0]
+                    title: row[0], dataIndex: row[0]
                 }));
             }
         }
@@ -71,6 +72,11 @@ export function getHead(jsonObject) {
     }
 }
 
+/**
+ * v3判断返回是否有错误
+ * @param jsonObjRet
+ * @returns {*|SVGAttributes|string}
+ */
 export const hasError = function (jsonObjRet) {
     console.log("check:" + JSON.stringify(jsonObjRet))
     if (jsonObjRet === undefined || jsonObjRet === null) {

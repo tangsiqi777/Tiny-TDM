@@ -3,10 +3,10 @@
 import DatabaseItem from "../components/DatabaseItem.vue";
 import {onMounted, ref} from "vue";
 import {useRouter} from "vue-router";
-import {Store} from "../store.js";
+import {Store} from "../util/store.js";
 import Back from "../components/Back.vue";
 import {ListDatabases} from "../../wailsjs/go/service/RestSqlService.js";
-import {hasError, parseNestedJsonAndGetData} from "../TdengineRestData.js";
+import {hasError, restDataToJsonObj} from "../version/restDataHandle.js";
 import {Message} from '@arco-design/web-vue';
 
 console.log("Database List\n\n\n\n\n\n")
@@ -28,14 +28,13 @@ function displayDatabase(conn) {
       Message.error({
         id: 'displayDatabase',
         content: conn.name + " : " + errorMsg,
-        duration: 2000
+        duration: 4000
       });
       return;
     }
-    databaseList.value = parseNestedJsonAndGetData(databases)
+    databaseList.value = restDataToJsonObj(databases)
   });
 }
-
 
 
 </script>

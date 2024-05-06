@@ -1,8 +1,8 @@
 <script setup>
-import {Store} from "../store.js";
-import {SingleMitt} from "../mitt.js";
+import {Store} from "../util/store.js";
+import {SingleMitt} from "../util/mitt.js";
 import {SqlQuery} from "../../wailsjs/go/service/RestSqlService.js";
-import {hasError, parseNestedJsonAndGetData} from "../TdengineRestData.js";
+import {hasError, restDataToJsonObj} from "../version/restDataHandle.js";
 import {Message} from "@arco-design/web-vue";
 
 const store = Store()
@@ -24,7 +24,7 @@ function getDatabaseInfo() {
       });
       return
     }
-    SingleMitt.emit("displayInfo", {"infoType": 1, "data": parseNestedJsonAndGetData(databaseInfo)})
+    SingleMitt.emit("displayInfo", {"infoType": 1, "data": restDataToJsonObj(databaseInfo)})
   })
 }
 

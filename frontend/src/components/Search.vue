@@ -1,7 +1,7 @@
 <script setup>
 import {ref} from "vue";
-import {SingleMitt} from "../mitt.js";
-import {Store} from "../store.js";
+import {SingleMitt} from "../util/mitt.js";
+import {Store} from "../util/store.js";
 
 let searchValue = ref("")
 const props = defineProps(['displayType'])

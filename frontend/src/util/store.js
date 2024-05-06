@@ -2,7 +2,7 @@ import {defineStore} from 'pinia'
 import {reactive, ref} from 'vue'
 
 // 用户模块 token setToken removeToken
-export const Store = defineStore('big-user', () => {
+export const Store = defineStore('store', () => {
 
     const displayType = ref(0)
     const setDisplayType = (newDisplayType) => {

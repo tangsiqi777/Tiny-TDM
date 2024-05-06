@@ -1,11 +1,12 @@
 <script setup>
 
 import {CountData, PageData} from "../../wailsjs/go/service/RestSqlService.js";
-import {reactive, ref, watch} from "vue";
-import {Store} from "../store.js";
+import {reactive, ref} from "vue";
+import {Store} from "../util/store.js";
 import {storeToRefs} from "pinia";
-import {getHead, hasError, parseNestedJsonAndGetData} from "../TdengineRestData.js";
+import {getHead, hasError, restDataToJsonObj} from "../version/restDataHandle.js";
 import {Message} from "@arco-design/web-vue";
+import {SingleMitt} from "../util/mitt.js";
 
 console.log("Right Data\n\n\n\n\n\n")
 
@@ -50,11 +51,11 @@ function pageData() {
 
         CountData(store.conn.conn, database.value, childTable.value, query).then((count) => {
           console.log("count" + JSON.stringify(count))
-          total.value = parseNestedJsonAndGetData(count)[0].total
+          total.value = restDataToJsonObj(count)[0].total
           console.log("total" + total.value)
         })
         headList.value = (getHead(pageData))
-        pageDataList.value = parseNestedJsonAndGetData(pageData)
+        pageDataList.value = restDataToJsonObj(pageData)
 
         console.log("headList:" + JSON.stringify(headList.value))
         console.log("pageDataList:" + JSON.stringify(pageDataList.value))
@@ -70,11 +71,9 @@ function pageData() {
 const result = convertArrayToObject(arr);
 console.log(result);*/
 
-// 可以直接侦听一个 ref
-watch(childTable, async (newChildTable, oldChildTable) => {
-  console.log(newChildTable + ":" + oldChildTable)
+SingleMitt.on("clickChildTable", (childTableName) => {
   pageData()
-})
+});
 
 
 function onSelect(dateString, date) {
