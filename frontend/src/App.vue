@@ -150,7 +150,7 @@ function dragControllerDiv() {
   <!-- windows 定制化窗口按钮 -->
   <div v-if="isNotMac" class="win-tap" style="--wails-draggable:drag">
     <div class="logo">
-      <img class="logo-img" src="../src/assets/images/Tdengine.ico" alt=""/>
+      <img class="logo-img" src="assets/images/Tdengine.png" alt=""/>
       <span>Tiny TDM</span>
     </div>
     <div class="tap">
@@ -225,7 +225,7 @@ body {
 }
 
 .logo {
-  height: 35px;
+  height: 40px;
   width: 130px;
   display: flex;
   justify-content: center;
@@ -235,12 +235,12 @@ body {
 .logo span {
   font-size: 15px;
   font-weight: bold;
-  padding-left: 10px;
+  padding-left: 7px;
 }
 
 .logo img {
-  height: 32px;
-  width: 32px;
+  height: 30px;
+  width: 30px;
 }
 
 .tap {
