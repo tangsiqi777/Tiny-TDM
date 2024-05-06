@@ -150,7 +150,7 @@ function dragControllerDiv() {
   <!-- windows 定制化窗口按钮 -->
   <div v-if="isNotMac" class="win-tap" style="--wails-draggable:drag">
     <div class="logo">
-      <img class="logo-img" src="assets/images/Tdengine.png" alt=""/>
+      <img class="logo-img" src="./assets/images/Tdengine.png" alt=""/>
       <span>Tiny TDM</span>
     </div>
     <div class="tap">
