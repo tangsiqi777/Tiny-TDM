@@ -82,8 +82,8 @@ function displayChildTable() {
       <SqlQuery class="sql-query"></SqlQuery>
     </div>
     <a-scrollbar outer-style="height:calc(100% - 105px);" style="height:100%;overflow: auto;" class="table-item-list">
-      <ChildTableItem :child-table="item.tbname" v-for="item in childTableList"
-                      :key="item.tbname"></ChildTableItem>
+      <ChildTableItem :child-table="item.table_name" v-for="item in childTableList"
+                      :key="item.table_name"></ChildTableItem>
     </a-scrollbar>
     <div class="bottom">
       <a-pagination :total="total" :page-size="size" :current="current" :show-total="true" @change="changeCurrent"
