@@ -23,6 +23,14 @@ SingleMitt.on("clickChildTable", (childTableName) => {
 });
 
 function toChildTableData(childTable) {
+  if(store.sqlQuerySelected === true){
+    Message.warning({
+      id: 'toChildTableData',
+      content: "请退出Sql查询模式",
+      duration: 2000
+    });
+    return;
+  }
   console.log("display table" + childTable)
   store.setChildTable(childTable)
   SingleMitt.emit("clickChildTable", childTable)
@@ -90,10 +98,10 @@ function getChildTableInfo() {
   width: calc(100% - 80px);
   min-width: 220px;
   height: 30px;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 30px;
   text-align: left;
-  color: #4d5869;
+  color: black;
   overflow: hidden;
 }
 

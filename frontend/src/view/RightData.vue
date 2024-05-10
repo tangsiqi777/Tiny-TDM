@@ -66,11 +66,6 @@ function pageData() {
 }
 
 
-// 示例用法 查询前获取数据库元信息 todo
-/*const arr = ["ts", "value"];
-const result = convertArrayToObject(arr);
-console.log(result);*/
-
 SingleMitt.on("clickChildTable", (childTableName) => {
   pageData()
 });
@@ -220,7 +215,7 @@ console.log(getCurrentDatePlusWeeks(1));
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  height: 60px;
+  height: 45px;
   min-width: 700px;
 }
 
@@ -228,7 +223,7 @@ console.log(getCurrentDatePlusWeeks(1));
   min-width: 230px;
   width: 230px;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
 }
 
 .select-time {
@@ -253,7 +248,7 @@ console.log(getCurrentDatePlusWeeks(1));
 }
 
 .data {
-  height: calc(100% - 120px);
+  height: calc(100% - 90px);
 }
 
 
@@ -261,6 +256,6 @@ console.log(getCurrentDatePlusWeeks(1));
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 60px;
+  height: 45px;
 }
 </style>

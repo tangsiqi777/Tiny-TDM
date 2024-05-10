@@ -81,7 +81,7 @@ function displayChildTable() {
       <Search :display-type="3" class="search-input"></Search>
       <SqlQuery class="sql-query"></SqlQuery>
     </div>
-    <a-scrollbar outer-style="height:calc(100% - 105px);" style="height:100%;overflow: auto;" class="table-item-list">
+    <a-scrollbar outer-style="height:calc(100% - 90px);" style="height:100%;overflow: auto;" class="table-item-list">
       <ChildTableItem :child-table="item.table_name" v-for="item in childTableList"
                       :key="item.table_name"></ChildTableItem>
     </a-scrollbar>
@@ -107,27 +107,27 @@ function displayChildTable() {
 }
 
 .search-input {
-  height: 70%;
-  width: 70%;
+  height: 72%;
+  width: calc(100% - 90px);
 }
 
 .back {
-  width: 15%;
+  width: 45px;
   height: 45px;
 }
 
 .sql-query {
   height: 45px;
-  width: 15%;
+  width: 45px;
 }
 
 .table-item-list {
-  height: calc(100% - 105px);
+  height: calc(100% - 90px);
 }
 
 .bottom {
   display: flex;
-  height: 60px;
+  height: 45px;
   width: 100%;
   align-items: center;
   justify-content: center;

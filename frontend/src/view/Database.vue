@@ -33,8 +33,7 @@ function displayDatabase(conn) {
       return;
     }
 
-    const dbList = restDataToJsonObj(databases).filter(database => database.name !== "information_schema" && database.name !== "performance_schema")
-    databaseList.value = dbList
+    databaseList.value = restDataToJsonObj(databases).filter(database => database.name !== "information_schema" && database.name !== "performance_schema")
   });
 }
 

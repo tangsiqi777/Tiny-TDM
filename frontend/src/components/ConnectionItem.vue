@@ -82,10 +82,10 @@ function getConnectionInfo() {
   width: calc(100% - 150px);
   min-width: 150px;
   height: 30px;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 30px;
   text-align: left;
-  color: #4d5869;
+  color: black;
   overflow: hidden;
 }
 

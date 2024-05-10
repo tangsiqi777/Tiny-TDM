@@ -1,23 +1,24 @@
 <script setup>
 
-import {SingleMitt} from "../util/mitt.js";
 import {ref} from "vue";
+import {Store} from "../util/store.js";
 
-let selectedCss = ref("")
-let selected = ref(false)
+const store = Store()
+
+
+const initCss = store.sqlQuerySelected === true ? 'background: #e7f1fd;' : '';
+
+let selectedCss = ref(initCss)
 
 
 function displaySqlQuery() {
-  if (selected.value === true) {
-    selected.value = false
+  if (store.sqlQuerySelected === true) {
+    store.sqlQuerySelected = false
     selectedCss.value = ''
   } else {
-    selected.value = true
+    store.sqlQuerySelected = true
     selectedCss.value = 'background: #e7f1fd;'
-
   }
-
-  SingleMitt.emit("displaySqlQuery", selected.value);
 }
 
 </script>

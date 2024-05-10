@@ -39,7 +39,7 @@ function search(KeyboardEvent) {
 }
 
 .search-input-c {
-  width: 85%;
+  width: 90%;
   height: 100%;
 }
 

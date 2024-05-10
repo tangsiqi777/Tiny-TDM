@@ -87,10 +87,10 @@ function getSuperTableInfo() {
   width: calc(100% - 100px);
   min-width: 200px;
   height: 30px;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 30px;
   text-align: left;
-  color: #4d5869;
+  color: black;
   overflow: hidden;
 }
 

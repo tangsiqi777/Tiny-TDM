@@ -6,20 +6,19 @@ import {SingleMitt} from "../util/mitt.js";
 let store = Store()
 
 function back() {
-  let displayType = store.displayType
-  if (displayType > 0) {
-    store.setDisplayType(displayType - 1)
+  if (store.displayType > 0) {
+    store.setDisplayType(store.displayType - 1)
     console.log("click back" + store.displayType)
   }
-  if (displayType < 2) {
-    SingleMitt.emit("displaySqlQuery", false);
+  if (store.displayType < 2) {
+    store.removeSqlQuerySelected();
   }
 }
 </script>
 
 <template>
   <div class="back-c" @click="back()">
-    <icon-arrow-left size="28px"/>
+    <icon-left size="28px"/>
   </div>
 
 </template>

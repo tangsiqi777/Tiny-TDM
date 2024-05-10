@@ -1,6 +1,6 @@
 <script setup>
 
-import {onMounted, reactive, ref} from 'vue'
+import {onMounted, reactive, ref, watch} from 'vue'
 import Database from "./view/Database.vue";
 import SuperTable from "./view/SuperTable.vue";
 import ChildTable from "./view/ChildTable.vue";
@@ -22,11 +22,12 @@ onMounted(() => {
   dragControllerDiv();
 })
 
-SingleMitt.on("displaySqlQuery", (selected) => {
-  disPlayQueryWindow.value = selected
-});
+const {sqlQuerySelected} = storeToRefs(store)
 
-
+watch(sqlQuerySelected, (newValue, oldValue) => {
+  console.log('sqlQuery已触发更新', newValue)
+  disPlayQueryWindow.value = newValue
+})
 // 当前页面状态
 
 // 是否非 Mac 平台

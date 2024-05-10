@@ -73,18 +73,18 @@ function displaySuperTable() {
 }
 
 .search-input {
-  height: 70%;
-  width: 70%;
+  height: 72%;
+  width: calc(100% - 90px);
 }
 
 .back {
-  width: 15%;
+  width: 45px;
   height: 45px;
 }
 
 .sql-query {
   height: 45px;
-  width: 15%;
+  width: 45px;
 }
 
 .table-list {

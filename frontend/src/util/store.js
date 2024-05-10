@@ -75,6 +75,15 @@ export const Store = defineStore('store', () => {
         primaryId.value = ''
     }
 
+    const sqlQuerySelected = ref(false)
+    const setSqlQuerySelected = () => {
+        sqlQuerySelected.value = true
+    }
+    const removeSqlQuerySelected = () => {
+        sqlQuerySelected.value = false
+    }
+
+
     return {
         conn,
         setConn,
@@ -99,6 +108,9 @@ export const Store = defineStore('store', () => {
         removeSuperTableSearch,
         primaryId,
         setPrimaryId,
-        removePrimaryId
+        removePrimaryId,
+        sqlQuerySelected,
+        setSqlQuerySelected,
+        removeSqlQuerySelected
     }
 })
