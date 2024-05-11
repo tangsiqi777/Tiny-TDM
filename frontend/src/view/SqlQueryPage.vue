@@ -60,7 +60,7 @@ function convertArrayToObject(arr) {
     <div class="info-c">
       <a-alert>1. SQL需要带上数据库限定<br/>
         2. 对于有大写数据库名数据库表的SQL需要对该字段使用``转义<br/>
-        3. 为了避免卡顿返回最多显示2000条<br/>
+        3. 为了避免卡顿请控制返回数量<br/>
       </a-alert>
     </div>
     <div class="sql-input-c">
