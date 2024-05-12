@@ -10,7 +10,7 @@ import SqlQuery from "../components/SqlQuery.vue";
 import {hasError, restDataToJsonObj} from "../version/restDataHandle.js";
 import {Message} from "@arco-design/web-vue";
 
-console.log("ChildTable List\n\n\n\n\n\n")
+console.log("into childTable page")
 const store = Store()
 
 let childTableList = ref([])
@@ -52,8 +52,6 @@ function displayChildTable() {
       return;
     }
     total.value = restDataToJsonObj(countChildTable)[0].num
-    console.log("count:" + total.value)
-
 
     ListChildTable(store.conn.conn, database, superTable, childTableSearch, PAGE_SIZE, current.value).then((childTables) => {
       let errorMsg = hasError(childTables);
@@ -67,7 +65,7 @@ function displayChildTable() {
       }
       childTableList.value = restDataToJsonObj(childTables)
       let end = new Date().getTime();
-      console.log("获取子表耗时:" + (end - start) + JSON.stringify(childTables))
+      console.log("获取子表耗时:" + (end - start))
     })
   })
 

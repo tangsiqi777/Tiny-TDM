@@ -13,7 +13,7 @@ let selectedCss = ref("")
 
 
 SingleMitt.on("clickChildTable", (childTableName) => {
-  console.log(childTableName);
+  // 设置选中颜色
   if (selectedCss.value !== "") {
     selectedCss.value = ""
   }
@@ -31,7 +31,6 @@ function toChildTableData(childTable) {
     });
     return;
   }
-  console.log("display table" + childTable)
   store.setChildTable(childTable)
   SingleMitt.emit("clickChildTable", childTable)
 }
@@ -39,7 +38,6 @@ function toChildTableData(childTable) {
 function getChildTableInfo() {
   SqlQuery(store.conn.conn, "SHOW CREATE TABLE `" + store.database + "`.`" + props.childTable + "`")
       .then((childTableInfo) => {
-        console.log("info:" + JSON.stringify(childTableInfo))
         let errorMsg = hasError(childTableInfo);
         if (errorMsg !== "") {
           Message.error({

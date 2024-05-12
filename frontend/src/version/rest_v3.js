@@ -22,7 +22,6 @@ export function restDataToJsonObj(jsonObject) {
                 for (let i = 0; i < innerJsonObject.data.length; i++) {
                     let rowObj = {}
                     let rowData = innerJsonObject.data[i]
-                    console.log("rowData" + JSON.stringify(rowData))
                     for (let j = 0; j < columnMeta.length; j++) {
                         rowObj[columnMeta[j]] = rowData[j]
                     }
@@ -78,7 +77,6 @@ export function getHead(jsonObject) {
  * @returns {*|SVGAttributes|string}
  */
 export const hasError = function (jsonObjRet) {
-    console.log("check:" + JSON.stringify(jsonObjRet))
     if (jsonObjRet === undefined || jsonObjRet === null) {
         return "返回为空"
     }

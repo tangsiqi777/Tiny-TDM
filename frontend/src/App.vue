@@ -105,7 +105,6 @@ function dragControllerDiv() {
 
   // resize.length 元素个数
   for (let i = 0; i < resize.length; i++) {
-    console.log("hhhasdaf")
     // 鼠标按下事件
     resize[i].onmousedown = function (e) {
       //颜色改变提醒
@@ -185,9 +184,10 @@ function dragControllerDiv() {
 
       <div class="right-data">
         <div v-if="disPlayQueryWindow === false" class="right-data-inner">
+          <RightData v-if="displayType === 2"></RightData>
           <RightData v-if="displayType===3"></RightData>
           <AddConnection v-if="displayType===0"></AddConnection>
-          <Blank v-if="displayType===1 || displayType === 2"></Blank>
+          <Blank v-if="displayType===1 "></Blank>
         </div>
         <div v-if="disPlayQueryWindow === true" class="right-data-inner">
           <SqlQueryPage></SqlQueryPage>

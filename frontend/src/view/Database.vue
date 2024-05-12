@@ -9,7 +9,7 @@ import {ListDatabases} from "../../wailsjs/go/service/RestSqlService.js";
 import {hasError, restDataToJsonObj} from "../version/restDataHandle.js";
 import {Message} from '@arco-design/web-vue';
 
-console.log("Database List\n\n\n\n\n\n")
+console.log("into database page")
 
 let router = useRouter()
 let databaseList = ref([])
@@ -32,7 +32,6 @@ function displayDatabase(conn) {
       });
       return;
     }
-
     databaseList.value = restDataToJsonObj(databases).filter(database => database.name !== "information_schema" && database.name !== "performance_schema")
   });
 }

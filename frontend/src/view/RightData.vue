@@ -8,17 +8,17 @@ import {getHead, hasError, restDataToJsonObj} from "../version/restDataHandle.js
 import {Message} from "@arco-design/web-vue";
 import {SingleMitt} from "../util/mitt.js";
 
-console.log("Right Data\n\n\n\n\n\n")
+console.log("into data page")
 
-const scrollPercent = {
+const scrollPercent = reactive({
   x: '100%',
   y: 'calc(100% - 120px)'
-};
+})
 
 let headList = ref([])
 let pageDataList = ref([])
 
-let total = ref(1)
+let total = ref(0)
 let hideIcon = ref(true)
 const store = Store()
 let {database, childTable} = storeToRefs(store)
@@ -36,8 +36,21 @@ function pageData() {
   hideIcon.value = false
   query.primaryId = store.primaryId
   console.log(window.hello("测试将函数绑定到window"))
-  console.log("childTableQuery:" + childTable.value)
-  PageData(store.conn.conn, database.value, childTable.value, query)
+  console.log("选中childTable:" + store.childTable)
+  console.log("选中superTable:" + store.superTable)
+  const tableName = (store.childTable && store.childTable !== "") ? store.childTable : store.selectedSuperTable
+  console.log("选中Table:" + tableName + "; query:" + JSON.stringify(query))
+  if (!tableName) {
+    console.log("tableName为空")
+    Message.warning({
+      id: 'pageData',
+      content: "没有选择表！",
+      duration: 2000
+    });
+    hideIcon.value = true
+    return;
+  }
+  PageData(store.conn.conn, database.value, tableName, query)
       .then((pageData) => {
         let errorMsg = hasError(pageData);
         if (errorMsg !== "") {
@@ -49,28 +62,33 @@ function pageData() {
           return;
         }
 
-        CountData(store.conn.conn, database.value, childTable.value, query).then((count) => {
-          console.log("count" + JSON.stringify(count))
+        CountData(store.conn.conn, database.value, tableName, query).then((count) => {
           total.value = restDataToJsonObj(count)[0].total
-          console.log("total" + total.value)
+          console.log("count" + JSON.stringify(count) + total.value)
         })
         headList.value = (getHead(pageData))
         pageDataList.value = restDataToJsonObj(pageData)
-
+        if (headList.value && headList.value.length > 5) {
+          scrollPercent.x = (headList.value.length / 5) * 100 + '%'
+        }
         console.log("headList:" + JSON.stringify(headList.value))
-        console.log("pageDataList:" + JSON.stringify(pageDataList.value))
+        // console.log("pageDataList:" + JSON.stringify(pageDataList.value))
         setTimeout(() => {
           hideIcon.value = true
         }, 300);
       })
 }
 
-
-SingleMitt.on("clickChildTable", (childTableName) => {
+SingleMitt.on("clickChildTable", (childTable) => {
+  //兄弟组件监听点击事件
   pageData()
 });
 
+SingleMitt.on("clickSuperTable", (superTable) => {
+  pageData()
+});
 
+// 时间选择器回调函数
 function onSelect(dateString, date) {
   console.log('onSelect', dateString, date);
 }
@@ -82,7 +100,7 @@ function onChange(dateString, date) {
 function onOk(dateString, date) {
   console.log('onOk: ', dateString, date);
   query.timeEnd = dateString[1]
-  query.timeStart = dateString[0]
+  query.pageDatatimeStart = dateString[0]
   pageData()
 }
 
@@ -160,11 +178,6 @@ function clearTime() {
   query.timeEnd = "";
   pageData()
 }
-
-console.log(getCurrentDatePlusHours(24));
-console.log(getCurrentDatePlusWeeks(1));
-
-
 </script>
 <template>
   <div class="select">
@@ -191,18 +204,20 @@ console.log(getCurrentDatePlusWeeks(1));
         <icon-arrow-up size="20px" :strokeWidth="3" v-if="query.timeOrder === 1" @click="changeTimeOrder"/>
       </div>
       <div class="loading">
-        <a-spin :hide-icon="hideIcon" size="large"/>
+        <a-spin :hide-icon="hideIcon" :size="20"/>
       </div>
     </div>
   </div>
   <div class="data">
     <a-table :columns="headList" :data="pageDataList" :pagination="false" :scroll="scrollPercent" :scrollbar="true"
+             :bordered="{cell:true}"
+             column-resizable
              style="height: calc(100%);overflow-y: auto;"/>
   </div>
 
   <div class="page">
     <a-pagination :total="total" show-page-size @page-size-change="changeSize" @change="changeCurrent"
-                  v-model:page-size="query.size"
+                  v-model:page-size="query.size" show-total
                   v-model:current="query.current"/>
   </div>
 

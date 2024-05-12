@@ -12,10 +12,9 @@ import {hasError, restDataToJsonObj} from "../version/restDataHandle.js";
 import {Message} from "@arco-design/web-vue";
 
 
-console.log("SuperTable List\n\n\n\n\n\n")
+console.log("into superTable page")
 
 let superTableList = ref([])
-
 const store = Store()
 
 

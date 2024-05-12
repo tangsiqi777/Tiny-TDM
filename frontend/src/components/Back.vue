@@ -1,14 +1,18 @@
 <script setup>
 
 import {Store} from "../util/store.js";
-import {SingleMitt} from "../util/mitt.js";
 
 let store = Store()
 
 function back() {
-  if (store.displayType > 0) {
-    store.setDisplayType(store.displayType - 1)
-    console.log("click back" + store.displayType)
+  const lastDisplayType = store.displayType
+  if (lastDisplayType > 0) {
+    const newDisplayType = lastDisplayType - 1
+    store.setDisplayType(newDisplayType)
+    if (lastDisplayType === 3 && newDisplayType === 2) {
+      console.log("子表列表返回到超级表列表")
+      store.removeChildTable();
+    }
   }
   if (store.displayType < 2) {
     store.removeSqlQuerySelected();

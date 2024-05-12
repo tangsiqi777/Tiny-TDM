@@ -33,12 +33,22 @@ export const Store = defineStore('store', () => {
         database.value = ''
     }
 
+    // 从哪个超级表点击进去的
     const superTable = ref('')
     const setSuperTable = (newSuperTable) => {
         superTable.value = newSuperTable
     }
     const removeSuperTable = () => {
         superTable.value = ''
+    }
+
+    //选中查询超级表
+    const selectedSuperTable = ref('')
+    const setSelectedSuperTable = (superTable) => {
+        selectedSuperTable.value = superTable
+    }
+    const removeSelectedSuperTable = () => {
+        selectedSuperTable.value = ''
     }
 
     const childTable = ref('')
@@ -111,6 +121,9 @@ export const Store = defineStore('store', () => {
         removePrimaryId,
         sqlQuerySelected,
         setSqlQuerySelected,
-        removeSqlQuerySelected
+        removeSqlQuerySelected,
+        selectedSuperTable,
+        setSelectedSuperTable,
+        removeSelectedSuperTable
     }
 })

@@ -1,6 +1,6 @@
 <script setup>
 
-import {ref} from "vue";
+import {reactive, ref} from "vue";
 import {Store} from "../util/store.js";
 import {isNotEmpty} from "../util/valid.js";
 import {SqlQuery} from "../../wailsjs/go/service/RestSqlService.js";
@@ -18,10 +18,10 @@ let defaultSql = "SELECT * FROM `" + selectedDatabase + "`.`" + selectedTable + 
 let sql = ref(defaultSql)
 
 
-const scrollPercent = {
+const scrollPercent = reactive({
   x: '100%',
   y: 'calc(100% - 230px)'
-};
+})
 
 function subSql() {
   SqlQuery(store.conn.conn, sql.value).then((pageData) => {
@@ -34,25 +34,19 @@ function subSql() {
       });
       return;
     }
-    console.log(JSON.stringify(pageData))
-    headList.value = (getHead(pageData))
-    pageDataList.value = restDataToJsonObj(pageData)
     console.log("headList:" + JSON.stringify(headList.value))
-    console.log("pageDataList:" + JSON.stringify(pageDataList.value))
+    console.log(JSON.stringify(pageData))
+    headList.value = getHead(pageData)
+    pageDataList.value = restDataToJsonObj(pageData)
+    //两个值设置要同时不然会导致头和表格错乱
+    if (headList.value && headList.value.length > 5) {
+      scrollPercent.x = (headList.value.length / 5) * 100 + '%'
+      console.log(scrollPercent.x)
+    }
+    // console.log("pageDataList:" + JSON.stringify(pageDataList.value))
   })
 }
 
-function convertArrayToObject(arr) {
-  if (arr === null || arr === undefined || arr.length === 0) {
-    return
-  }
-  return arr.map(item => {
-    return {
-      title: item,
-      dataIndex: item,
-    };
-  });
-}
 </script>
 
 <template>
@@ -75,7 +69,9 @@ function convertArrayToObject(arr) {
 
     <div class="data-c">
       <a-table :columns="headList" :data="pageDataList" :pagination="false" :scroll="scrollPercent" :scrollbar="true"
-               style="height: 100%;overflow-y: auto;"/>
+               :bordered="{cell:true}"
+               column-resizable
+               style="height: calc(100%);overflow-y: auto;"/>
     </div>
   </div>
 
@@ -104,7 +100,8 @@ function convertArrayToObject(arr) {
 }
 
 .data-c {
-  height: calc(100% - 230px);
+  height: calc(100% - 353px);
+  width: 100%;
 }
 
 
