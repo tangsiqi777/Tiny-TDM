@@ -10,7 +10,7 @@ import RightData from "./view/RightData.vue";
 import Blank from "./components/Blank.vue";
 import AddConnection from "./components/AddConnection.vue";
 import Connection from "./view/Connection.vue";
-import {Quit, WindowMaximise, WindowMinimise, WindowUnmaximise} from "../wailsjs/runtime/runtime";
+import {BrowserOpenURL, Quit, WindowMaximise, WindowMinimise, WindowUnmaximise} from "../wailsjs/runtime/runtime";
 import {SingleMitt} from "./util/mitt.js";
 import SqlQueryPage from "./view/SqlQueryPage.vue";
 
@@ -50,6 +50,9 @@ function windowChange() {
   }
 }
 
+function toGithub() {
+  BrowserOpenURL("https://github.com/tangsiqi777/Tiny-TDM")
+}
 
 SingleMitt.on("displayInfo", (info) => {
   console.log("displayInfo:" + JSON.stringify(info.data, null, 2))
@@ -149,7 +152,7 @@ function dragControllerDiv() {
 <template>
   <!-- windows 定制化窗口按钮 -->
   <div v-if="isNotMac" class="win-tap" style="--wails-draggable:drag">
-    <div class="logo">
+    <div class="logo" @click="toGithub()">
       <img class="logo-img" src="./assets/images/Tdengine.png" alt=""/>
       <span>Tiny TDM</span>
     </div>

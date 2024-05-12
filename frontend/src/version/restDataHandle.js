@@ -23,18 +23,18 @@ handleMap.set("v2", {
 const DEFAULT_VERSION = "v3"
 
 export function restDataToJsonObj(jsonObject) {
-    const version = store.conn.conn.Version
+    const version = store.conn.conn.version
     return (handleMap.get(version) || handleMap.get(DEFAULT_VERSION)).restDataToJsonObj(jsonObject)
 }
 
 
 export function getHead(jsonObject) {
-    const version = store.conn.conn.Version
+    const version = store.conn.conn.version
     return (handleMap.get(version) || handleMap.get(DEFAULT_VERSION)).getHead(jsonObject)
 }
 
 export function hasError(jsonObject) {
-    const version = store.conn.conn.Version
+    const version = store.conn.conn.version
     const fun = handleMap.get(version) || handleMap.get(DEFAULT_VERSION);
     console.log("version:" + fun)
     return fun.hasError(jsonObject)

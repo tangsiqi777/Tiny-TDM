@@ -37,7 +37,12 @@ function subSql() {
     console.log("headList:" + JSON.stringify(headList.value))
     console.log(JSON.stringify(pageData))
     headList.value = getHead(pageData)
-    pageDataList.value = restDataToJsonObj(pageData)
+    let originalArray = restDataToJsonObj(pageData)
+    if (originalArray && originalArray.length > 0) {
+      pageDataList.value = originalArray.slice(0, 1000);
+    } else {
+      pageDataList.value = []
+    }
     //两个值设置要同时不然会导致头和表格错乱
     if (headList.value && headList.value.length > 5) {
       scrollPercent.x = (headList.value.length / 5) * 100 + '%'
@@ -54,7 +59,7 @@ function subSql() {
     <div class="info-c">
       <a-alert>1. SQL需要带上数据库限定<br/>
         2. 对于有大写数据库名数据库表的SQL需要对该字段使用``转义<br/>
-        3. 为了避免卡顿返回最多显示2000条<br/>
+        3. 为了避免卡只显示返回前1000条数据<br/>
       </a-alert>
     </div>
     <div class="sql-input-c">
