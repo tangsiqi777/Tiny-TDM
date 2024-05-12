@@ -91,14 +91,14 @@
 ![img](https://github.com/tangsiqi777/Tiny-TDM/blob/main/doc/database.png?raw=true)
 
 **超级表列表**
-可以查看超级表列表，以及超级表信息，同时考虑到超级表会比较多提供了搜索功能
+可以查看超级表列表，查询超级表，以及超级表信息，同时考虑到超级表会比较多提供了搜索功能
 
 ![img](https://github.com/tangsiqi777/Tiny-TDM/blob/main/doc/superTable.png?raw=true)
 
 **子表列表**
 
 可以查看子表列表，以及子表信息，同时考虑到子表会比较多提供了搜索功能，并进行了分页显示，避免字表过多卡顿
-![img](https://github.com/tangsiqi777/Tiny-TDM/blob/main/doc/sqlQuery.png?raw=true)
+![img](https://github.com/tangsiqi777/Tiny-TDM/blob/main/doc/clickChildTable.png?raw=true)
 
 **自定义Sql查询功能**![img](https://github.com/tangsiqi777/Tiny-TDM/blob/main/doc/sqlQuery.png?raw=true)
 
